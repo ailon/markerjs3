@@ -1,0 +1,40 @@
+{
+  "name": "markerjs3",
+  "version": "3.0.0",
+  "description": "marker.js 3",
+  "main": "umd/markerjs3.js",
+  "module": "markerjs3.js",
+  "types": "markerjs3.d.ts",
+  "author": "Alan Mendelevich",
+  "license": "SEE LICENSE IN LICENSE",
+  "scripts": {
+    "lint": "eslint src",
+    "build": "yarn lint && rollup --config rollup.config.prod.mjs",
+    "start": "rollup --config rollup.config.dev.mjs -w",
+    "old-docs": "typedoc --excludePrivate --excludeExternals --exclude \"src/index.ts\" -mode file --out docs src --name \"MJS Diagram Class Reference\" --disableSources --readme none",
+    "docs": "typedoc"
+  },
+  "devDependencies": {
+    "@rollup/plugin-node-resolve": "^15.2.3",
+    "@rollup/plugin-terser": "^0.4.4",
+    "@rollup/plugin-typescript": "^11.1.5",
+    "@typescript-eslint/eslint-plugin": "^6.10.0",
+    "@typescript-eslint/parser": "^6.10.0",
+    "eslint": "^8.53.0",
+    "eslint-config-prettier": "^9.0.0",
+    "prettier": "^3.0.3",
+    "rollup": "^4.3.0",
+    "rollup-plugin-copy": "^3.5.0",
+    "rollup-plugin-delete": "^2.0.0",
+    "rollup-plugin-dev": "^2.0.4",
+    "rollup-plugin-dts": "^6.1.0",
+    "rollup-plugin-generate-html-template": "^1.7.0",
+    "rollup-plugin-generate-package-json": "^3.2.0",
+    "rollup-plugin-livereload": "^2.0.5",
+    "rollup-plugin-svgo": "^2.0.0",
+    "svgo": "^3.0.3",
+    "tslib": "^2.6.2",
+    "typedoc": "^0.25.3",
+    "typescript": "^5.2.2"
+  }
+}

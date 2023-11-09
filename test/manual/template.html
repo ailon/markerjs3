@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>marker.js 3 manual testing</title>
+  <script>
+    let experiments;
+    document.addEventListener("DOMContentLoaded", function () {
+      experiments = new markerjs3.Experiments();
+
+      experiments.setup();
+    });    
+  </script>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      background-color: rgb(226, 226, 252);
+      font-size: 40px;
+      font-family: 'Times New Roman', Times, serif;
+      display: flex;
+      flex-direction: column;
+    }
+  </style>
+</head>
+<body>
+    <div style="width: 70%; min-width: 400px; height: 50vh; min-height: 500px; background-color: antiquewhite; margin: 10px auto; display: flex; flex-direction: column;">
+    </div>
+
+    <div style="display: flex; justify-content: center; margin-top: 50px;">
+      <button id="restoreStateButton">restore state</button>
+    </div>
+
+    <div style="height: 50vh; background-color: antiquewhite; margin: 10px auto; display: flex; flex-direction: column;">
+    </div>
+
+    <img id="rasterResult" title="result" />
+
+</body>
+</html>
