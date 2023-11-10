@@ -1,4 +1,4 @@
-import { SvgHelper } from "./core/SvgHelper";
+import { SvgHelper } from './core/SvgHelper';
 
 export interface MarkerAreaEventMap {
   /**
@@ -24,10 +24,40 @@ export class MarkerArea extends HTMLElement {
   private _mainCanvas?: SVGSVGElement;
   private _groupLayer?: SVGGElement;
 
+  private _editingTarget?: HTMLImageElement;
+
   private width = 0;
   private height = 0;
 
+  private _targetWidth = -1;
+  public get targetWidth() {
+    return this._targetWidth;
+  }
+  public set targetWidth(value) {
+    this._targetWidth = value;
+    this.setMainCanvasSize();
+  }
+  private _targetHeight = -1;
+  public get targetHeight() {
+    return this._targetHeight;
+  }
+  public set targetHeight(value) {
+    this._targetHeight = value;
+    this.setMainCanvasSize();
+  }
+
   private _isInitialized = false;
+
+  private _targetImage: HTMLImageElement | undefined;
+  public get targetImage(): HTMLImageElement | undefined {
+    return this._targetImage;
+  }
+  public set targetImage(value: HTMLImageElement | undefined) {
+    this._targetImage = value;
+    if (value !== undefined) {
+      this.addTargetImage();
+    }
+  }
 
   constructor() {
     super();
@@ -39,6 +69,7 @@ export class MarkerArea extends HTMLElement {
     this.addMainCanvas = this.addMainCanvas.bind(this);
     this.setMainCanvasSize = this.setMainCanvasSize.bind(this);
     this.initOverlay = this.initOverlay.bind(this);
+    this.addTargetImage = this.addTargetImage.bind(this);
 
     this.attachEvents = this.attachEvents.bind(this);
     this.attachWindowEvents = this.attachWindowEvents.bind(this);
@@ -54,6 +85,10 @@ export class MarkerArea extends HTMLElement {
     this.initOverlay();
     this.attachEvents();
     this._isInitialized = true;
+    if (this.targetImage !== undefined) {
+      this.addTargetImage();
+    }
+    this.setMainCanvasSize();
   }
 
   private disconnectedCallback() {
@@ -85,7 +120,7 @@ export class MarkerArea extends HTMLElement {
     this._canvasContainer.style.overflow = 'auto';
     this._contentContainer.appendChild(this._canvasContainer);
 
-    this.shadowRoot?.appendChild(this._contentContainer);    
+    this.shadowRoot?.appendChild(this._contentContainer);
   }
 
   private addMainCanvas() {
@@ -94,7 +129,7 @@ export class MarkerArea extends HTMLElement {
 
     this._mainCanvas = document.createElementNS(
       'http://www.w3.org/2000/svg',
-      'svg'
+      'svg',
     );
     this._mainCanvas.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
     this.setMainCanvasSize();
@@ -102,6 +137,7 @@ export class MarkerArea extends HTMLElement {
     this._mainCanvas.style.gridRowStart = '1';
     this._mainCanvas.style.pointerEvents = 'auto';
     this._mainCanvas.style.backgroundColor = 'pink'; // @todo
+    this._mainCanvas.style.opacity = '0.3'; // @todo
     this._mainCanvas.style.margin = '10px';
     //this._mainCanvas.style.transform = `scale(${this._zoomLevel})`;
 
@@ -113,8 +149,21 @@ export class MarkerArea extends HTMLElement {
   }
 
   private setMainCanvasSize() {
-    if (this._mainCanvas !== undefined) {
-      // @todo
+    if (
+      this._mainCanvas !== undefined &&
+      this._targetHeight > 0 &&
+      this._targetWidth > 0
+    ) {
+      this._mainCanvas.setAttribute('width', this._targetWidth.toString());
+      this._mainCanvas.setAttribute('height', this._targetHeight.toString());
+      this._mainCanvas.setAttribute(
+        'viewBox',
+        '0 0 ' +
+          this._targetWidth.toString() +
+          ' ' +
+          this._targetHeight.toString(),
+      );
+      // @todo zoom
     }
   }
 
@@ -136,6 +185,48 @@ export class MarkerArea extends HTMLElement {
     // this._overlayContentContainer.style.height = `${this.documentHeight}px`;
     this._overlayContentContainer.style.display = 'flex';
     this._overlayContainer.appendChild(this._overlayContentContainer);
+  }
+
+  private addTargetImage() {
+    if (
+      this._isInitialized &&
+      this._editingTarget === undefined &&
+      this.targetImage !== undefined &&
+      this._canvasContainer !== undefined &&
+      this._mainCanvas !== undefined
+    ) {
+      this._editingTarget = document.createElement('img');
+
+      this._targetWidth =
+        this._targetWidth > 0 ? this._targetWidth : this.targetImage.clientWidth;
+      this._targetHeight =
+        this._targetHeight > 0
+          ? this._targetHeight
+          : this.targetImage.clientHeight;
+
+      this._editingTarget.addEventListener('load', (ev) => {
+        if (this._editingTarget !== undefined) {
+          if (this._targetHeight <= 0 && this._targetWidth <= 0) {
+            const img = <HTMLImageElement>ev.target;
+            this._targetWidth =
+              img.clientWidth > 0 ? img.clientWidth : img.naturalWidth;
+            this._targetHeight =
+              img.clientHeight > 0 ? img.clientHeight : img.naturalHeight;
+          }
+          this._editingTarget.width = this._targetWidth;
+          this._editingTarget.height = this._targetHeight;
+          this._editingTarget.style.width = `${this._targetWidth}px`;
+          this._editingTarget.style.height = `${this._targetHeight}px`;
+          this._editingTarget.style.gridColumnStart = '1';
+          this._editingTarget.style.gridRowStart = '1';
+
+          this.setMainCanvasSize();
+        }
+      });
+      this._editingTarget.src = this.targetImage.src;
+
+      this._canvasContainer.insertBefore(this._editingTarget, this._mainCanvas);
+    }
   }
 
   private attachEvents() {
@@ -162,7 +253,7 @@ export class MarkerArea extends HTMLElement {
     // window.addEventListener('pointerout', this.onPointerOut);
     // window.addEventListener('pointerleave', this.onPointerUp);
     // window.addEventListener('keyup', this.onKeyUp);
-  }  
+  }
 
   private detachEvents() {
     // @todo
@@ -200,17 +291,17 @@ export class MarkerArea extends HTMLElement {
     listener: (this: MarkerArea, ev: MarkerAreaEventMap[T]) => void,
 
     // any options
-    options?: boolean | AddEventListenerOptions
+    options?: boolean | AddEventListenerOptions,
   ): void;
   addEventListener<K extends keyof HTMLElementEventMap>(
     type: K,
     listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => void,
-    options?: boolean | AddEventListenerOptions | undefined
+    options?: boolean | AddEventListenerOptions | undefined,
   ): void;
   addEventListener(
     type: string,
     listener: EventListenerOrEventListenerObject,
-    options?: boolean | AddEventListenerOptions | undefined
+    options?: boolean | AddEventListenerOptions | undefined,
   ): void {
     super.addEventListener(type, listener, options);
   }
@@ -223,18 +314,18 @@ export class MarkerArea extends HTMLElement {
     listener: (this: MarkerArea, ev: MarkerAreaEventMap[T]) => void,
 
     // any options
-    options?: boolean | EventListenerOptions
+    options?: boolean | EventListenerOptions,
   ): void;
   removeEventListener<K extends keyof HTMLElementEventMap>(
     type: K,
     listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => void,
-    options?: boolean | EventListenerOptions | undefined
+    options?: boolean | EventListenerOptions | undefined,
   ): void;
   removeEventListener(
     type: string,
     listener: EventListenerOrEventListenerObject,
-    options?: boolean | EventListenerOptions | undefined
+    options?: boolean | EventListenerOptions | undefined,
   ): void {
     super.removeEventListener(type, listener, options);
-  }  
+  }
 }
