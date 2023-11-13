@@ -13,12 +13,12 @@ export type MarkerEditorState =
   | 'rotate'
   | 'edit';
 
-export class MarkerBaseEditor {
-  protected _markerType: typeof MarkerBase;
+export class MarkerBaseEditor<TMarkerType extends MarkerBase = MarkerBase> {
+  protected _markerType: new (container: SVGGElement) => TMarkerType;
 
-  protected _marker: MarkerBase;
+  protected _marker: TMarkerType;
 
-  public get marker(): MarkerBase {
+  public get marker(): TMarkerType {
     return this._marker;
   }
 
@@ -66,12 +66,12 @@ export class MarkerBaseEditor {
   /**
    * Method called when marker creation is finished.
    */
-  public onMarkerCreated?: (marker: MarkerBaseEditor) => void;
+  public onMarkerCreated?: (marker: MarkerBaseEditor<TMarkerType>) => void;
 
   /**
    * Method to call when marker state changes.
    */
-  public onStateChanged?: (marker: MarkerBaseEditor) => void;
+  public onStateChanged?: (marker: MarkerBaseEditor<TMarkerType>) => void;
 
   /**
    * Marker's state when it is selected
@@ -90,7 +90,7 @@ export class MarkerBaseEditor {
     return this._isSelected;
   }
 
-  constructor(properties: MarkerEditorProperties) {
+  constructor(properties: MarkerEditorProperties<TMarkerType>) {
     this._container = properties.container;
     this._overlayContainer = properties.overlayContainer;
     this._markerType = properties.markerType;

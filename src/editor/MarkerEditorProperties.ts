@@ -1,6 +1,6 @@
 import { MarkerBase } from '../core';
 
-export interface MarkerEditorProperties {
+export interface MarkerEditorProperties<TMarkerType extends MarkerBase = MarkerBase> {
   /**
    * SVG container for the marker and editor elements.
    */
@@ -12,9 +12,9 @@ export interface MarkerEditorProperties {
   /**
    * Type of marker to create.
    */
-  markerType: typeof MarkerBase;
+  markerType: new (container: SVGGElement) => TMarkerType;
   /**
    * Previously created marker to edit.
    */
-  marker?: MarkerBase;
+  marker?: TMarkerType;
 }
