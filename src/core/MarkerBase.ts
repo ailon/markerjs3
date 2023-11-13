@@ -1,4 +1,4 @@
-import { MarkerBaseState, MarkerState } from './MarkerBaseState';
+import { MarkerBaseState } from './MarkerBaseState';
 
 export class MarkerBase {
   public static typeName = 'MarkerBase';
@@ -13,16 +13,6 @@ export class MarkerBase {
    */
   public get container(): SVGGElement {
     return this._container;
-  }
-
-  protected _state: MarkerState = 'new';
-  /**
-   * Current marker state.
-   *
-   * Both MarkerArea and the marker itself can react differently to different events based on what state the marker is in.
-   */
-  public get state(): MarkerState {
-    return this._state;
   }
 
   /**
@@ -69,7 +59,6 @@ export class MarkerBase {
   public getState(): MarkerBaseState {
     return {
       typeName: MarkerBase.typeName,
-      state: this.state,
       notes: this.notes,
     };
   }
@@ -80,7 +69,6 @@ export class MarkerBase {
    * @param state - previously saved state.
    */
   public restoreState(state: MarkerBaseState): void {
-    this._state = state.state;
     this.notes = state.notes;
   }
 
