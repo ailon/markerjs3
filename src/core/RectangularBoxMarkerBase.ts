@@ -79,6 +79,10 @@ export class RectangularBoxMarkerBase extends MarkerBase {
     }
   }
 
+  protected setSize(): void {
+    this.moveVisual({x: this.left, y: this.top});
+  }
+
   private rotate(point: IPoint) {
     // avoid glitch when crossing the 0 rotation point
     if (Math.abs(point.x - this.centerX) > 0.1) {
