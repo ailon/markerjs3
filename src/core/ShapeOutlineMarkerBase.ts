@@ -9,15 +9,15 @@ export abstract class ShapeOutlineMarkerBase extends RectangularBoxMarkerBase {
   /**
    * Rectangle stroke color.
    */
-  protected strokeColor = 'transparent';
+  public strokeColor = 'transparent';
   /**
    * Rectangle border stroke width.
    */
-  protected strokeWidth = 0;
+  public strokeWidth = 0;
   /**
    * Rectangle border stroke dash array.
    */
-  protected strokeDasharray = '';
+  public strokeDasharray = '';
   /**
    * Rectangle opacity (alpha). 0 to 1.
    */
@@ -45,7 +45,7 @@ export abstract class ShapeOutlineMarkerBase extends RectangularBoxMarkerBase {
     return 'M0,0';
   }
 
-  protected createVisual(): void {
+  public createVisual(): void {
     this.visual = SvgHelper.createPath(this.getPathD(), [
       ['stroke', this.strokeColor],
       ['stroke-width', this.strokeWidth.toString()],
@@ -55,7 +55,7 @@ export abstract class ShapeOutlineMarkerBase extends RectangularBoxMarkerBase {
     this.addMarkerVisualToContainer(this.visual);
   }
 
-  protected setSize(): void {
+  public setSize(): void {
     super.setSize();
     if (this.visual) {
       SvgHelper.setAttributes(this.visual, [
@@ -68,7 +68,7 @@ export abstract class ShapeOutlineMarkerBase extends RectangularBoxMarkerBase {
    * Sets rectangle's border stroke color.
    * @param color - color as string
    */
-  protected setStrokeColor(color: string): void {
+  public setStrokeColor(color: string): void {
     this.strokeColor = color;
     if (this.visual) {
       SvgHelper.setAttributes(this.visual, [['stroke', this.strokeColor]]);
@@ -79,7 +79,7 @@ export abstract class ShapeOutlineMarkerBase extends RectangularBoxMarkerBase {
    * Sets rectangle's border stroke (line) width.
    * @param color - color as string
    */
-  protected setStrokeWidth(width: number): void {
+  public setStrokeWidth(width: number): void {
     this.strokeWidth = width;
     if (this.visual) {
       SvgHelper.setAttributes(this.visual, [['stroke-width', this.strokeWidth.toString()]]);
@@ -89,7 +89,7 @@ export abstract class ShapeOutlineMarkerBase extends RectangularBoxMarkerBase {
    * Sets rectangle's border stroke dash array.
    * @param color - color as string
    */
-  protected setStrokeDasharray(dashes: string): void {
+  public setStrokeDasharray(dashes: string): void {
     this.strokeDasharray = dashes;
     if (this.visual) {
       SvgHelper.setAttributes(this.visual, [['stroke-dasharray', this.strokeDasharray]]);
