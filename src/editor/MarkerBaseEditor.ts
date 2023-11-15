@@ -66,12 +66,12 @@ export class MarkerBaseEditor<TMarkerType extends MarkerBase = MarkerBase> {
   /**
    * Method called when marker creation is finished.
    */
-  public onMarkerCreated?: (marker: MarkerBaseEditor<TMarkerType>) => void;
+  public onMarkerCreated?: (marker: TMarkerType) => void;
 
   /**
    * Method to call when marker state changes.
    */
-  public onStateChanged?: (marker: MarkerBaseEditor<TMarkerType>) => void;
+  public onStateChanged?: (marker: TMarkerType) => void;
 
   /**
    * Marker's state when it is selected
@@ -209,7 +209,7 @@ export class MarkerBaseEditor<TMarkerType extends MarkerBase = MarkerBase> {
         JSON.stringify(this.manipulationStartState) !=
         JSON.stringify(currentState)
       ) {
-        this.onStateChanged(this);
+        this.onStateChanged(this.marker);
       }
     }
   }

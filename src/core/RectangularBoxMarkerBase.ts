@@ -12,40 +12,40 @@ export class RectangularBoxMarkerBase extends MarkerBase {
   /**
    * x coordinate of the top-left corner.
    */
-  protected left = 0;
+  public left = 0;
   /**
    * y coordinate of the top-left corner.
    */
-  protected top = 0;
+  public top = 0;
   /**
    * Marker width.
    */
-  protected width = 0;
+  public width = 0;
   /**
    * Marker height.
    */
-  protected height = 0;
+  public height = 0;
 
   /**
    * The default marker size when the marker is created with a click (without dragging).
    */
-  protected defaultSize: IPoint = {x: 50, y: 20};
+  public defaultSize: IPoint = {x: 50, y: 20};
 
   /**
    * Marker's rotation angle.
    */
-  protected rotationAngle = 0;
+  public rotationAngle = 0;
 
   /**
    * x coordinate of the marker's center.
    */
-  protected get centerX(): number {
+  public get centerX(): number {
     return this.left + this.width / 2;
   }
   /**
    * y coordinate of the marker's center.
    */
-  protected get centerY(): number {
+  public get centerY(): number {
     return this.top + this.height / 2;
   }
 
@@ -73,17 +73,17 @@ export class RectangularBoxMarkerBase extends MarkerBase {
    * Moves visual to the specified coordinates.
    * @param point - coordinates of the new top-left corner of the visual.
    */
-  protected moveVisual(point: IPoint): void {
+  public moveVisual(point: IPoint): void {
     if (this.visual) {
       this.visual.style.transform = `translate(${point.x}px, ${point.y}px)`;
     }
   }
 
-  protected setSize(): void {
+  public setSize(): void {
     this.moveVisual({x: this.left, y: this.top});
   }
 
-  private rotate(point: IPoint) {
+  public rotate(point: IPoint) {
     // avoid glitch when crossing the 0 rotation point
     if (Math.abs(point.x - this.centerX) > 0.1) {
       const sign = Math.sign(point.x - this.centerX);
@@ -105,7 +105,7 @@ export class RectangularBoxMarkerBase extends MarkerBase {
    * Returns point coordinates based on the actual screen coordinates and marker's rotation.
    * @param point - original pointer coordinates
    */
-  protected rotatePoint(point: IPoint): IPoint {
+  public rotatePoint(point: IPoint): IPoint {
     if (this.rotationAngle === 0) {
       return point;
     }
@@ -126,7 +126,7 @@ export class RectangularBoxMarkerBase extends MarkerBase {
    * Returns original point coordinates based on coordinates with rotation applied.
    * @param point - rotated point coordinates.
    */
-  protected unrotatePoint(point: IPoint): IPoint {
+  public unrotatePoint(point: IPoint): IPoint {
     if (this.rotationAngle === 0) {
       return point;
     }

@@ -2,3 +2,8 @@ export { IPoint } from './core/IPoint';
 export { SvgHelper } from './core/SvgHelper';
 export { MarkerBaseState } from './core/MarkerBaseState';
 export { MarkerBase } from './core/MarkerBase';
+export { ShapeOutlineMarkerBaseState } from './core/ShapeOutlineMarkerBaseState';
+export { ShapeOutlineMarkerBase } from './core/ShapeOutlineMarkerBase';
+export { RectangularBoxMarkerBaseState } from './core/RectangularBoxMarkerBaseState';
+export { RectangularBoxMarkerBase } from './core/RectangularBoxMarkerBase';
+export { FrameMarker } from './core/FrameMarker';
