@@ -14,7 +14,7 @@ export type MarkerEditorState =
   | 'edit';
 
 export class MarkerBaseEditor<TMarkerType extends MarkerBase = MarkerBase> {
-  protected _markerType: new (container: SVGGElement) => TMarkerType;
+protected _markerType: new (container: SVGGElement) => TMarkerType;
 
   protected _marker: TMarkerType;
 
@@ -66,12 +66,12 @@ export class MarkerBaseEditor<TMarkerType extends MarkerBase = MarkerBase> {
   /**
    * Method called when marker creation is finished.
    */
-  public onMarkerCreated?: (marker: TMarkerType) => void;
+  public onMarkerCreated?: <T extends MarkerBase = TMarkerType>(marker: T) => void;
 
   /**
    * Method to call when marker state changes.
    */
-  public onStateChanged?: (marker: TMarkerType) => void;
+  public onStateChanged?: <T extends MarkerBase = TMarkerType>(marker: T) => void;
 
   /**
    * Marker's state when it is selected
