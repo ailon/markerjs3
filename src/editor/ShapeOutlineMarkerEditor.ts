@@ -2,7 +2,7 @@ import { IPoint, ShapeOutlineMarkerBase } from '../core';
 import { ColorType } from './ColorType';
 import { RectangularBoxMarkerBaseEditor } from './RectangularBoxMarkerBaseEditor';
 
-export class ShapeOutlineMarkerBaseEditor<
+export class ShapeOutlineMarkerEditor<
   TMarkerType extends ShapeOutlineMarkerBase = ShapeOutlineMarkerBase,
 > extends RectangularBoxMarkerBaseEditor<TMarkerType> {
 
