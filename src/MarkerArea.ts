@@ -51,6 +51,8 @@ export class MarkerArea extends HTMLElement {
 
   private _isInitialized = false;
 
+  private _currentMarkerEditor?: MarkerBaseEditor;
+
   private _targetImage: HTMLImageElement | undefined;
   public get targetImage(): HTMLImageElement | undefined {
     return this._targetImage;
@@ -62,11 +64,10 @@ export class MarkerArea extends HTMLElement {
     }
   }
 
-  public markerEditors: Map<typeof MarkerBase, typeof MarkerBaseEditor<MarkerBase>> = new Map(
-    [
-      [ FrameMarker, ShapeOutlineMarkerEditor<FrameMarker> ]
-    ],
-  );
+  public markerEditors: Map<
+    typeof MarkerBase,
+    typeof MarkerBaseEditor<MarkerBase>
+  > = new Map([[FrameMarker, ShapeOutlineMarkerEditor<FrameMarker>]]);
 
   constructor() {
     super();
@@ -207,7 +208,9 @@ export class MarkerArea extends HTMLElement {
       this._editingTarget = document.createElement('img');
 
       this._targetWidth =
-        this._targetWidth > 0 ? this._targetWidth : this.targetImage.clientWidth;
+        this._targetWidth > 0
+          ? this._targetWidth
+          : this.targetImage.clientWidth;
       this._targetHeight =
         this._targetHeight > 0
           ? this._targetHeight
@@ -236,6 +239,31 @@ export class MarkerArea extends HTMLElement {
 
       this._canvasContainer.insertBefore(this._editingTarget, this._mainCanvas);
     }
+  }
+
+  public createMarker(markerType: typeof MarkerBase) {
+    const markerEditor = this.markerEditors.get(markerType);
+    if (markerEditor) {
+      this._currentMarkerEditor = this.addNewMarker(markerEditor, markerType);
+    }
+  }
+
+  private addNewMarker(
+    markerEditorType: typeof MarkerBaseEditor<MarkerBase>,
+    markerType: typeof MarkerBase,
+  ): MarkerBaseEditor {
+    if (this._mainCanvas === undefined) {
+      throw new Error('Main canvas is not initialized.');
+    }
+
+    const g = SvgHelper.createGroup();
+    this._mainCanvas.appendChild(g);
+
+    return new markerEditorType({
+      container: g,
+      overlayContainer: this._overlayContentContainer,
+      markerType: markerType,
+    });
   }
 
   private attachEvents() {
