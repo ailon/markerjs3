@@ -3,7 +3,7 @@ import { RectangularBoxMarkerBase } from "./RectangularBoxMarkerBase";
 import { ShapeOutlineMarkerBaseState } from "./ShapeOutlineMarkerBaseState";
 import { SvgHelper } from "./SvgHelper";
 
-export abstract class ShapeOutlineMarkerBase extends RectangularBoxMarkerBase {
+export class ShapeOutlineMarkerBase extends RectangularBoxMarkerBase {
   public static title = 'Shape outline marker';
 
   /**
