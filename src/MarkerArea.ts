@@ -1,4 +1,7 @@
+import { FrameMarker, MarkerBase } from './core';
 import { SvgHelper } from './core/SvgHelper';
+import { MarkerBaseEditor } from './editor/MarkerBaseEditor';
+import { ShapeOutlineMarkerEditor } from './editor/ShapeOutlineMarkerEditor';
 
 export interface MarkerAreaEventMap {
   /**
@@ -58,6 +61,12 @@ export class MarkerArea extends HTMLElement {
       this.addTargetImage();
     }
   }
+
+  public markerEditors: Map<typeof MarkerBase, typeof MarkerBaseEditor<MarkerBase>> = new Map(
+    [
+      [ FrameMarker, ShapeOutlineMarkerEditor<FrameMarker> ]
+    ],
+  );
 
   constructor() {
     super();
