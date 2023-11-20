@@ -209,7 +209,7 @@ protected _markerType: new (container: SVGGElement) => TMarkerType;
         JSON.stringify(this.manipulationStartState) !=
         JSON.stringify(currentState)
       ) {
-        this.onStateChanged(this.marker);
+        this.onStateChanged(this);
       }
     }
   }
