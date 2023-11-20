@@ -381,7 +381,7 @@ export class RectangularBoxMarkerBaseEditor<
 
   private positionGrips() {
     if (this.controlGrips !== undefined) {
-      const gripSize = this.controlGrips.topLeft?.GRIP_SIZE ?? 0;
+      const gripSize = this.controlGrips.topLeft?.gripSize ?? 0;
 
       const left = -gripSize / 2;
       const top = left;
@@ -400,7 +400,11 @@ export class RectangularBoxMarkerBaseEditor<
       this.positionGrip(this.controlGrips.bottomRight?.visual, right, bottom);
 
       if (this.rotatorGrip !== undefined) {
-        this.positionGrip(this.rotatorGrip.visual, cx, top - this.CB_DISTANCE * 3);
+        const rotatorGripSize = this.rotatorGrip.gripSize ?? 0;
+        const rtop = -rotatorGripSize / 2;
+        const rcx = (this.marker.width + this.CB_DISTANCE) / 2 - rotatorGripSize / 2;
+  
+        this.positionGrip(this.rotatorGrip.visual, rcx, rtop - this.CB_DISTANCE * 3);
       }
     }
   }

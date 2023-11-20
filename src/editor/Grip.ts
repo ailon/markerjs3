@@ -7,32 +7,45 @@ export class Grip {
   /**
    * Grip's visual element.
    */
-  public visual: SVGGraphicsElement;
+  protected _visual?: SVGGraphicsElement;
+  public get visual(): SVGGraphicsElement {
+    if (!this._visual) {
+      this.createVisual();
+    }
+    return this._visual!;
+  }
 
   /**
    * Grip's size (raduis).
    */
-  public readonly GRIP_SIZE = 10;
+  public gripSize = 5;
+
+  public fillColor = '#0ea5e9';
+  public strokeColor = '#ffffff';
 
   /**
    * Creates a new grip.
    */
   constructor() {
-    this.visual = SvgHelper.createGroup();
-    this.createVisual();
+    this.createVisual = this.createVisual.bind(this);
   }
 
   protected createVisual() {
-    this.visual.appendChild(
-      SvgHelper.createCircle(this.GRIP_SIZE * 1.5, [['fill', 'transparent']])
+    this._visual = SvgHelper.createGroup();
+    this._visual.appendChild(
+      SvgHelper.createCircle(this.gripSize * 4, [
+        ['fill', 'transparent'],
+        ['cx', (this.gripSize / 2).toString()],
+        ['cy', (this.gripSize / 2).toString()],
+      ])
     );
-    this.visual.appendChild(
-      SvgHelper.createCircle(this.GRIP_SIZE, [
-        ['fill', '#cccccc'],
-        ['fill-opacity', '0.7'],
-        ['stroke', '#333333'],
-        ['stroke-width', '2'],
-        ['stroke-opacity', '0.7']
+    this._visual.appendChild(
+      SvgHelper.createCircle(this.gripSize, [
+        ['fill', this.fillColor],
+        ['fill-opacity', '1'],
+        ['stroke', this.strokeColor],
+        ['stroke-width', '1'],
+        ['stroke-opacity', '1']
       ])
     );
   }
@@ -44,13 +57,17 @@ export class Grip {
    */
   public ownsTarget(el: EventTarget): boolean {
     if (
-      el === this.visual ||
-      el === this.visual.childNodes[0] ||
-      el === this.visual.childNodes[1]
+      el === this._visual 
     ) {
       return true;
     } else {
-      return false;
+      let found = false;
+      this._visual?.childNodes.forEach((child) => {
+        if (child === el) {
+          found = true;
+        }
+      });
+      return found;
     }
   }
 }
