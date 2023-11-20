@@ -23,6 +23,12 @@
       display: flex;
       flex-direction: column;
     }
+    .toolbar {
+      margin: 0 auto;
+      display: flex;
+      justify-items: center;
+      gap: 0.2rem;
+    }
   </style>
 </head>
 <body>
@@ -31,8 +37,10 @@
       <mjs-marker-area id="markerArea1"></mjs-marker-area>
     </div>
 
-    <div>
-      <button onclick="experiments.addMarker('FrameMarker');">FM</button>
+    <div class="toolbar">
+      <button onclick="experiments.addMarker('FrameMarker');">Frame</button>
+      <button onclick="experiments.addMarker('FrameMarker');">Frame</button>
+      <button onclick="experiments.addMarker('FrameMarker');">Frame</button>
     </div>
 
     <div style="display: flex; justify-content: center; margin-top: 50px;">
