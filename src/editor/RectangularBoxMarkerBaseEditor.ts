@@ -1,6 +1,7 @@
 import { IPoint, RectangularBoxMarkerBase, SvgHelper } from '../core';
 import { Grip } from './Grip';
 import { MarkerBaseEditor } from './MarkerBaseEditor';
+import { MarkerEditorProperties } from './MarkerEditorProperties';
 import { RectangularBoxMarkerGrips } from './RectangularBoxMarkerGrips';
 import { ResizeGrip } from './ResizeGrip';
 import { RotateGrip as RotateGrip } from './RotateGrip';
@@ -55,6 +56,12 @@ export class RectangularBoxMarkerBaseEditor<
   private rotatorGrip?: RotateGrip;
   private activeGrip?: Grip;
   private disableRotation = false;
+
+  constructor(properties: MarkerEditorProperties<TMarkerType>) {
+    super(properties);
+
+    this.setupControlBox();
+  }
 
   /**
    * Returns true if passed SVG element belongs to the marker. False otherwise.
@@ -144,7 +151,7 @@ export class RectangularBoxMarkerBaseEditor<
     }
     this._state = 'select';
     if (inState === 'creating' && this.onMarkerCreated && this._suppressMarkerCreateEvent === false) {
-      this.onMarkerCreated(this.marker);
+      this.onMarkerCreated(this);
     }
   }  
 

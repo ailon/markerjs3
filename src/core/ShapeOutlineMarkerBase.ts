@@ -47,6 +47,7 @@ export class ShapeOutlineMarkerBase extends RectangularBoxMarkerBase {
 
   public createVisual(): void {
     this.visual = SvgHelper.createPath(this.getPathD(), [
+      ['fill', 'transparent'],
       ['stroke', this.strokeColor],
       ['stroke-width', this.strokeWidth.toString()],
       ['stroke-dasharray', this.strokeDasharray],

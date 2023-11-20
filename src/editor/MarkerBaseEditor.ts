@@ -66,12 +66,12 @@ protected _markerType: new (container: SVGGElement) => TMarkerType;
   /**
    * Method called when marker creation is finished.
    */
-  public onMarkerCreated?: <T extends MarkerBase = TMarkerType>(marker: T) => void;
+  public onMarkerCreated?: <T extends MarkerBaseEditor<MarkerBase>>(editor: T) => void;
 
   /**
    * Method to call when marker state changes.
    */
-  public onStateChanged?: <T extends MarkerBase = TMarkerType>(marker: T) => void;
+  public onStateChanged?: <T extends MarkerBaseEditor<MarkerBase>>(editor: T) => void;
 
   /**
    * Marker's state when it is selected

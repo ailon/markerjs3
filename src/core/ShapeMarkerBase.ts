@@ -17,7 +17,7 @@ export abstract class ShapeMarkerBase extends ShapeOutlineMarkerBase {
 
   }
 
-  protected createVisual(): void {
+  public createVisual(): void {
     super.createVisual();
     if (this.visual) {
       SvgHelper.setAttributes(this.visual, [['fill', this.fillColor]]);
