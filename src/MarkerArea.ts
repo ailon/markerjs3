@@ -316,6 +316,8 @@ export class MarkerArea extends HTMLElement {
 
       this._mainCanvas.style.cursor = 'crosshair';
     }
+
+    return this._currentMarkerEditor;
   }
 
   private addNewMarker(
