@@ -37,27 +37,26 @@ export class Grip {
         ['fill', 'transparent'],
         ['cx', (this.gripSize / 2).toString()],
         ['cy', (this.gripSize / 2).toString()],
-      ])
+      ]),
     );
-    const visual =       SvgHelper.createCircle(this.gripSize, [
+    const visual = SvgHelper.createCircle(this.gripSize, [
       ['fill-opacity', '1'],
       ['stroke-width', '1'],
-      ['stroke-opacity', '1']
+      ['stroke-opacity', '1'],
     ]);
     visual.style.fill = `var(--mjs-grip-fill, ${this.fillColor})`;
     visual.style.stroke = `var(--mjs-grip-stroke, ${this.strokeColor})`;
+    visual.style.filter = 'drop-shadow(0px 0px 2px rgba(0, 0, 0, .7))';
     this._visual.appendChild(visual);
   }
 
   /**
    * Returns true if passed SVG element belongs to the grip. False otherwise.
-   * 
+   *
    * @param el - target element.
    */
   public ownsTarget(el: EventTarget): boolean {
-    if (
-      el === this._visual 
-    ) {
+    if (el === this._visual) {
       return true;
     } else {
       let found = false;
