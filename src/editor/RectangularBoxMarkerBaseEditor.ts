@@ -327,6 +327,8 @@ export class RectangularBoxMarkerBaseEditor<
           ['stroke-dasharray', '3, 2'],
         ],
       );
+      this.rotatorGripLine.style.filter = 'drop-shadow(rgba(255, 255, 255, 0.7) 0px 2px 0px)';
+
 
       this.controlBox.appendChild(this.rotatorGripLine);
     }
