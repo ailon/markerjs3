@@ -20,8 +20,8 @@ export class Grip {
    */
   public gripSize = 5;
 
-  public fillColor = '#0ea5e9';
-  public strokeColor = '#ffffff';
+  public fillColor = 'rgba(255,255,255,0.9)';
+  public strokeColor = '#0ea5e9';
 
   /**
    * Creates a new grip.
@@ -39,15 +39,14 @@ export class Grip {
         ['cy', (this.gripSize / 2).toString()],
       ])
     );
-    this._visual.appendChild(
-      SvgHelper.createCircle(this.gripSize, [
-        ['fill', this.fillColor],
-        ['fill-opacity', '1'],
-        ['stroke', this.strokeColor],
-        ['stroke-width', '1'],
-        ['stroke-opacity', '1']
-      ])
-    );
+    const visual =       SvgHelper.createCircle(this.gripSize, [
+      ['fill-opacity', '1'],
+      ['stroke-width', '1'],
+      ['stroke-opacity', '1']
+    ]);
+    visual.style.fill = `var(--mjs-grip-fill, ${this.fillColor})`;
+    visual.style.stroke = `var(--mjs-grip-stroke, ${this.strokeColor})`;
+    this._visual.appendChild(visual);
   }
 
   /**
