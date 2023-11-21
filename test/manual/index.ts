@@ -1,6 +1,6 @@
 import { MarkerArea } from '../../src/MarkerArea';
 import { FrameMarker } from '../../src/core';
-import { MarkerBaseEditor, ShapeOutlineMarkerEditor } from '../../src/editor';
+import { ShapeOutlineMarkerEditor } from '../../src/editor';
 
 export * from './../../src/index';
 
@@ -18,10 +18,11 @@ export class Experiments {
     this.markerArea1.targetImage = targetImg;
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   public addMarker(markerType: string) {
     const newMarkerEditor = this.markerArea1?.createMarker(FrameMarker);
     if (newMarkerEditor && newMarkerEditor.is(ShapeOutlineMarkerEditor)) {
-      newMarkerEditor.setStrokeColor('blue');
+      newMarkerEditor.strokeColor = 'blue';
     }
   }
 }

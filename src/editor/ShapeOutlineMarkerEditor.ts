@@ -47,12 +47,12 @@ export class ShapeOutlineMarkerEditor<
    * Sets rectangle's border stroke color.
    * @param color - color as string
    */
-  public setStrokeColor(color: string): void {
-    this.marker.setStrokeColor(color);
+  public set strokeColor(color: string) {
+    this.marker.strokeColor = color;
     this.colorChanged('stroke', color);
   }
 
-  public getStrokeColor(): string {
+  public get strokeColor(): string {
     return this.marker.strokeColor;
   }
 
@@ -60,12 +60,12 @@ export class ShapeOutlineMarkerEditor<
    * Sets rectangle's border stroke (line) width.
    * @param color - color as string
    */
-  public setStrokeWidth(width: number): void {
-    this.marker.setStrokeWidth(width);
+  public set strokeWidth(width: number) {
+    this.marker.strokeWidth = width;
     this.stateChanged();
   }
 
-  public getStrokeWidth(): number {
+  public get strokeWidth(): number {
     return this.marker.strokeWidth;
   }
 
@@ -73,12 +73,12 @@ export class ShapeOutlineMarkerEditor<
    * Sets rectangle's border stroke dash array.
    * @param color - color as string
    */
-  public setStrokeDasharray(dashes: string): void {
-    this.marker.setStrokeDasharray(dashes);
+  public set strokeDasharray(dashes: string) {
+    this.marker.strokeDasharray = dashes;
     this.stateChanged();
   }
 
-  public getStrokeDasharray(): string {
+  public get strokeDasharray(): string {
     return this.marker.strokeDasharray;
   }
 
@@ -93,5 +93,4 @@ export class ShapeOutlineMarkerEditor<
     }
     this.stateChanged();
   }
-
 }

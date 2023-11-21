@@ -15,8 +15,8 @@ export class FrameMarker extends ShapeOutlineMarkerBase {
   constructor(container: SVGGElement) {
     super(container);
 
-    this.setStrokeColor('#ff0000');
-    this.setStrokeWidth(3);
+    this.strokeColor = '#ff0000';
+    this.strokeWidth = 3;
   }
 
   protected getPathD(): string {

@@ -1,7 +1,7 @@
-import { MarkerBaseState } from "./MarkerBaseState";
-import { RectangularBoxMarkerBase } from "./RectangularBoxMarkerBase";
-import { ShapeOutlineMarkerBaseState } from "./ShapeOutlineMarkerBaseState";
-import { SvgHelper } from "./SvgHelper";
+import { MarkerBaseState } from './MarkerBaseState';
+import { RectangularBoxMarkerBase } from './RectangularBoxMarkerBase';
+import { ShapeOutlineMarkerBaseState } from './ShapeOutlineMarkerBaseState';
+import { SvgHelper } from './SvgHelper';
 
 export class ShapeOutlineMarkerBase extends RectangularBoxMarkerBase {
   public static title = 'Shape outline marker';
@@ -9,28 +9,66 @@ export class ShapeOutlineMarkerBase extends RectangularBoxMarkerBase {
   /**
    * Rectangle stroke color.
    */
-  public strokeColor = 'transparent';
+  protected _strokeColor = 'transparent';
+  public get strokeColor() {
+    return this._strokeColor;
+  }
+  public set strokeColor(color: string) {
+    this._strokeColor = color;
+    if (this.visual) {
+      SvgHelper.setAttributes(this.visual, [['stroke', this._strokeColor]]);
+    }
+  }
+
   /**
    * Rectangle border stroke width.
    */
-  public strokeWidth = 0;
+  protected _strokeWidth = 0;
+  public get strokeWidth() {
+    return this._strokeWidth;
+  }
+  public set strokeWidth(value) {
+    this._strokeWidth = value;
+    if (this.visual) {
+      SvgHelper.setAttributes(this.visual, [
+        ['stroke-width', this._strokeWidth.toString()],
+      ]);
+    }
+  }
+
   /**
    * Rectangle border stroke dash array.
    */
-  public strokeDasharray = '';
-  /**
-   * Rectangle opacity (alpha). 0 to 1.
-   */
-  protected opacity = 1;
+  protected _strokeDasharray = '';
+  public get strokeDasharray() {
+    return this._strokeDasharray;
+  }
+  public set strokeDasharray(value) {
+    this._strokeDasharray = value;
+    if (this.visual) {
+      SvgHelper.setAttributes(this.visual, [
+        ['stroke-dasharray', this._strokeDasharray],
+      ]);
+    }
+  }
+
+  protected _opacity = 1;
+  public get opacity() {
+    return this._opacity;
+  }
+  public set opacity(value) {
+    this._opacity = value;
+    if (this.visual) {
+      SvgHelper.setAttributes(this.visual, [
+        ['opacity', this._opacity.toString()],
+      ]);
+    }
+  }
 
   constructor(container: SVGGElement) {
     super(container);
 
-    this.setStrokeColor = this.setStrokeColor.bind(this);
-    this.setStrokeWidth = this.setStrokeWidth.bind(this);
-    this.setStrokeDasharray = this.setStrokeDasharray.bind(this);
     this.createVisual = this.createVisual.bind(this);
-
   }
 
   public ownsTarget(el: EventTarget): boolean {
@@ -48,10 +86,10 @@ export class ShapeOutlineMarkerBase extends RectangularBoxMarkerBase {
   public createVisual(): void {
     this.visual = SvgHelper.createPath(this.getPathD(), [
       ['fill', 'transparent'],
-      ['stroke', this.strokeColor],
-      ['stroke-width', this.strokeWidth.toString()],
-      ['stroke-dasharray', this.strokeDasharray],
-      ['opacity', this.opacity.toString()]
+      ['stroke', this._strokeColor],
+      ['stroke-width', this._strokeWidth.toString()],
+      ['stroke-dasharray', this._strokeDasharray],
+      ['opacity', this._opacity.toString()],
     ]);
     this.addMarkerVisualToContainer(this.visual);
   }
@@ -59,41 +97,7 @@ export class ShapeOutlineMarkerBase extends RectangularBoxMarkerBase {
   public setSize(): void {
     super.setSize();
     if (this.visual) {
-      SvgHelper.setAttributes(this.visual, [
-        ['d', this.getPathD()],
-      ]);
-    }
-  }
-
-  /**
-   * Sets rectangle's border stroke color.
-   * @param color - color as string
-   */
-  public setStrokeColor(color: string): void {
-    this.strokeColor = color;
-    if (this.visual) {
-      SvgHelper.setAttributes(this.visual, [['stroke', this.strokeColor]]);
-    }
-  }
-
-  /**
-   * Sets rectangle's border stroke (line) width.
-   * @param color - color as string
-   */
-  public setStrokeWidth(width: number): void {
-    this.strokeWidth = width;
-    if (this.visual) {
-      SvgHelper.setAttributes(this.visual, [['stroke-width', this.strokeWidth.toString()]]);
-    }
-  }
-  /**
-   * Sets rectangle's border stroke dash array.
-   * @param color - color as string
-   */
-  public setStrokeDasharray(dashes: string): void {
-    this.strokeDasharray = dashes;
-    if (this.visual) {
-      SvgHelper.setAttributes(this.visual, [['stroke-dasharray', this.strokeDasharray]]);
+      SvgHelper.setAttributes(this.visual, [['d', this.getPathD()]]);
     }
   }
 
@@ -101,27 +105,30 @@ export class ShapeOutlineMarkerBase extends RectangularBoxMarkerBase {
    * Returns current marker state that can be restored in the future.
    */
   public getState(): ShapeOutlineMarkerBaseState {
-    const result: ShapeOutlineMarkerBaseState = Object.assign({
-      strokeColor: this.strokeColor,
-      strokeWidth: this.strokeWidth,
-      strokeDasharray: this.strokeDasharray,
-      opacity: this.opacity
-    }, super.getState());
+    const result: ShapeOutlineMarkerBaseState = Object.assign(
+      {
+        strokeColor: this._strokeColor,
+        strokeWidth: this._strokeWidth,
+        strokeDasharray: this._strokeDasharray,
+        opacity: this._opacity,
+      },
+      super.getState(),
+    );
 
     return result;
   }
 
   /**
    * Restores previously saved marker state.
-   * 
+   *
    * @param state - previously saved state.
    */
   public restoreState(state: MarkerBaseState): void {
     const rectState = state as ShapeOutlineMarkerBaseState;
-    this.strokeColor = rectState.strokeColor;
-    this.strokeWidth = rectState.strokeWidth;
-    this.strokeDasharray = rectState.strokeDasharray;
-    this.opacity = rectState.opacity;
+    this._strokeColor = rectState.strokeColor;
+    this._strokeWidth = rectState.strokeWidth;
+    this._strokeDasharray = rectState.strokeDasharray;
+    this._opacity = rectState.opacity;
 
     this.createVisual();
     super.restoreState(state);
@@ -130,7 +137,7 @@ export class ShapeOutlineMarkerBase extends RectangularBoxMarkerBase {
 
   /**
    * Scales marker. Used after the image resize.
-   * 
+   *
    * @param scaleX - horizontal scale
    * @param scaleY - vertical scale
    */
@@ -138,5 +145,5 @@ export class ShapeOutlineMarkerBase extends RectangularBoxMarkerBase {
     super.scale(scaleX, scaleY);
 
     this.setSize();
-  }  
+  }
 }
