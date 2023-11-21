@@ -14,7 +14,20 @@ export type MarkerEditorState =
   | 'edit';
 
 export class MarkerBaseEditor<TMarkerType extends MarkerBase = MarkerBase> {
-protected _markerType: new (container: SVGGElement) => TMarkerType;
+  protected _markerType: new (container: SVGGElement) => TMarkerType;
+
+  /**
+   * Type guard for specific marker editor types.
+   * @param cls 
+   * @returns 
+   */
+  public is<T>(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    cls: new (...args: any[]) => T,
+  ): this is T {
+    return this instanceof cls;
+  }
+  
 
   protected _marker: TMarkerType;
 
@@ -66,12 +79,16 @@ protected _markerType: new (container: SVGGElement) => TMarkerType;
   /**
    * Method called when marker creation is finished.
    */
-  public onMarkerCreated?: <T extends MarkerBaseEditor<MarkerBase>>(editor: T) => void;
+  public onMarkerCreated?: <T extends MarkerBaseEditor<MarkerBase>>(
+    editor: T,
+  ) => void;
 
   /**
    * Method to call when marker state changes.
    */
-  public onStateChanged?: <T extends MarkerBaseEditor<MarkerBase>>(editor: T) => void;
+  public onStateChanged?: <T extends MarkerBaseEditor<MarkerBase>>(
+    editor: T,
+  ) => void;
 
   /**
    * Marker's state when it is selected

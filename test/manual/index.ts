@@ -1,5 +1,6 @@
 import { MarkerArea } from '../../src/MarkerArea';
 import { FrameMarker } from '../../src/core';
+import { MarkerBaseEditor, ShapeOutlineMarkerEditor } from '../../src/editor';
 
 export * from './../../src/index';
 
@@ -18,6 +19,9 @@ export class Experiments {
   }
 
   public addMarker(markerType: string) {
-    this.markerArea1?.createMarker(FrameMarker);
+    const newMarkerEditor = this.markerArea1?.createMarker(FrameMarker);
+    if (newMarkerEditor && newMarkerEditor.is(ShapeOutlineMarkerEditor)) {
+      newMarkerEditor.setStrokeColor('blue');
+    }
   }
 }
