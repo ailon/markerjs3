@@ -7,7 +7,20 @@ export interface MarkerAreaEventMap {
   /**
    * Marker area initialized.
    */
-  markerareainit: CustomEvent<MarkerAreaEventData>;
+  areainit: CustomEvent<MarkerAreaEventData>;
+  areashow: CustomEvent<MarkerAreaEventData>;
+  arearestorestate: CustomEvent<MarkerAreaEventData>;
+  areafocus: CustomEvent<MarkerAreaEventData>;
+  areablur: CustomEvent<MarkerAreaEventData>;
+  areastatechange: CustomEvent<MarkerAreaEventData>;
+
+  markerselect: CustomEvent<MarkerEditorEventData>;
+  markerdeselect: CustomEvent<MarkerEditorEventData>;
+  markercreating: CustomEvent<MarkerEditorEventData>;
+  markercreate: CustomEvent<MarkerEditorEventData>;
+  markerbeforedelete: CustomEvent<MarkerEditorEventData>;
+  markerdelete: CustomEvent<MarkerEditorEventData>;
+  markerchange: CustomEvent<MarkerEditorEventData>;
 }
 
 export interface MarkerAreaEventData {
@@ -15,6 +28,10 @@ export interface MarkerAreaEventData {
    * {@link MarkerArea} instance.
    */
   markerArea: MarkerArea;
+}
+
+export interface MarkerEditorEventData extends MarkerAreaEventData {
+  markerEditor: MarkerBaseEditor;
 }
 
 /**
@@ -151,11 +168,17 @@ export class MarkerArea extends HTMLElement {
     this.createMarker = this.createMarker.bind(this);
     this.addNewMarker = this.addNewMarker.bind(this);
     this.markerCreated = this.markerCreated.bind(this);
+    this.markerStateChanged = this.markerStateChanged.bind(this);
 
     this.attachShadow({ mode: 'open' });
   }
 
   private connectedCallback() {
+    this.dispatchEvent(
+      new CustomEvent<MarkerAreaEventData>('areainit', {
+        detail: { markerArea: this },
+      }),
+    );
     this.createLayout();
     this.addMainCanvas();
     this.initOverlay();
@@ -165,6 +188,11 @@ export class MarkerArea extends HTMLElement {
       this.addTargetImage();
     }
     this.setMainCanvasSize();
+    this.dispatchEvent(
+      new CustomEvent<MarkerAreaEventData>('areashow', {
+        detail: { markerArea: this },
+      }),
+    );
   }
 
   private disconnectedCallback() {
@@ -313,6 +341,7 @@ export class MarkerArea extends HTMLElement {
       this.setCurrentEditor();
       this._currentMarkerEditor = this.addNewMarker(markerEditor, markerType);
       this._currentMarkerEditor.onMarkerCreated = this.markerCreated;
+      this._currentMarkerEditor.onStateChanged = this.markerStateChanged;
 
       this._mainCanvas.style.cursor = 'crosshair';
     }
@@ -352,10 +381,20 @@ export class MarkerArea extends HTMLElement {
       //   this.createNewMarker(FreehandMarker);
       // }
       // this.addUndoStep();
-      // this.eventListeners['markercreate'].forEach((listener) =>
-      //   listener(new MarkerEvent(this, this._currentMarker)),
-      // );
+      this.dispatchEvent(
+        new CustomEvent<MarkerEditorEventData>('markercreate', {
+          detail: { markerArea: this, markerEditor: editor },
+        }),
+      );
     }
+  }
+
+  private markerStateChanged(markerEditor: MarkerBaseEditor): void {
+    this.dispatchEvent(
+      new CustomEvent<MarkerEditorEventData>('markerchange', {
+        detail: { markerArea: this, markerEditor: markerEditor },
+      })
+    );
   }
 
   public setCurrentEditor(editor?: MarkerBaseEditor): void {
@@ -366,9 +405,14 @@ export class MarkerArea extends HTMLElement {
 
         // @todo
         // if (!this._isResizing) {
-        //   this.eventListeners['markerdeselect'].forEach((listener) =>
-        //     listener(new MarkerEvent(this, this._currentMarker))
-        //   );
+        this.dispatchEvent(
+          new CustomEvent<MarkerEditorEventData>('markerdeselect', {
+            detail: {
+              markerArea: this,
+              markerEditor: this._currentMarkerEditor,
+            },
+          }),
+        );
         // }
       }
     }
@@ -383,9 +427,11 @@ export class MarkerArea extends HTMLElement {
 
       // @todo
       // if (!this._isResizing) {
-      //   this.eventListeners['markerselect'].forEach((listener) =>
-      //     listener(new MarkerEvent(this, this._currentMarker))
-      //   );
+      this.dispatchEvent(
+        new CustomEvent<MarkerEditorEventData>('markerselect', {
+          detail: { markerArea: this, markerEditor: this._currentMarkerEditor },
+        }),
+      );
       // }
     }
   }
