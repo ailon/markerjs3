@@ -79,12 +79,17 @@ export class ShapeOutlineMarkerBase extends RectangularBoxMarkerBase {
     }
   }
 
-  protected getPath(): string {
+  protected getPath(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    width: number = this.width,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    height: number = this.height,
+  ): string {
     return 'M0,0';
   }
 
   public getOutline(): string {
-    return this.getPath();
+    return this.getPath(this.defaultSize.width, this.defaultSize.height);
   }
 
   public createVisual(): void {

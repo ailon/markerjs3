@@ -1,10 +1,17 @@
 import { IPoint, ShapeOutlineMarkerBase } from '../core';
 import { ColorType } from './ColorType';
+import { MarkerEditorProperties } from './MarkerEditorProperties';
 import { RectangularBoxMarkerBaseEditor } from './RectangularBoxMarkerBaseEditor';
 
 export class ShapeOutlineMarkerEditor<
   TMarkerType extends ShapeOutlineMarkerBase = ShapeOutlineMarkerBase,
 > extends RectangularBoxMarkerBaseEditor<TMarkerType> {
+
+  constructor(properties: MarkerEditorProperties<TMarkerType>) {
+    super(properties);
+
+    this._creationStyle = 'draw';
+  }
 
   /**
    * Handles pointer (mouse, touch, stylus, etc.) down event.

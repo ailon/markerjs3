@@ -27,11 +27,6 @@ export class RectangularBoxMarkerBase extends MarkerBase {
   public height = 0;
 
   /**
-   * The default marker size when the marker is created with a click (without dragging).
-   */
-  public defaultSize: IPoint = { x: 50, y: 20 };
-
-  /**
    * Marker's rotation angle.
    */
   public rotationAngle = 0;
@@ -150,8 +145,8 @@ export class RectangularBoxMarkerBase extends MarkerBase {
    */
   public getOutline(): string {
     const result = `M 0 0 
-    H ${this.width} 
-    V ${this.height} 
+    H ${this.defaultSize} 
+    V ${this.defaultSize} 
     H 0 
     V 0 Z`;
 

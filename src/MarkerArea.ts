@@ -77,6 +77,14 @@ export class MarkerArea extends HTMLElement {
 
   private _currentMarkerEditor?: MarkerBaseEditor;
 
+  private _newMarkerOutline: SVGPathElement = SvgHelper.createPath('', [
+    ['stroke', '#333'],
+    ['stroke-width', '0.5'],
+    ['stroke-dasharray', '2 5'],
+    ['fill', 'rgba(200,200,200,0.5)'],
+    ['pointer-events', 'none'],
+  ]);
+
   private _targetImage: HTMLImageElement | undefined;
   public get targetImage(): HTMLImageElement | undefined {
     return this._targetImage;
@@ -169,6 +177,9 @@ export class MarkerArea extends HTMLElement {
     this.addNewMarker = this.addNewMarker.bind(this);
     this.markerCreated = this.markerCreated.bind(this);
     this.markerStateChanged = this.markerStateChanged.bind(this);
+
+    this.showOutline = this.showOutline.bind(this);
+    this.hideOutline = this.hideOutline.bind(this);
 
     this.attachShadow({ mode: 'open' });
   }
@@ -343,7 +354,15 @@ export class MarkerArea extends HTMLElement {
       this._currentMarkerEditor.onMarkerCreated = this.markerCreated;
       this._currentMarkerEditor.onStateChanged = this.markerStateChanged;
 
-      this._mainCanvas.style.cursor = 'crosshair';
+      switch (this._currentMarkerEditor.creationStyle) {
+        case 'drop':
+          this._mainCanvas.style.cursor = 'move';
+          break;
+        case 'draw':
+        default:
+          this._mainCanvas.style.cursor = 'crosshair';
+          break;
+      }
     }
 
     return this._currentMarkerEditor;
@@ -393,7 +412,7 @@ export class MarkerArea extends HTMLElement {
     this.dispatchEvent(
       new CustomEvent<MarkerEditorEventData>('markerchange', {
         detail: { markerArea: this, markerEditor: markerEditor },
-      })
+      }),
     );
   }
 
@@ -494,17 +513,47 @@ export class MarkerArea extends HTMLElement {
         }
 
         if (this._currentMarkerEditor !== undefined) {
-          this._currentMarkerEditor.manipulate(
-            SvgHelper.clientToLocalCoordinates(
-              this._mainCanvas,
-              ev.clientX,
-              ev.clientY,
-            ),
+          const localPoint = SvgHelper.clientToLocalCoordinates(
+            this._mainCanvas,
+            ev.clientX,
+            ev.clientY,
           );
+
+          this.showOutline(localPoint);
+
+          this._currentMarkerEditor.manipulate(localPoint);
         } else if (this.zoomLevel > 1) {
           this.panTo({ x: ev.clientX, y: ev.clientY });
         }
       }
+    }
+  }
+
+  private showOutline(localPoint: IPoint) {
+    if (
+      this._currentMarkerEditor &&
+      this._currentMarkerEditor.creationStyle === 'drop' &&
+      this._currentMarkerEditor.state === 'new'
+    ) {
+      if (
+        this._mainCanvas !== undefined &&
+        !this._mainCanvas.contains(this._newMarkerOutline)
+      ) {
+        this._mainCanvas.appendChild(this._newMarkerOutline);
+      }
+      const size = this._currentMarkerEditor.marker.defaultSize;
+      SvgHelper.setAttributes(this._newMarkerOutline, [
+        ['d', this._currentMarkerEditor.marker.getOutline()],
+      ]);
+      this._newMarkerOutline.style.transform = `translate(${
+        localPoint.x - size.width / 2
+      }px, ${localPoint.y - size.height / 2}px)`;
+    }
+  }
+
+  private hideOutline() {
+    if (this._mainCanvas?.contains(this._newMarkerOutline)) {
+      this._mainCanvas.removeChild(this._newMarkerOutline);
     }
   }
 
@@ -521,6 +570,8 @@ export class MarkerArea extends HTMLElement {
             ev.clientY,
           ),
         );
+
+        this.hideOutline();
       }
     }
     this.isDragging = false;
@@ -532,6 +583,7 @@ export class MarkerArea extends HTMLElement {
     if (this.touchPoints > 0) {
       this.touchPoints--;
     }
+    this.hideOutline();
   }
 
   private onKeyUp(ev: KeyboardEvent) {

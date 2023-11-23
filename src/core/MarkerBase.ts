@@ -1,3 +1,4 @@
+import { ISize } from './ISize';
 import { MarkerBaseState } from './MarkerBaseState';
 
 export class MarkerBase {
@@ -19,6 +20,11 @@ export class MarkerBase {
    * Additional information about the marker
    */
   public notes?: string;
+
+  /**
+   * The default marker size when the marker is created with a click (without dragging).
+   */
+  public defaultSize: ISize = { width: 50, height: 20 };
 
   /**
    * Marker type title (display name) used for accessibility and other attributes.

@@ -161,8 +161,8 @@ export class RectangularBoxMarkerBaseEditor<
       this.marker.width < 10 &&
       this.marker.height < 10
     ) {
-      this.marker.width = this.marker.defaultSize.x;
-      this.marker.height = this.marker.defaultSize.y;
+      this.marker.width = this.marker.defaultSize.width;
+      this.marker.height = this.marker.defaultSize.height;
     } else {
       this.manipulate(point);
     }

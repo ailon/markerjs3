@@ -13,8 +13,16 @@ export type MarkerEditorState =
   | 'rotate'
   | 'edit';
 
+export type MarkerCreationStyle = 'draw' | 'drop';
+
 export class MarkerBaseEditor<TMarkerType extends MarkerBase = MarkerBase> {
+  
   protected _markerType: new (container: SVGGElement) => TMarkerType;
+  
+  protected _creationStyle: MarkerCreationStyle = 'draw';
+  public get creationStyle(): MarkerCreationStyle {
+    return this._creationStyle;
+  }
 
   /**
    * Type guard for specific marker editor types.
