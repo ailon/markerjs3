@@ -19,7 +19,7 @@ export class FrameMarker extends ShapeOutlineMarkerBase {
     this.strokeWidth = 3;
   }
 
-  protected getPathD(): string {
+  protected getPath(): string {
     const result = `M 0 0 
       H ${this.width} 
       V ${this.height} 

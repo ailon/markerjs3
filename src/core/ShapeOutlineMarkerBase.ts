@@ -79,12 +79,12 @@ export class ShapeOutlineMarkerBase extends RectangularBoxMarkerBase {
     }
   }
 
-  protected getPathD(): string {
+  protected getPath(): string {
     return 'M0,0';
   }
 
   public createVisual(): void {
-    this.visual = SvgHelper.createPath(this.getPathD(), [
+    this.visual = SvgHelper.createPath(this.getPath(), [
       ['fill', 'transparent'],
       ['stroke', this._strokeColor],
       ['stroke-width', this._strokeWidth.toString()],
@@ -97,7 +97,7 @@ export class ShapeOutlineMarkerBase extends RectangularBoxMarkerBase {
   public setSize(): void {
     super.setSize();
     if (this.visual) {
-      SvgHelper.setAttributes(this.visual, [['d', this.getPathD()]]);
+      SvgHelper.setAttributes(this.visual, [['d', this.getPath()]]);
     }
   }
 
