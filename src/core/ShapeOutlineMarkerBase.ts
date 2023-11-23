@@ -83,6 +83,10 @@ export class ShapeOutlineMarkerBase extends RectangularBoxMarkerBase {
     return 'M0,0';
   }
 
+  public getOutline(): string {
+    return this.getPath();
+  }
+
   public createVisual(): void {
     this.visual = SvgHelper.createPath(this.getPath(), [
       ['fill', 'transparent'],

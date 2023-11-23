@@ -1,8 +1,8 @@
-import { IPoint } from "./IPoint";
-import { MarkerBase } from "./MarkerBase";
-import { MarkerBaseState } from "./MarkerBaseState";
-import { RectangularBoxMarkerBaseState } from "./RectangularBoxMarkerBaseState";
-import { SvgHelper } from "./SvgHelper";
+import { IPoint } from './IPoint';
+import { MarkerBase } from './MarkerBase';
+import { MarkerBaseState } from './MarkerBaseState';
+import { RectangularBoxMarkerBaseState } from './RectangularBoxMarkerBaseState';
+import { SvgHelper } from './SvgHelper';
 
 /**
  * RectangularBoxMarkerBase is a base class for all marker's that conceptually fit into a rectangle
@@ -29,7 +29,7 @@ export class RectangularBoxMarkerBase extends MarkerBase {
   /**
    * The default marker size when the marker is created with a click (without dragging).
    */
-  public defaultSize: IPoint = {x: 50, y: 20};
+  public defaultSize: IPoint = { x: 50, y: 20 };
 
   /**
    * Marker's rotation angle.
@@ -66,7 +66,7 @@ export class RectangularBoxMarkerBase extends MarkerBase {
     super(container);
 
     // add rotation transform
-    this.container.transform.baseVal.appendItem(SvgHelper.createTransform());    
+    this.container.transform.baseVal.appendItem(SvgHelper.createTransform());
   }
 
   /**
@@ -80,7 +80,7 @@ export class RectangularBoxMarkerBase extends MarkerBase {
   }
 
   public setSize(): void {
-    this.moveVisual({x: this.left, y: this.top});
+    this.moveVisual({ x: this.left, y: this.top });
   }
 
   public rotate(point: IPoint) {
@@ -109,7 +109,7 @@ export class RectangularBoxMarkerBase extends MarkerBase {
     if (this.rotationAngle === 0) {
       return point;
     }
-    
+
     const matrix = this.container.getCTM();
     if (matrix === null) {
       return point;
@@ -130,7 +130,7 @@ export class RectangularBoxMarkerBase extends MarkerBase {
     if (this.rotationAngle === 0) {
       return point;
     }
-    
+
     let matrix = this.container.getCTM();
     if (matrix === null) {
       return point;
@@ -145,17 +145,33 @@ export class RectangularBoxMarkerBase extends MarkerBase {
   }
 
   /**
+   * Returns marker's outline path for use while creating, etc.
+   * @returns SVG path `d` attribute.
+   */
+  public getOutline(): string {
+    const result = `M 0 0 
+    H ${this.width} 
+    V ${this.height} 
+    H 0 
+    V 0 Z`;
+
+    return result;
+  }
+
+  /**
    * Returns marker's state.
    */
   public getState(): RectangularBoxMarkerBaseState {
-    const result: RectangularBoxMarkerBaseState = Object.assign({
-      left: this.left,
-      top: this.top,
-      width: this.width,
-      height: this.height,
-      rotationAngle: this.rotationAngle,
-    },
-    super.getState());
+    const result: RectangularBoxMarkerBaseState = Object.assign(
+      {
+        left: this.left,
+        top: this.top,
+        width: this.width,
+        height: this.height,
+        rotationAngle: this.rotationAngle,
+      },
+      super.getState(),
+    );
 
     return result;
   }
@@ -172,21 +188,24 @@ export class RectangularBoxMarkerBase extends MarkerBase {
     this.width = rbmState.width;
     this.height = rbmState.height;
     this.rotationAngle = rbmState.rotationAngle;
-    this.moveVisual({x: this.left, y: this.top});
+    this.moveVisual({ x: this.left, y: this.top });
     this.applyRotation();
   }
 
   /**
    * Scales marker. Used after the image resize.
-   * 
+   *
    * @param scaleX - horizontal scale
    * @param scaleY - vertical scale
    */
   public scale(scaleX: number, scaleY: number): void {
     super.scale(scaleX, scaleY);
 
-    const rPoint = this.rotatePoint({x: this.left, y: this.top});
-    const point = this.unrotatePoint({x: rPoint.x * scaleX, y: rPoint.y * scaleY});
+    const rPoint = this.rotatePoint({ x: this.left, y: this.top });
+    const point = this.unrotatePoint({
+      x: rPoint.x * scaleX,
+      y: rPoint.y * scaleY,
+    });
 
     this.left = point.x;
     this.top = point.y;

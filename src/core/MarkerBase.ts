@@ -53,6 +53,10 @@ export class MarkerBase {
     }
   }
 
+  public getOutline(): string {
+    return '';
+  }
+
   /**
    * Returns current marker state that can be restored in the future.
    */
