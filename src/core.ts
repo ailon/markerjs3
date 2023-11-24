@@ -7,3 +7,4 @@ export { ShapeOutlineMarkerBase } from './core/ShapeOutlineMarkerBase';
 export { RectangularBoxMarkerBaseState } from './core/RectangularBoxMarkerBaseState';
 export { RectangularBoxMarkerBase } from './core/RectangularBoxMarkerBase';
 export { FrameMarker } from './core/FrameMarker';
+export { AnnotationState } from './core/AnnotationState';

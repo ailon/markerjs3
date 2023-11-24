@@ -238,4 +238,20 @@ export class MarkerBaseEditor<TMarkerType extends MarkerBase = MarkerBase> {
       }
     }
   }
+
+  public getState(): MarkerBaseState {
+    return this.marker.getState();
+  }
+
+  /**
+   * Restores previously saved marker state.
+   *
+   * @param state - previously saved state.
+   */
+  public restoreState(state: MarkerBaseState): void {
+    this._state = 'select';
+    this.marker.restoreState(state);
+    this.adjustControlBox();
+  }
+
 }

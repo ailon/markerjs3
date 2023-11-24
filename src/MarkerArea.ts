@@ -1,4 +1,4 @@
-import { FrameMarker, IPoint, MarkerBase } from './core';
+import { AnnotationState, FrameMarker, IPoint, MarkerBase } from './core';
 import { SvgHelper } from './core/SvgHelper';
 import { MarkerBaseEditor } from './editor/MarkerBaseEditor';
 import { ShapeOutlineMarkerEditor } from './editor/ShapeOutlineMarkerEditor';
@@ -180,6 +180,8 @@ export class MarkerArea extends HTMLElement {
 
     this.showOutline = this.showOutline.bind(this);
     this.hideOutline = this.hideOutline.bind(this);
+
+    this.getState = this.getState.bind(this);
 
     this.attachShadow({ mode: 'open' });
   }
@@ -655,6 +657,86 @@ export class MarkerArea extends HTMLElement {
     // window.removeEventListener('pointerleave', this.onPointerUp);
     // window.removeEventListener('keyup', this.onKeyUp);
   }
+
+  private getMarkerTypeByName(typeName: string): typeof MarkerBase | undefined {
+    let result: typeof MarkerBase | undefined;
+    this.markerEditors.forEach((value, key) => {
+      if (key.typeName === typeName) {
+        result = key;
+      }
+    });
+    return result;
+  }
+
+  public getState(): AnnotationState {
+    const result: AnnotationState = {
+      version: 3,
+      width: this.width,
+      height: this.height,
+
+      markers: this.editors.map((editor) => { return editor.getState(); }),
+    };
+
+    return result;
+  }
+
+  public restoreState(state: AnnotationState): void {
+    this.editors.splice(0);
+
+    while (this._mainCanvas?.lastChild) {
+      this._mainCanvas.removeChild(this._mainCanvas.lastChild);
+    }
+
+    state.markers.forEach((markerState) => {
+      const markerType = this.getMarkerTypeByName(markerState.typeName);
+      if (markerType !== undefined) {
+        const editorType = this.markerEditors.get(markerType);
+        if (editorType !== undefined) {
+          const markerEditor = this.addNewMarker(editorType, markerType);
+          markerEditor.restoreState(markerState);
+          this.editors.push(markerEditor);
+        }
+      }
+    });
+    
+    if (
+      state.width &&
+      state.height &&
+      (state.width !== this.width || state.height !== this.height)
+    ) {
+      this.scaleMarkers(
+        this.width / state.width,
+        this.height / state.height
+      );
+    }    
+
+    this.dispatchEvent(
+      new CustomEvent<MarkerAreaEventData>('arearestorestate', {
+        detail: { markerArea: this },
+      }),
+    );
+  }
+
+  private scaleMarkers(scaleX: number, scaleY: number) {
+    let preScaleSelectedMarker: MarkerBaseEditor | undefined;
+    // @todo
+    // if (!(this._currentMarker && this._currentMarker instanceof TextMarker)) {
+      // can't unselect text marker as it would hide keyboard on mobile
+      // eslint-disable-next-line prefer-const
+      preScaleSelectedMarker = this._currentMarkerEditor;
+      this.setCurrentEditor();
+    // } else {
+    //   this._currentMarker.scale(scaleX, scaleY);
+    // }
+    this.editors.forEach((editor) => {
+      if (editor !== this._currentMarkerEditor) {
+        editor.scale(scaleX, scaleY)
+      }
+    });
+    if (preScaleSelectedMarker !== undefined) {
+      this.setCurrentEditor(preScaleSelectedMarker);
+    }
+  }  
 
   addEventListener<T extends keyof MarkerAreaEventMap>(
     // the event name, a key of MarkerAreaEventMap

@@ -1,5 +1,5 @@
 import { MarkerArea } from '../../src/MarkerArea';
-import { FrameMarker } from '../../src/core';
+import { AnnotationState, FrameMarker, ShapeOutlineMarkerBaseState } from '../../src/core';
 import { ShapeOutlineMarkerEditor } from '../../src/editor';
 
 export * from './../../src/index';
@@ -11,14 +11,14 @@ export class Experiments {
     // const targetImg = document.getElementById('testImg') as HTMLImageElement;
     const targetImg = document.createElement('img');
     targetImg.src = './images/landscape_sm.jpg';
-    
+
     this.markerArea1 = document.getElementById('markerArea1') as MarkerArea;
     // markerArea1.targetWidth = 400;
     // markerArea1.targetHeight = 300;
     this.markerArea1.targetImage = targetImg;
 
     // doesn't fire when component is added in html (this call is already after init)
-    this.markerArea1.addEventListener('areainit', (e) => { 
+    this.markerArea1.addEventListener('areainit', (e) => {
       console.log('areainit', e);
     });
     this.markerArea1.addEventListener('markercreate', (e) => {
@@ -41,6 +41,36 @@ export class Experiments {
     const newMarkerEditor = this.markerArea1?.createMarker(FrameMarker);
     if (newMarkerEditor && newMarkerEditor.is(ShapeOutlineMarkerEditor)) {
       newMarkerEditor.strokeColor = 'blue';
+    }
+  }
+
+  savedState?: AnnotationState = {
+    version: 3,
+    width: 867,
+    height: 654,
+    markers: [
+      {
+        strokeColor: 'blue',
+        strokeWidth: 3,
+        strokeDasharray: '',
+        opacity: 1,
+        left: 245.16802978515625,
+        top: 216.16673278808594,
+        width: 118,
+        height: 112.66668701171875,
+        rotationAngle: -49.2104827920239,
+        typeName: 'FrameMarker',
+      } as ShapeOutlineMarkerBaseState,
+    ],
+  };
+  public saveState() {
+    this.savedState = this.markerArea1?.getState();
+    console.log('saved state:', this.savedState);
+    console.log(JSON.stringify(this.savedState));
+  }
+  public restoreState() {
+    if (this.savedState) {
+      this.markerArea1?.restoreState(this.savedState);
     }
   }
 }
