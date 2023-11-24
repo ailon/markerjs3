@@ -1,4 +1,5 @@
 import { MarkerBaseState } from '../core/MarkerBaseState';
+import { ITransformMatrix } from './TransformMatrix';
 
 /**
  * Represents a state snapshot of a RectangularBoxMarkerBase.
@@ -24,4 +25,8 @@ export interface RectangularBoxMarkerBaseState extends MarkerBaseState {
    * Marker's rotation angle.
    */
   rotationAngle: number;
+
+  visualTransformMatrix?: ITransformMatrix;
+  containerTransformMatrix?: ITransformMatrix;
+
 }

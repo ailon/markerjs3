@@ -3,6 +3,7 @@ import { MarkerBase } from './MarkerBase';
 import { MarkerBaseState } from './MarkerBaseState';
 import { RectangularBoxMarkerBaseState } from './RectangularBoxMarkerBaseState';
 import { SvgHelper } from './SvgHelper';
+import { TransformMatrix } from './TransformMatrix';
 
 /**
  * RectangularBoxMarkerBase is a base class for all marker's that conceptually fit into a rectangle
@@ -164,6 +165,12 @@ export class RectangularBoxMarkerBase extends MarkerBase {
         width: this.width,
         height: this.height,
         rotationAngle: this.rotationAngle,
+        visualTransformMatrix: TransformMatrix.toITransformMatrix(
+          this.visual!.transform.baseVal.getItem(0).matrix,
+        ),
+        containerTransformMatrix: TransformMatrix.toITransformMatrix(
+          this.container.transform.baseVal.getItem(0).matrix,
+        ),
       },
       super.getState(),
     );
@@ -183,8 +190,27 @@ export class RectangularBoxMarkerBase extends MarkerBase {
     this.width = rbmState.width;
     this.height = rbmState.height;
     this.rotationAngle = rbmState.rotationAngle;
-    this.moveVisual({ x: this.left, y: this.top });
-    this.applyRotation();
+
+    if (rbmState.visualTransformMatrix && rbmState.containerTransformMatrix) {
+      this.visual!.transform.baseVal.getItem(0).setMatrix(
+        TransformMatrix.toSVGMatrix(
+          this.visual!.transform.baseVal.getItem(0).matrix,
+          rbmState.visualTransformMatrix,
+        ),
+      );
+      this.container.transform.baseVal
+        .getItem(0)
+        .setMatrix(
+          TransformMatrix.toSVGMatrix(
+            this.container.transform.baseVal.getItem(0).matrix,
+            rbmState.containerTransformMatrix,
+          ),
+        );
+    } else {
+      this.moveVisual({ x: this.left, y: this.top });
+      this.applyRotation();
+    }
+
   }
 
   /**
