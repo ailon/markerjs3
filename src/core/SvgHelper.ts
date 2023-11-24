@@ -209,7 +209,7 @@ export class SvgHelper {
   }
 
   /**
-   * Creaes an SVG text element.
+   * Creates an SVG text element.
    * @param attributes - additional attributes.
    */
   public static createText(
@@ -304,7 +304,7 @@ export class SvgHelper {
   }
 
   /**
-   * Creaes an SVG text element.
+   * Creates an SVG text element.
    * @param attributes - additional attributes.
    */
    public static createForeignObject(

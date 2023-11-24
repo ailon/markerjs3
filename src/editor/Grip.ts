@@ -16,7 +16,7 @@ export class Grip {
   }
 
   /**
-   * Grip's size (raduis).
+   * Grip's size (radius).
    */
   public gripSize = 5;
 
