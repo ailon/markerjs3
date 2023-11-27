@@ -2,6 +2,7 @@ import { AnnotationState, FrameMarker, IPoint, MarkerBase } from './core';
 import { SvgHelper } from './core/SvgHelper';
 import { MarkerBaseEditor } from './editor/MarkerBaseEditor';
 import { ShapeOutlineMarkerEditor } from './editor/ShapeOutlineMarkerEditor';
+import { UndoRedoManager } from './editor/UndoRedoManager';
 
 export interface MarkerAreaEventMap {
   /**
@@ -150,6 +151,10 @@ export class MarkerArea extends HTMLElement {
     this.prevPanPoint = point;
   }
 
+  private undoRedoManager =
+    new UndoRedoManager<AnnotationState>();
+
+
   constructor() {
     super();
 
@@ -182,6 +187,13 @@ export class MarkerArea extends HTMLElement {
     this.hideOutline = this.hideOutline.bind(this);
 
     this.getState = this.getState.bind(this);
+    this.restoreState = this.restoreState.bind(this);
+
+    this.undo = this.undo.bind(this);
+    this.addUndoStep = this.addUndoStep.bind(this);
+    this.undoStep = this.undoStep.bind(this);
+    this.redo = this.redo.bind(this);
+    this.redoStep = this.redoStep.bind(this);    
 
     this.attachShadow({ mode: 'open' });
   }
@@ -352,6 +364,7 @@ export class MarkerArea extends HTMLElement {
     const markerEditor = this.markerEditors.get(markerType);
     if (markerEditor && this._mainCanvas) {
       this.setCurrentEditor();
+      this.addUndoStep();
       this._currentMarkerEditor = this.addNewMarker(markerEditor, markerType);
       this._currentMarkerEditor.onMarkerCreated = this.markerCreated;
       this._currentMarkerEditor.onStateChanged = this.markerStateChanged;
@@ -401,7 +414,7 @@ export class MarkerArea extends HTMLElement {
       // ) {
       //   this.createNewMarker(FreehandMarker);
       // }
-      // this.addUndoStep();
+      this.addUndoStep();
       this.dispatchEvent(
         new CustomEvent<MarkerEditorEventData>('markercreate', {
           detail: { markerArea: this, markerEditor: editor },
@@ -411,6 +424,7 @@ export class MarkerArea extends HTMLElement {
   }
 
   private markerStateChanged(markerEditor: MarkerBaseEditor): void {
+    this.addUndoStep();
     this.dispatchEvent(
       new CustomEvent<MarkerEditorEventData>('markerchange', {
         detail: { markerArea: this, markerEditor: markerEditor },
@@ -577,8 +591,7 @@ export class MarkerArea extends HTMLElement {
       }
     }
     this.isDragging = false;
-    // @todo
-    // this.addUndoStep();
+    this.addUndoStep();
   }
 
   private onPointerOut(/*ev: PointerEvent*/) {
@@ -737,6 +750,96 @@ export class MarkerArea extends HTMLElement {
       this.setCurrentEditor(preScaleSelectedMarker);
     }
   }  
+
+
+  /**
+   * Returns true if undo operation can be performed (undo stack is not empty).
+   */
+  public get isUndoPossible(): boolean {
+    if (this.undoRedoManager && this.undoRedoManager.isUndoPossible) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  /**
+   * Returns true if redo operation can be performed (redo stack is not empty).
+   */
+  public get isRedoPossible(): boolean {
+    if (this.undoRedoManager && this.undoRedoManager.isRedoPossible) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  private addUndoStep() {
+    if (
+      this._currentMarkerEditor === undefined ||
+      this._currentMarkerEditor.state !== 'edit'
+    ) {
+      const currentState = this.getState();
+      const lastUndoState = this.undoRedoManager.getLastUndoStep();
+      if (
+        lastUndoState &&
+        (lastUndoState.width !== currentState.width ||
+          lastUndoState.height !== currentState.height)
+      ) {
+        // if the size changed just replace the last step with a resized one
+        this.undoRedoManager.replaceLastUndoStep(currentState);
+        this.dispatchEvent(
+          new CustomEvent<MarkerAreaEventData>('areastatechange', {
+            detail: { markerArea: this },
+          })
+        );
+      } else {
+        const stepAdded = this.undoRedoManager.addUndoStep(currentState);
+        if (stepAdded) {
+          this.dispatchEvent(
+            new CustomEvent<MarkerAreaEventData>('areastatechange', {
+              detail: { markerArea: this },
+            })
+          );
+        }
+      }
+    }
+  }
+
+  /**
+   * Undo last action.
+   */
+  public undo(): void {
+    this.addUndoStep();
+    this.undoStep();
+  }
+
+  private undoStep(): void {
+    const stepData = this.undoRedoManager.undo();
+    if (stepData !== undefined) {
+      this.restoreState(stepData);
+    }
+  }  
+
+  /**
+   * Redo previously undone action.
+   */
+  public redo(): void {
+    this.redoStep();
+  }
+
+  private redoStep(): void {
+    const stepData = this.undoRedoManager.redo();
+    if (stepData !== undefined) {
+      this.restoreState(stepData);
+      this.dispatchEvent(
+        new CustomEvent<MarkerAreaEventData>('areastatechange', {
+          detail: { markerArea: this },
+        })
+      );
+    }
+  }
+
 
   addEventListener<T extends keyof MarkerAreaEventMap>(
     // the event name, a key of MarkerAreaEventMap

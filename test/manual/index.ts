@@ -73,4 +73,10 @@ export class Experiments {
       this.markerArea1?.restoreState(this.savedState);
     }
   }
+  public undo() {
+    this.markerArea1?.undo();
+  }
+  public redo() {
+    this.markerArea1?.redo();
+  }
 }
