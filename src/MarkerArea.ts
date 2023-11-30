@@ -77,6 +77,9 @@ export class MarkerArea extends HTMLElement {
   private _isInitialized = false;
 
   private _currentMarkerEditor?: MarkerBaseEditor;
+  public get currentMarkerEditor(): MarkerBaseEditor | undefined {
+    return this._currentMarkerEditor;
+  }
 
   private _newMarkerOutline: SVGPathElement = SvgHelper.createPath('', [
     ['stroke', '#333'],

@@ -40,6 +40,21 @@
       background-color: lightgray;
       border-radius: 5px;
     }
+    .property-panel {
+      margin: 10px auto;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 0.2rem;
+      max-width: 800px;
+      padding: 5px;
+      border: 1px solid black;
+      background-color: lightgray;
+      border-radius: 5px;
+    }
+    .property-panel label {
+      font-size: 1rem;
+      text-align: right;
+    }
   </style>
 </head>
 <body>
@@ -63,6 +78,17 @@
         <button onclick="experiments.saveState();">Save state</button>
         <button onclick="experiments.restoreState();">Load state</button>
       </div>
+    </div>
+
+    <div class="property-panel" id="shapePropertyPanel" style="display: none;">
+      <label for="strokeColor">Stroke color:</label>
+      <input type="color" id="strokeColor" />
+
+      <label for="strokeWidth">Stroke width:</label>
+      <input type="number" id="strokeWidth" min="1" max="10" step="1" value="1" />
+
+      <label for="strokeDasharray">Stroke Dash Array:</label>
+      <input type="text" id="strokeDasharray" />
     </div>
 
     <div style="display: flex; justify-content: center; margin-top: 50px;">
