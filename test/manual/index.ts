@@ -79,11 +79,11 @@ export class Experiments {
     ) {
       if (e.detail.markerEditor.is(ShapeOutlineMarkerEditor)) {
         (document.getElementById('strokeColor') as HTMLInputElement).value =
-          e.detail.markerEditor.marker.strokeColor;
+          e.detail.markerEditor.strokeColor;
         (document.getElementById('strokeWidth') as HTMLInputElement).value =
-          e.detail.markerEditor.marker.strokeWidth.toString();
+          e.detail.markerEditor.strokeWidth.toString();
         (document.getElementById('strokeDasharray') as HTMLInputElement).value =
-          e.detail.markerEditor.marker.strokeDasharray;
+          e.detail.markerEditor.strokeDasharray;
       }
     }
   }
@@ -135,7 +135,7 @@ export class Experiments {
   public setStrokeColor(color: string) {
     const editor = this.markerArea1?.currentMarkerEditor;
     if (editor && editor.is(ShapeOutlineMarkerEditor)) {
-      editor.marker.strokeColor = color;
+      editor.strokeColor = color;
     }
     console.log('setStrokeColor', color);
   }
@@ -143,7 +143,7 @@ export class Experiments {
   public setStrokeWidth(width: string) {
     const editor = this.markerArea1?.currentMarkerEditor;
     if (editor && editor.is(ShapeOutlineMarkerEditor)) {
-      editor.marker.strokeWidth = Number.parseInt(width);
+      editor.strokeWidth = Number.parseInt(width);
     }
     console.log('setStrokeWidth', width);
   }
@@ -151,7 +151,7 @@ export class Experiments {
   public setStrokeDasharray(dashes: string) {
     const editor = this.markerArea1?.currentMarkerEditor;
     if (editor && editor.is(ShapeOutlineMarkerEditor)) {
-      editor.marker.strokeDasharray = dashes;
+      editor.strokeDasharray = dashes;
     }
     console.log('setStrokeDasharray', dashes);
   }
