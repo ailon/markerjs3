@@ -155,4 +155,21 @@ export class Experiments {
     }
     console.log('setStrokeDasharray', dashes);
   }
+
+  public zoomOut() {
+    if (this.markerArea1) {
+      this.markerArea1.zoomLevel -= 0.1;
+    }
+  }
+  public zoomIn() {
+    if (this.markerArea1) {
+      this.markerArea1.zoomLevel += 0.1;
+    }
+  }
+
+  public zoomReset() {
+    if (this.markerArea1) {
+      this.markerArea1.zoomLevel = 1;
+    }
+  }
 }

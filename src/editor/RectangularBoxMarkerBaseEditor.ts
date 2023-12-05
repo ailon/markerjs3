@@ -88,6 +88,7 @@ export class RectangularBoxMarkerBaseEditor<
    * @param target - direct event target element.
    */
   public pointerDown(point: IPoint, target?: EventTarget): void {
+    console.log(point);
     super.pointerDown(point, target);
 
     if (this.state === 'new') {

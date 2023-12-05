@@ -107,7 +107,6 @@ export class MarkerArea extends HTMLElement {
 
   public editors: MarkerBaseEditor[] = [];
 
-  public zoomSteps = [0.5, 0.8, 1, 1.5, 2, 4];
   private _zoomLevel = 1;
   /**
    * Returns the current zoom level.
@@ -126,10 +125,7 @@ export class MarkerArea extends HTMLElement {
       this._mainCanvas &&
       this._overlayContainer
     ) {
-      this._mainCanvas.style.width = `${this._targetWidth * this.zoomLevel}px`;
-      this._mainCanvas.style.height = `${
-        this._targetHeight * this.zoomLevel
-      }px`;
+      this.setMainCanvasSize();
       //this._mainCanvas.style.transform = `scale(${this._zoomLevel})`;
       this._canvasContainer.scrollTo({
         left:
@@ -154,9 +150,7 @@ export class MarkerArea extends HTMLElement {
     this.prevPanPoint = point;
   }
 
-  private undoRedoManager =
-    new UndoRedoManager<AnnotationState>();
-
+  private undoRedoManager = new UndoRedoManager<AnnotationState>();
 
   constructor() {
     super();
@@ -196,7 +190,7 @@ export class MarkerArea extends HTMLElement {
     this.addUndoStep = this.addUndoStep.bind(this);
     this.undoStep = this.undoStep.bind(this);
     this.redo = this.redo.bind(this);
-    this.redoStep = this.redoStep.bind(this);    
+    this.redoStep = this.redoStep.bind(this);
 
     this.attachShadow({ mode: 'open' });
   }
@@ -271,7 +265,7 @@ export class MarkerArea extends HTMLElement {
     // this._mainCanvas.style.backgroundColor = 'pink'; // @todo
     // this._mainCanvas.style.opacity = '0.3'; // @todo
     this._mainCanvas.style.margin = '10px';
-    //this._mainCanvas.style.transform = `scale(${this._zoomLevel})`;
+    this._mainCanvas.style.transform = `scale(${this._zoomLevel})`;
 
     this._groupLayer = SvgHelper.createGroup();
 
@@ -286,8 +280,18 @@ export class MarkerArea extends HTMLElement {
       this._targetHeight > 0 &&
       this._targetWidth > 0
     ) {
-      this._mainCanvas.setAttribute('width', this._targetWidth.toString());
-      this._mainCanvas.setAttribute('height', this._targetHeight.toString());
+      this._mainCanvas.style.width = `${this._targetWidth * this.zoomLevel}px`;
+      this._mainCanvas.style.height = `${
+        this._targetHeight * this.zoomLevel
+      }px`;
+      this._mainCanvas.setAttribute(
+        'width',
+        `${this._targetWidth * this.zoomLevel}`,
+      );
+      this._mainCanvas.setAttribute(
+        'height',
+        `${this._targetHeight * this.zoomLevel}`,
+      );
       this._mainCanvas.setAttribute(
         'viewBox',
         '0 0 ' +
@@ -295,7 +299,16 @@ export class MarkerArea extends HTMLElement {
           ' ' +
           this._targetHeight.toString(),
       );
-      // @todo zoom
+      if (this._editingTarget !== undefined) {
+        this._editingTarget.width = this._targetWidth * this.zoomLevel;
+        this._editingTarget.height = this._targetHeight * this.zoomLevel;
+        this._editingTarget.style.width = `${
+          this._targetWidth * this.zoomLevel
+        }px`;
+        this._editingTarget.style.height = `${
+          this._targetHeight * this.zoomLevel
+        }px`;
+      }
     }
   }
 
@@ -496,6 +509,7 @@ export class MarkerArea extends HTMLElement {
             this._mainCanvas,
             ev.clientX,
             ev.clientY,
+            this.zoomLevel,
           ),
         );
       } else if (this.mode === 'select') {
@@ -508,6 +522,7 @@ export class MarkerArea extends HTMLElement {
               this._mainCanvas,
               ev.clientX,
               ev.clientY,
+              this.zoomLevel,
             ),
             ev.target ?? undefined,
           );
@@ -536,6 +551,7 @@ export class MarkerArea extends HTMLElement {
             this._mainCanvas,
             ev.clientX,
             ev.clientY,
+            this.zoomLevel,
           );
 
           this.showOutline(localPoint);
@@ -587,6 +603,7 @@ export class MarkerArea extends HTMLElement {
             this._mainCanvas,
             ev.clientX,
             ev.clientY,
+            this.zoomLevel,
           ),
         );
 
@@ -690,7 +707,9 @@ export class MarkerArea extends HTMLElement {
       width: this.width,
       height: this.height,
 
-      markers: this.editors.map((editor) => { return editor.getState(); }),
+      markers: this.editors.map((editor) => {
+        return editor.getState();
+      }),
     };
 
     return result;
@@ -714,17 +733,14 @@ export class MarkerArea extends HTMLElement {
         }
       }
     });
-    
+
     if (
       state.width &&
       state.height &&
       (state.width !== this.width || state.height !== this.height)
     ) {
-      this.scaleMarkers(
-        this.width / state.width,
-        this.height / state.height
-      );
-    }    
+      this.scaleMarkers(this.width / state.width, this.height / state.height);
+    }
 
     this.dispatchEvent(
       new CustomEvent<MarkerAreaEventData>('arearestorestate', {
@@ -737,23 +753,22 @@ export class MarkerArea extends HTMLElement {
     let preScaleSelectedMarker: MarkerBaseEditor | undefined;
     // @todo
     // if (!(this._currentMarker && this._currentMarker instanceof TextMarker)) {
-      // can't unselect text marker as it would hide keyboard on mobile
-      // eslint-disable-next-line prefer-const
-      preScaleSelectedMarker = this._currentMarkerEditor;
-      this.setCurrentEditor();
+    // can't unselect text marker as it would hide keyboard on mobile
+    // eslint-disable-next-line prefer-const
+    preScaleSelectedMarker = this._currentMarkerEditor;
+    this.setCurrentEditor();
     // } else {
     //   this._currentMarker.scale(scaleX, scaleY);
     // }
     this.editors.forEach((editor) => {
       if (editor !== this._currentMarkerEditor) {
-        editor.scale(scaleX, scaleY)
+        editor.scale(scaleX, scaleY);
       }
     });
     if (preScaleSelectedMarker !== undefined) {
       this.setCurrentEditor(preScaleSelectedMarker);
     }
-  }  
-
+  }
 
   /**
    * Returns true if undo operation can be performed (undo stack is not empty).
@@ -794,7 +809,7 @@ export class MarkerArea extends HTMLElement {
         this.dispatchEvent(
           new CustomEvent<MarkerAreaEventData>('areastatechange', {
             detail: { markerArea: this },
-          })
+          }),
         );
       } else {
         const stepAdded = this.undoRedoManager.addUndoStep(currentState);
@@ -802,7 +817,7 @@ export class MarkerArea extends HTMLElement {
           this.dispatchEvent(
             new CustomEvent<MarkerAreaEventData>('areastatechange', {
               detail: { markerArea: this },
-            })
+            }),
           );
         }
       }
@@ -822,7 +837,7 @@ export class MarkerArea extends HTMLElement {
     if (stepData !== undefined) {
       this.restoreState(stepData);
     }
-  }  
+  }
 
   /**
    * Redo previously undone action.
@@ -838,11 +853,10 @@ export class MarkerArea extends HTMLElement {
       this.dispatchEvent(
         new CustomEvent<MarkerAreaEventData>('areastatechange', {
           detail: { markerArea: this },
-        })
+        }),
       );
     }
   }
-
 
   addEventListener<T extends keyof MarkerAreaEventMap>(
     // the event name, a key of MarkerAreaEventMap
