@@ -125,8 +125,9 @@ export class MarkerArea extends HTMLElement {
       this._mainCanvas &&
       this._overlayContainer
     ) {
-      this.setMainCanvasSize();
-      //this._mainCanvas.style.transform = `scale(${this._zoomLevel})`;
+      //this.setMainCanvasSize();
+      this._mainCanvas.style.transform = `scale(${this._zoomLevel})`;
+      this.setEditingTargetSize();
       this._canvasContainer.scrollTo({
         left:
           (this._mainCanvas.clientWidth - this._canvasContainer.clientWidth) /
@@ -161,6 +162,7 @@ export class MarkerArea extends HTMLElement {
     this.createLayout = this.createLayout.bind(this);
     this.addMainCanvas = this.addMainCanvas.bind(this);
     this.setMainCanvasSize = this.setMainCanvasSize.bind(this);
+    this.setEditingTargetSize = this.setEditingTargetSize.bind(this);
     this.initOverlay = this.initOverlay.bind(this);
     this.addTargetImage = this.addTargetImage.bind(this);
 
@@ -299,16 +301,20 @@ export class MarkerArea extends HTMLElement {
           ' ' +
           this._targetHeight.toString(),
       );
-      if (this._editingTarget !== undefined) {
-        this._editingTarget.width = this._targetWidth * this.zoomLevel;
-        this._editingTarget.height = this._targetHeight * this.zoomLevel;
-        this._editingTarget.style.width = `${
-          this._targetWidth * this.zoomLevel
-        }px`;
-        this._editingTarget.style.height = `${
-          this._targetHeight * this.zoomLevel
-        }px`;
-      }
+      this.setEditingTargetSize();
+    }
+  }
+
+  private setEditingTargetSize() {
+    if (this._editingTarget !== undefined) {
+      this._editingTarget.width = this._targetWidth * this.zoomLevel;
+      this._editingTarget.height = this._targetHeight * this.zoomLevel;
+      this._editingTarget.style.width = `${
+        this._targetWidth * this.zoomLevel
+      }px`;
+      this._editingTarget.style.height = `${
+        this._targetHeight * this.zoomLevel
+      }px`;
     }
   }
 

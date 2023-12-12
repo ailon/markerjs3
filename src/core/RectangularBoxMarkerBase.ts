@@ -61,6 +61,9 @@ export class RectangularBoxMarkerBase extends MarkerBase {
   constructor(container: SVGGElement) {
     super(container);
 
+    this.rotatePoint = this.rotatePoint.bind(this);
+    this.unrotatePoint = this.unrotatePoint.bind(this);
+
     // add rotation transform
     this.container.transform.baseVal.appendItem(SvgHelper.createTransform());
   }
