@@ -113,14 +113,46 @@ export class LinearMarkerBase extends MarkerBase {
     }
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  public createVisual(): void {}
+  protected getPath(): string {
+    return 'M0,0';
+  }
+
+  public createVisual(): void {
+    this.visual = SvgHelper.createGroup();
+    this.selectorVisual = SvgHelper.createPath(
+      this.getPath(),
+      [
+        ['stroke', 'transparent'],
+        ['stroke-width', Math.max(this.strokeWidth, 8).toString()],
+      ]
+    );
+    this.visibleVisual = SvgHelper.createPath(
+      this.getPath(),
+      [
+        ['stroke', this.strokeColor],
+        ['stroke-width', this.strokeWidth.toString()],
+      ]
+    );
+    this.visual.appendChild(this.selectorVisual);
+    this.visual.appendChild(this.visibleVisual);
+
+    this.addMarkerVisualToContainer(this.visual);
+  }
 
   /**
    * When implemented adjusts marker visual after manipulation when needed.
    */
   // eslint-disable-next-line @typescript-eslint/no-empty-function
-  public adjustVisual(): void {}
+  public adjustVisual(): void {
+    if (this.selectorVisual && this.visibleVisual) {
+      SvgHelper.setAttributes(this.selectorVisual, [['d', this.getPath()]]);
+      SvgHelper.setAttributes(this.visibleVisual, [['d', this.getPath()]]);
+
+      SvgHelper.setAttributes(this.visibleVisual, [['stroke', this.strokeColor]]);
+      SvgHelper.setAttributes(this.visibleVisual, [['stroke-width', this.strokeWidth.toString()]]);
+      SvgHelper.setAttributes(this.visibleVisual, [['stroke-dasharray', this.strokeDasharray.toString()]]);
+    }
+  }
 
   /**
    * Returns marker's state.
