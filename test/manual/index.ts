@@ -1,10 +1,6 @@
 import { MarkerArea } from '../../src/MarkerArea';
-import {
-  AnnotationState,
-  FrameMarker,
-  ShapeOutlineMarkerBaseState,
-} from '../../src/core';
-import { ShapeOutlineMarkerEditor } from '../../src/editor';
+import { AnnotationState, ShapeOutlineMarkerBaseState } from '../../src/core';
+import { LinearMarkerEditor, ShapeOutlineMarkerEditor } from '../../src/editor';
 
 export * from './../../src/index';
 
@@ -77,7 +73,10 @@ export class Experiments {
         import('c:/Work/dev/markerjs/markerjs3/markerjs3/src/MarkerArea').MarkerEditorEventData
       >,
     ) {
-      if (e.detail.markerEditor.is(ShapeOutlineMarkerEditor)) {
+      if (
+        e.detail.markerEditor.is(ShapeOutlineMarkerEditor) ||
+        e.detail.markerEditor.is(LinearMarkerEditor)
+      ) {
         (document.getElementById('strokeColor') as HTMLInputElement).value =
           e.detail.markerEditor.strokeColor;
         (document.getElementById('strokeWidth') as HTMLInputElement).value =
@@ -90,8 +89,12 @@ export class Experiments {
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   public addMarker(markerType: string) {
-    const newMarkerEditor = this.markerArea1?.createMarker(FrameMarker);
-    if (newMarkerEditor && newMarkerEditor.is(ShapeOutlineMarkerEditor)) {
+    const newMarkerEditor = this.markerArea1?.createMarker(markerType);
+    if (
+      newMarkerEditor &&
+      (newMarkerEditor.is(ShapeOutlineMarkerEditor) ||
+        newMarkerEditor.is(LinearMarkerEditor))
+    ) {
       newMarkerEditor.strokeColor = '#0000ff';
     }
   }
@@ -134,7 +137,10 @@ export class Experiments {
 
   public setStrokeColor(color: string) {
     const editor = this.markerArea1?.currentMarkerEditor;
-    if (editor && editor.is(ShapeOutlineMarkerEditor)) {
+    if (
+      editor &&
+      (editor.is(ShapeOutlineMarkerEditor) || editor.is(LinearMarkerEditor))
+    ) {
       editor.strokeColor = color;
     }
     console.log('setStrokeColor', color);
@@ -142,7 +148,10 @@ export class Experiments {
 
   public setStrokeWidth(width: string) {
     const editor = this.markerArea1?.currentMarkerEditor;
-    if (editor && editor.is(ShapeOutlineMarkerEditor)) {
+    if (
+      editor &&
+      (editor.is(ShapeOutlineMarkerEditor) || editor.is(LinearMarkerEditor))
+    ) {
       editor.strokeWidth = Number.parseInt(width);
     }
     console.log('setStrokeWidth', width);
@@ -150,7 +159,10 @@ export class Experiments {
 
   public setStrokeDasharray(dashes: string) {
     const editor = this.markerArea1?.currentMarkerEditor;
-    if (editor && editor.is(ShapeOutlineMarkerEditor)) {
+    if (
+      editor &&
+      (editor.is(ShapeOutlineMarkerEditor) || editor.is(LinearMarkerEditor))
+    ) {
       editor.strokeDasharray = dashes;
     }
     console.log('setStrokeDasharray', dashes);

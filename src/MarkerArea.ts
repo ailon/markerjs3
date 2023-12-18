@@ -1,5 +1,7 @@
 import { AnnotationState, FrameMarker, IPoint, MarkerBase } from './core';
+import { LineMarker } from './core/LineMarker';
 import { SvgHelper } from './core/SvgHelper';
+import { LinearMarkerEditor } from './editor/LinearMarkerEditor';
 import { MarkerBaseEditor } from './editor/MarkerBaseEditor';
 import { ShapeOutlineMarkerEditor } from './editor/ShapeOutlineMarkerEditor';
 import { UndoRedoManager } from './editor/UndoRedoManager';
@@ -103,7 +105,7 @@ export class MarkerArea extends HTMLElement {
   public markerEditors: Map<
     typeof MarkerBase,
     typeof MarkerBaseEditor<MarkerBase>
-  > = new Map([[FrameMarker, ShapeOutlineMarkerEditor<FrameMarker>]]);
+  > = new Map();
 
   public editors: MarkerBaseEditor[] = [];
 
@@ -155,6 +157,9 @@ export class MarkerArea extends HTMLElement {
 
   constructor() {
     super();
+
+    this.markerEditors.set(FrameMarker, ShapeOutlineMarkerEditor<FrameMarker>);
+    this.markerEditors.set(LineMarker, LinearMarkerEditor<LineMarker>);
 
     this.connectedCallback = this.connectedCallback.bind(this);
     this.disconnectedCallback = this.disconnectedCallback.bind(this);
@@ -382,12 +387,18 @@ export class MarkerArea extends HTMLElement {
     }
   }
 
-  public createMarker(markerType: typeof MarkerBase) {
-    const markerEditor = this.markerEditors.get(markerType);
+  public createMarker(markerType: typeof MarkerBase | string) {
+    let mType: typeof MarkerBase = FrameMarker;
+    if (typeof markerType === 'string') {
+      mType = this.getMarkerTypeByName(markerType) || FrameMarker;
+    } else {
+      mType = markerType;
+    }
+    const markerEditor = this.markerEditors.get(mType);
     if (markerEditor && this._mainCanvas) {
       this.setCurrentEditor();
       this.addUndoStep();
-      this._currentMarkerEditor = this.addNewMarker(markerEditor, markerType);
+      this._currentMarkerEditor = this.addNewMarker(markerEditor, mType);
       this._currentMarkerEditor.onMarkerCreated = this.markerCreated;
       this._currentMarkerEditor.onStateChanged = this.markerStateChanged;
 

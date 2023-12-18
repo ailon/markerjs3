@@ -8,3 +8,5 @@ export { RectangularBoxMarkerBaseState } from './core/RectangularBoxMarkerBaseSt
 export { RectangularBoxMarkerBase } from './core/RectangularBoxMarkerBase';
 export { FrameMarker } from './core/FrameMarker';
 export { AnnotationState } from './core/AnnotationState';
+export { LinearMarkerBaseState } from './core/LinearMarkerBaseState';
+export { LinearMarkerBase } from './core/LinearMarkerBase';

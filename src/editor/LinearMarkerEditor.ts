@@ -1,0 +1,322 @@
+import { IPoint, LinearMarkerBase, SvgHelper } from '../core';
+import { ColorType } from './ColorType';
+import { MarkerBaseEditor } from './MarkerBaseEditor';
+import { MarkerEditorProperties } from './MarkerEditorProperties';
+import { ResizeGrip } from './ResizeGrip';
+
+export class LinearMarkerEditor<
+  TMarkerType extends LinearMarkerBase = LinearMarkerBase,
+> extends MarkerBaseEditor<TMarkerType> {
+  /**
+   * Default line length when marker is created with a simple click (without dragging).
+   */
+  protected defaultLength = 50;
+
+  /**
+   * Pointer coordinates at the start of move or resize.
+   */
+  protected manipulationStartX = 0;
+  protected manipulationStartY = 0;
+
+  private manipulationStartX1 = 0;
+  private manipulationStartY1 = 0;
+  private manipulationStartX2 = 0;
+  private manipulationStartY2 = 0;
+
+  /**
+   * Container for control elements.
+   */
+  protected controlBox: SVGGElement = SvgHelper.createGroup();
+
+  /**
+   * First manipulation grip
+   */
+  protected grip1?: ResizeGrip;
+  /**
+   * Second manipulation grip.
+   */
+  protected grip2?: ResizeGrip;
+  /**
+   * Active manipulation grip.
+   */
+  protected activeGrip?: ResizeGrip;
+
+  constructor(properties: MarkerEditorProperties<TMarkerType>) {
+    super(properties);
+    
+    this.ownsTarget = this.ownsTarget.bind(this);
+
+    this.setupControlBox = this.setupControlBox.bind(this);
+    this.adjustControlBox = this.adjustControlBox.bind(this);
+    
+    this.addControlGrips = this.addControlGrips.bind(this);
+    this.createGrip = this.createGrip.bind(this);
+    this.positionGrip = this.positionGrip.bind(this);
+    this.positionGrips = this.positionGrips.bind(this);
+
+    this.resize = this.resize.bind(this);
+
+    this.manipulate = this.manipulate.bind(this);
+    this.pointerDown = this.pointerDown.bind(this);
+    this.pointerUp = this.pointerUp.bind(this);
+
+    this.setupControlBox();
+  }
+
+  /**
+   * Returns true if passed SVG element belongs to the marker. False otherwise.
+   * 
+   * @param el - target element.
+   */
+  public ownsTarget(el: EventTarget): boolean {
+    if (super.ownsTarget(el) || this.marker.ownsTarget(el)) {
+      return true;
+    } else if (
+      this.grip1?.ownsTarget(el) || this.grip2?.ownsTarget(el)
+    ) {
+      return true;
+    } else {
+      return false;
+    }
+  }  
+
+  /**
+   * Handles pointer (mouse, touch, stylus, etc.) down event.
+   * 
+   * @param point - event coordinates.
+   * @param target - direct event target element.
+   */
+  public pointerDown(point: IPoint, target?: EventTarget): void {
+    super.pointerDown(point, target);
+
+    this.manipulationStartX = point.x;
+    this.manipulationStartY = point.y;
+
+    if (this.state === 'new') {
+      this.marker.x1 = point.x;
+      this.marker.y1 = point.y;
+      this.marker.x2 = point.x;
+      this.marker.y2 = point.y;
+    }
+
+    this.manipulationStartX1 = this.marker.x1;
+    this.manipulationStartY1 = this.marker.y1;
+    this.manipulationStartX2 = this.marker.x2;
+    this.manipulationStartY2 = this.marker.y2;
+
+    if (this.state === 'new') {
+      this.marker.createVisual();
+      this.marker.adjustVisual();
+
+      this._state = 'creating';
+    } else {
+      this.select();
+      if (target && this.grip1?.ownsTarget(target)) {
+        this.activeGrip = this.grip1;
+      } else if (target && this.grip2?.ownsTarget(target)) {
+        this.activeGrip = this.grip2;
+      } else {
+        this.activeGrip = undefined;
+      }
+
+      if (this.activeGrip) {
+        this._state = 'resize';
+      } else {
+        this._state = 'move';
+      }
+    }
+  }
+
+  /**
+   * Handles pointer (mouse, touch, stylus, etc.) up event.
+   * 
+   * @param point - event coordinates.
+   * @param target - direct event target element.
+   */
+  public pointerUp(point: IPoint): void {
+    const inState = this.state;
+    super.pointerUp(point);
+    if (this.state === 'creating' && Math.abs(this.marker.x1 - this.marker.x2) < 10 
+    && Math.abs(this.marker.y1 - this.marker.y2) < 10) {
+      this.marker.x2 = this.marker.x1 + this.defaultLength;
+      this.marker.adjustVisual();
+      this.adjustControlBox()
+    } else {
+      this.manipulate(point);
+    }
+    this._state = 'select';
+    if (inState === 'creating' && this.onMarkerCreated) {
+      this.onMarkerCreated(this);
+    }
+  }
+  
+  /**
+   * Handles marker manipulation (move, resize, rotate, etc.).
+   * 
+   * @param point - event coordinates.
+   */
+  public manipulate(point: IPoint): void {
+    if (this.state === 'creating') {
+      this.resize(point);
+    } else if (this.state === 'move') {
+      this.marker.x1 = this.manipulationStartX1 + point.x - this.manipulationStartX;
+      this.marker.y1 = this.manipulationStartY1 + point.y - this.manipulationStartY;
+      this.marker.x2 = this.manipulationStartX2 + point.x - this.manipulationStartX;
+      this.marker.y2 = this.manipulationStartY2 + point.y - this.manipulationStartY;
+      this.marker.adjustVisual();
+      this.adjustControlBox();
+    } else if (this.state === 'resize') {
+      this.resize(point);
+    }
+  } 
+
+  /**
+   * Resizes the line marker.
+   * @param point - current manipulation coordinates.
+   */
+  protected resize(point: IPoint): void {
+    switch(this.activeGrip) {
+      case this.grip1:
+        this.marker.x1 = point.x;
+        this.marker.y1 = point.y;
+        break; 
+      case this.grip2:
+      case undefined:
+        this.marker.x2 = point.x;
+        this.marker.y2 = point.y;
+        break; 
+    }
+    this.marker.adjustVisual();
+    this.adjustControlBox();
+  }
+
+  /**
+   * Creates control box for manipulation controls.
+   */
+  protected setupControlBox(): void {
+    this.controlBox = SvgHelper.createGroup();
+    this.container.appendChild(this.controlBox);
+
+    this.addControlGrips();
+
+    this.controlBox.style.display = 'none';
+  }
+
+  protected adjustControlBox() {
+    this.positionGrips();
+  }
+
+  /**
+   * Adds control grips to control box.
+   */
+  protected addControlGrips(): void {
+    this.grip1 = this.createGrip();
+    this.grip2 = this.createGrip();
+
+    this.positionGrips();
+  }
+
+  /**
+   * Creates manipulation grip.
+   * @returns - manipulation grip.
+   */
+  protected createGrip(): ResizeGrip {
+    const grip = new ResizeGrip();
+    grip.visual.transform.baseVal.appendItem(SvgHelper.createTransform());
+    this.controlBox.appendChild(grip.visual);
+
+    return grip;
+  }
+
+  /**
+   * Updates manipulation grip layout.
+   */
+  protected positionGrips(): void {
+    if (this.grip1 && this.grip2) {
+      const gripSize = this.grip1.gripSize;
+
+      this.positionGrip(this.grip1.visual, this.marker.x1 - gripSize / 2, this.marker.y1 - gripSize / 2);
+      this.positionGrip(this.grip2.visual, this.marker.x2 - gripSize / 2, this.marker.y2 - gripSize / 2);
+    }
+  }
+
+  /**
+   * Positions manipulation grip.
+   * @param grip - grip to position
+   * @param x - new X coordinate
+   * @param y - new Y coordinate
+   */
+  protected positionGrip(grip: SVGGraphicsElement, x: number, y: number): void {
+    const translate = grip.transform.baseVal.getItem(0);
+    translate.setTranslate(x, y);
+    grip.transform.baseVal.replaceItem(translate, 0);
+  }
+
+  /**
+   * Displays marker's controls.
+   */
+  public select(): void {
+    super.select();
+    this.adjustControlBox();
+    this.controlBox.style.display = '';
+  }
+
+  /**
+   * Hides marker's controls.
+   */
+  public deselect(): void {
+    super.deselect();
+    this.controlBox.style.display = 'none';
+  }
+
+  /**
+   * Sets rectangle's border stroke color.
+   * @param color - color as string
+   */
+  public set strokeColor(color: string) {
+    this.marker.strokeColor = color;
+    this.colorChanged('stroke', color);
+  }
+
+  public get strokeColor(): string {
+    return this.marker.strokeColor;
+  }
+
+  /**
+   * Sets rectangle's border stroke (line) width.
+   * @param color - color as string
+   */
+  public set strokeWidth(width: number) {
+    this.marker.strokeWidth = width;
+    this.stateChanged();
+  }
+
+  public get strokeWidth(): number {
+    return this.marker.strokeWidth;
+  }
+
+  /**
+   * Sets rectangle's border stroke dash array.
+   * @param color - color as string
+   */
+  public set strokeDasharray(dashes: string) {
+    this.marker.strokeDasharray = dashes;
+    this.stateChanged();
+  }
+
+  public get strokeDasharray(): string {
+    return this.marker.strokeDasharray;
+  }
+
+  /**
+   * Method to call when foreground color changes.
+   */
+  public onColorChanged?: (colorType: ColorType, color: string) => void;
+
+  public colorChanged(colorType: ColorType, color: string): void {
+    if (this.onColorChanged) {
+      this.onColorChanged(colorType, color);
+    }
+    this.stateChanged();
+  }  
+}
