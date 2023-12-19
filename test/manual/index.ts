@@ -1,6 +1,6 @@
 import { MarkerArea } from '../../src/MarkerArea';
 import { AnnotationState, ShapeOutlineMarkerBaseState } from '../../src/core';
-import { LinearMarkerEditor, ShapeOutlineMarkerEditor } from '../../src/editor';
+import { LinearMarkerEditor, PolygonMarkerEditor, ShapeOutlineMarkerEditor } from '../../src/editor';
 
 export * from './../../src/index';
 
@@ -75,7 +75,8 @@ export class Experiments {
     ) {
       if (
         e.detail.markerEditor.is(ShapeOutlineMarkerEditor) ||
-        e.detail.markerEditor.is(LinearMarkerEditor)
+        e.detail.markerEditor.is(LinearMarkerEditor) ||
+        e.detail.markerEditor.is(PolygonMarkerEditor)
       ) {
         (document.getElementById('strokeColor') as HTMLInputElement).value =
           e.detail.markerEditor.strokeColor;
@@ -93,7 +94,9 @@ export class Experiments {
     if (
       newMarkerEditor &&
       (newMarkerEditor.is(ShapeOutlineMarkerEditor) ||
-        newMarkerEditor.is(LinearMarkerEditor))
+        newMarkerEditor.is(LinearMarkerEditor) ||
+        newMarkerEditor.is(PolygonMarkerEditor)
+        )
     ) {
       newMarkerEditor.strokeColor = '#0000ff';
     }
@@ -139,7 +142,7 @@ export class Experiments {
     const editor = this.markerArea1?.currentMarkerEditor;
     if (
       editor &&
-      (editor.is(ShapeOutlineMarkerEditor) || editor.is(LinearMarkerEditor))
+      (editor.is(ShapeOutlineMarkerEditor) || editor.is(LinearMarkerEditor)  || editor.is(PolygonMarkerEditor))
     ) {
       editor.strokeColor = color;
     }
@@ -150,7 +153,7 @@ export class Experiments {
     const editor = this.markerArea1?.currentMarkerEditor;
     if (
       editor &&
-      (editor.is(ShapeOutlineMarkerEditor) || editor.is(LinearMarkerEditor))
+      (editor.is(ShapeOutlineMarkerEditor) || editor.is(LinearMarkerEditor) || editor.is(PolygonMarkerEditor))
     ) {
       editor.strokeWidth = Number.parseInt(width);
     }
@@ -161,7 +164,7 @@ export class Experiments {
     const editor = this.markerArea1?.currentMarkerEditor;
     if (
       editor &&
-      (editor.is(ShapeOutlineMarkerEditor) || editor.is(LinearMarkerEditor))
+      (editor.is(ShapeOutlineMarkerEditor) || editor.is(LinearMarkerEditor) || editor.is(PolygonMarkerEditor))
     ) {
       editor.strokeDasharray = dashes;
     }

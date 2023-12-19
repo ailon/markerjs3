@@ -13,6 +13,7 @@ export { ResizeGrip } from './editor/ResizeGrip';
 export { RotateGrip } from './editor/RotateGrip';
 export { ShapeOutlineMarkerEditor } from './editor/ShapeOutlineMarkerEditor';
 export { LinearMarkerEditor } from './editor/LinearMarkerEditor';
+export { PolygonMarkerEditor } from './editor/PolygonMarkerEditor';
 
 if (
   window &&

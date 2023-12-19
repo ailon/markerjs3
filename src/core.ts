@@ -10,3 +10,5 @@ export { FrameMarker } from './core/FrameMarker';
 export { AnnotationState } from './core/AnnotationState';
 export { LinearMarkerBaseState } from './core/LinearMarkerBaseState';
 export { LinearMarkerBase } from './core/LinearMarkerBase';
+export { PolygonMarkerState } from './core/PolygonMarkerState';
+export { PolygonMarker } from './core/PolygonMarker';

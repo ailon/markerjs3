@@ -1,6 +1,8 @@
 import { ISize } from './ISize';
 import { MarkerBaseState } from './MarkerBaseState';
 
+export type MarkerStage = 'creating' | 'normal';
+
 export class MarkerBase {
   public static typeName = 'MarkerBase';
 
@@ -30,6 +32,8 @@ export class MarkerBase {
    * Marker type title (display name) used for accessibility and other attributes.
    */
   public static title: string;
+
+  public stage: MarkerStage = 'normal';
 
   constructor(container: SVGGElement) {
     this._container = container;

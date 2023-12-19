@@ -1,6 +1,7 @@
-import { AnnotationState, FrameMarker, IPoint, MarkerBase } from './core';
+import { AnnotationState, FrameMarker, IPoint, MarkerBase, PolygonMarker } from './core';
 import { LineMarker } from './core/LineMarker';
 import { SvgHelper } from './core/SvgHelper';
+import { PolygonMarkerEditor } from './editor/PolygonMarkerEditor';
 import { LinearMarkerEditor } from './editor/LinearMarkerEditor';
 import { MarkerBaseEditor } from './editor/MarkerBaseEditor';
 import { ShapeOutlineMarkerEditor } from './editor/ShapeOutlineMarkerEditor';
@@ -160,6 +161,7 @@ export class MarkerArea extends HTMLElement {
 
     this.markerEditors.set(FrameMarker, ShapeOutlineMarkerEditor<FrameMarker>);
     this.markerEditors.set(LineMarker, LinearMarkerEditor<LineMarker>);
+    this.markerEditors.set(PolygonMarker, PolygonMarkerEditor<PolygonMarker>);
 
     this.connectedCallback = this.connectedCallback.bind(this);
     this.disconnectedCallback = this.disconnectedCallback.bind(this);
@@ -528,6 +530,7 @@ export class MarkerArea extends HTMLElement {
             ev.clientY,
             this.zoomLevel,
           ),
+          ev.target ?? undefined,
         );
       } else if (this.mode === 'select') {
         const hitMarker = this.editors.find((m) => m.ownsTarget(ev.target));
