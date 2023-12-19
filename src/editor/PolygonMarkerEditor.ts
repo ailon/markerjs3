@@ -123,6 +123,9 @@ export class PolygonMarkerEditor<
   public pointerUp(point: IPoint): void {
     super.pointerUp(point);
     this.manipulate(point);
+    if (this._state !== 'creating') {
+      this._state = 'select';
+    }
   }
 
   /**
@@ -138,6 +141,8 @@ export class PolygonMarkerEditor<
         p.x += point.x - this.manipulationStartX;
         p.y += point.y - this.manipulationStartY;
       });
+      this.manipulationStartX = point.x;
+      this.manipulationStartY = point.y;
       this.marker.adjustVisual();
       this.adjustControlBox();
     } else if (this.state === 'resize') {
