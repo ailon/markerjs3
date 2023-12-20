@@ -193,6 +193,24 @@ export class PolygonMarkerEditor<
     }
   }
 
+  public dblClick(point: IPoint, target?: EventTarget | undefined): void {
+    if (target && this.state === 'select') {
+      const selectorLineIndex = this.marker.selectorVisualLines.findIndex((l) => l === target);
+      if (selectorLineIndex > -1) {
+        this.marker.points.splice(selectorLineIndex + 1, 0, point);
+        this.marker.adjustVisual();
+        this.addControlGrips();
+      } else {
+        const gripIndex = this.grips.findIndex((g) => g.ownsTarget(target));
+        if (gripIndex > -1) {
+          this.marker.points.splice(gripIndex, 1);
+          this.marker.adjustVisual();
+          this.addControlGrips();
+        }
+      }
+    }
+  }
+
   /**
    * Creates control box for manipulation controls.
    */

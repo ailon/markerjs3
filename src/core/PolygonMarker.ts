@@ -13,11 +13,11 @@ export class PolygonMarker extends MarkerBase {
   /**
    * Marker's main visual.
    */
-  protected visual: SVGGraphicsElement | undefined;
+  public visual: SVGGraphicsElement | undefined;
 
-  protected selectorVisual: SVGGElement | undefined;
-  protected selectorVisualLines: SVGLineElement[] = [];
-  protected visibleVisual: SVGGraphicsElement | undefined;
+  public selectorVisual: SVGGElement | undefined;
+  public selectorVisualLines: SVGLineElement[] = [];
+  public visibleVisual: SVGGraphicsElement | undefined;
 
   protected _strokeColor = 'transparent';
   public get strokeColor() {

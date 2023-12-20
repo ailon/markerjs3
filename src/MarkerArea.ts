@@ -1,4 +1,10 @@
-import { AnnotationState, FrameMarker, IPoint, MarkerBase, PolygonMarker } from './core';
+import {
+  AnnotationState,
+  FrameMarker,
+  IPoint,
+  MarkerBase,
+  PolygonMarker,
+} from './core';
 import { LineMarker } from './core/LineMarker';
 import { SvgHelper } from './core/SvgHelper';
 import { PolygonMarkerEditor } from './editor/PolygonMarkerEditor';
@@ -179,6 +185,7 @@ export class MarkerArea extends HTMLElement {
     this.detachWindowEvents = this.detachWindowEvents.bind(this);
 
     this.onCanvasPointerDown = this.onCanvasPointerDown.bind(this);
+    this.onCanvasDblClick = this.onCanvasDblClick.bind(this);
     this.onKeyUp = this.onKeyUp.bind(this);
     this.onPointerMove = this.onPointerMove.bind(this);
     this.onPointerOut = this.onPointerOut.bind(this);
@@ -555,6 +562,33 @@ export class MarkerArea extends HTMLElement {
     }
   }
 
+  private onCanvasDblClick(ev: MouseEvent) {
+    // @todo ?
+    // if (!this._isFocused) {
+    //   this.focus();
+    // }
+
+    if (this.mode === 'select') {
+      const hitMarker = this.editors.find((m) => m.ownsTarget(ev.target));
+      if (hitMarker !== undefined && hitMarker !== this._currentMarkerEditor) {
+        this.setCurrentEditor(hitMarker);
+      }
+      if (this._currentMarkerEditor !== undefined) {
+        this._currentMarkerEditor.dblClick(
+          SvgHelper.clientToLocalCoordinates(
+            this._mainCanvas,
+            ev.clientX,
+            ev.clientY,
+            this.zoomLevel,
+          ),
+          ev.target ?? undefined,
+        );
+      } else {
+        this.setCurrentEditor();
+      }
+    }
+  }
+
   private onPointerMove(ev: PointerEvent) {
     if (this.touchPoints === 1 || ev.pointerType !== 'touch') {
       if (this._currentMarkerEditor !== undefined || this.isDragging) {
@@ -665,7 +699,7 @@ export class MarkerArea extends HTMLElement {
     this._mainCanvas?.addEventListener('touchmove', (ev) =>
       ev.preventDefault(),
     );
-    // this._mainCanvas?.addEventListener('dblclick', this.onDblClick);
+    this._mainCanvas?.addEventListener('dblclick', this.onCanvasDblClick);
 
     // @todo - using these in Diagrams but not in mjs2 - why?
     // this._mainCanvas?.addEventListener('pointermove', this.onCanvasPointerMove);
