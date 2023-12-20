@@ -101,7 +101,7 @@ export class MarkerBaseEditor<TMarkerType extends MarkerBase = MarkerBase> {
   /**
    * Marker's state when it is selected
    */
-  protected manipulationStartState?: MarkerBaseState;
+  protected manipulationStartState?: string;
 
   /**
    * Is this marker selected?
@@ -151,7 +151,8 @@ export class MarkerBaseEditor<TMarkerType extends MarkerBase = MarkerBase> {
   public select(): void {
     this.container.style.cursor = 'move';
     this._isSelected = true;
-    this.manipulationStartState = this._marker.getState();
+    this.manipulationStartState = JSON.stringify(this._marker.getState());
+    console.log('manipulationStartState', this.manipulationStartState);
   }
 
   /**
@@ -195,9 +196,7 @@ export class MarkerBaseEditor<TMarkerType extends MarkerBase = MarkerBase> {
    * @param point - event coordinates.
    */
   // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-empty-function
-  public pointerUp(point: IPoint): void {
-    this.stateChanged();
-  }
+  public pointerUp(point: IPoint): void {}
 
   /**
    * Disposes the marker and clean's up.
@@ -223,7 +222,8 @@ export class MarkerBaseEditor<TMarkerType extends MarkerBase = MarkerBase> {
       this.state !== 'creating' &&
       this.state !== 'new'
     ) {
-      const currentState = this._marker.getState();
+      const currentState = JSON.stringify(this._marker.getState());
+      console.log('currentState', currentState);
       // @todo - check if this is needed
       // avoid reacting to state (mode) differences
       // if (this.manipulationStartState !== undefined) {
@@ -231,9 +231,10 @@ export class MarkerBaseEditor<TMarkerType extends MarkerBase = MarkerBase> {
       // }
       // currentState.state = 'select';
       if (
-        JSON.stringify(this.manipulationStartState) !=
-        JSON.stringify(currentState)
+        this.manipulationStartState !=
+        currentState
       ) {
+        this.manipulationStartState = currentState;
         this.onStateChanged(this);
       }
     }

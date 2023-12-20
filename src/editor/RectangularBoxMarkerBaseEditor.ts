@@ -175,6 +175,7 @@ export class RectangularBoxMarkerBaseEditor<
     ) {
       this.onMarkerCreated(this);
     }
+    this.stateChanged();
   }
 
   /**

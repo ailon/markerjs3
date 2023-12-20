@@ -766,17 +766,18 @@ export class MarkerArea extends HTMLElement {
       }),
     };
 
-    return result;
+    return JSON.parse(JSON.stringify(result));
   }
 
   public restoreState(state: AnnotationState): void {
+    const stateCopy: AnnotationState = JSON.parse(JSON.stringify(state));
     this.editors.splice(0);
 
     while (this._mainCanvas?.lastChild) {
       this._mainCanvas.removeChild(this._mainCanvas.lastChild);
     }
 
-    state.markers.forEach((markerState) => {
+    stateCopy.markers.forEach((markerState) => {
       const markerType = this.getMarkerTypeByName(markerState.typeName);
       if (markerType !== undefined) {
         const editorType = this.markerEditors.get(markerType);
@@ -789,11 +790,11 @@ export class MarkerArea extends HTMLElement {
     });
 
     if (
-      state.width &&
-      state.height &&
-      (state.width !== this.width || state.height !== this.height)
+      stateCopy.width &&
+      stateCopy.height &&
+      (stateCopy.width !== this.width || stateCopy.height !== this.height)
     ) {
-      this.scaleMarkers(this.width / state.width, this.height / state.height);
+      this.scaleMarkers(this.width / stateCopy.width, this.height / stateCopy.height);
     }
 
     this.dispatchEvent(

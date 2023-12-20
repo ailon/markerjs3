@@ -45,7 +45,7 @@ export class UndoRedoManager<T> {
       JSON.stringify(this.undoStack[this.undoStack.length - 1]) !==
         JSON.stringify(stepData)
     ) {
-        this.undoStack.push(stepData);
+        this.undoStack.push(JSON.parse(JSON.stringify(stepData)));
         if (JSON.stringify(this.lastRedoStep) !== JSON.stringify(stepData)) {
           this.redoStack.splice(0, this.redoStack.length);
         }
@@ -60,7 +60,7 @@ export class UndoRedoManager<T> {
    */
   public replaceLastUndoStep(stepData: T): void {
     if (this.undoStack.length > 0) {
-        this.undoStack[this.undoStack.length - 1] = stepData;
+        this.undoStack[this.undoStack.length - 1] = JSON.parse(JSON.stringify(stepData));
     }
   }
 
