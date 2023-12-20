@@ -35,6 +35,7 @@ export default {
           dest: 'build-dev/images',
         },
       ],
+      copyOnce: true,
     }),
     dev({ host: '127.0.0.1', dirs: ['build-dev'], port: 8088 }),
     livereload('build-dev'),
