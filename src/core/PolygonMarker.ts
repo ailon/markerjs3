@@ -15,7 +15,8 @@ export class PolygonMarker extends MarkerBase {
    */
   protected visual: SVGGraphicsElement | undefined;
 
-  protected selectorVisual: SVGGraphicsElement | undefined;
+  protected selectorVisual: SVGGElement | undefined;
+  protected selectorVisualLines: SVGLineElement[] = [];
   protected visibleVisual: SVGGraphicsElement | undefined;
 
   protected _strokeColor = 'transparent';
@@ -98,7 +99,8 @@ export class PolygonMarker extends MarkerBase {
       super.ownsTarget(el) ||
       el === this.visual ||
       el === this.selectorVisual ||
-      el === this.visibleVisual
+      el === this.visibleVisual ||
+      this.selectorVisualLines.some((l) => l === el)
     ) {
       return true;
     } else {
@@ -119,20 +121,27 @@ export class PolygonMarker extends MarkerBase {
 
   public createVisual(): void {
     this.visual = SvgHelper.createGroup();
-    this.selectorVisual = SvgHelper.createPath(this.getPath(), [
-      ['stroke', 'transparent'],
-      ['fill', 'transparent'],
-      ['stroke-width', Math.max(this.strokeWidth, 8).toString()],
-    ]);
     this.visibleVisual = SvgHelper.createPath(this.getPath(), [
       ['stroke', this.strokeColor],
       ['fill', 'transparent'],
       ['stroke-width', this.strokeWidth.toString()],
     ]);
-    this.visual.appendChild(this.selectorVisual);
     this.visual.appendChild(this.visibleVisual);
 
+    this.createSelectorVisual();
+
     this.addMarkerVisualToContainer(this.visual);
+  }
+
+  private createSelectorVisual() {
+    if (this.visual) {
+      this.selectorVisual = SvgHelper.createGroup();
+      this.visual.appendChild(this.selectorVisual);
+
+      this.points.forEach(() => {
+        this.addSelectorLine();
+      });
+    }
   }
 
   /**
@@ -141,7 +150,6 @@ export class PolygonMarker extends MarkerBase {
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   public adjustVisual(): void {
     if (this.selectorVisual && this.visibleVisual) {
-      SvgHelper.setAttributes(this.selectorVisual, [['d', this.getPath()]]);
       SvgHelper.setAttributes(this.visibleVisual, [['d', this.getPath()]]);
 
       SvgHelper.setAttributes(this.visibleVisual, [
@@ -153,7 +161,44 @@ export class PolygonMarker extends MarkerBase {
       SvgHelper.setAttributes(this.visibleVisual, [
         ['stroke-dasharray', this.strokeDasharray.toString()],
       ]);
+
+      this.adjustSelectorVisual();
     }
+  }
+
+  private adjustSelectorVisual() {
+    if (this.selectorVisual) {
+      // adjust number of lines
+      const missingLines = this.points.length - this.selectorVisualLines.length;
+      if (missingLines > 0) {
+        for (let i = 0; i < missingLines; i++) {
+          this.addSelectorLine();
+        }
+      } else if (missingLines < 0) {
+        for (let i = 0; i < -missingLines; i++) {
+          this.selectorVisual!.removeChild(this.selectorVisualLines.pop()!);
+        }
+      }
+
+      // adjust line coordinates
+      this.selectorVisualLines.forEach((line, i) => {
+        SvgHelper.setAttributes(line, [
+          ['x1', this.points[i].x.toString()],
+          ['y1', this.points[i].y.toString()],
+          ['x2', this.points[(i + 1) % this.points.length].x.toString()],
+          ['y2', this.points[(i + 1) % this.points.length].y.toString()],
+        ]);
+      });
+    }
+  }
+
+  private addSelectorLine() {
+    const line = SvgHelper.createLine(0, 0, 0, 0, [
+      ['stroke', 'transparent'],
+      ['stroke-width', Math.max(this.strokeWidth, 8).toString()],
+    ]);
+    this.selectorVisual!.appendChild(line);
+    this.selectorVisualLines.push(line);
   }
 
   /**
