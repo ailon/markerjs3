@@ -19,7 +19,7 @@ export class PolygonMarker extends MarkerBase {
   public selectorVisualLines: SVGLineElement[] = [];
   public visibleVisual: SVGGraphicsElement | undefined;
 
-  protected setStrokeColor() {
+  protected applyStrokeColor() {
     if (this.visibleVisual) {
       SvgHelper.setAttributes(this.visibleVisual, [
         ['stroke', this._strokeColor],
@@ -27,7 +27,7 @@ export class PolygonMarker extends MarkerBase {
     }
   }
 
-  protected setStrokeWidth() {
+  protected applyStrokeWidth() {
     if (this.visibleVisual) {
       SvgHelper.setAttributes(this.visibleVisual, [
         ['stroke-width', this._strokeWidth.toString()],
@@ -40,7 +40,7 @@ export class PolygonMarker extends MarkerBase {
     }
   }
 
-  protected setStrokeDasharray() {
+  protected applyStrokeDasharray() {
     if (this.visibleVisual) {
       SvgHelper.setAttributes(this.visibleVisual, [
         ['stroke-dasharray', this._strokeDasharray],
@@ -48,7 +48,7 @@ export class PolygonMarker extends MarkerBase {
     }
   }
 
-  protected setOpacity() {
+  protected applyOpacity() {
     if (this.visual) {
       SvgHelper.setAttributes(this.visual, [
         ['opacity', this._opacity.toString()],

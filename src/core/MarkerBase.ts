@@ -41,9 +41,9 @@ export class MarkerBase {
   }
   public set strokeColor(color: string) {
     this._strokeColor = color;
-    this.setStrokeColor();
+    this.applyStrokeColor();
   }
-  protected setStrokeColor() {}
+  protected applyStrokeColor() {}
 
   protected _fillColor = 'transparent';
   public get fillColor() {
@@ -51,9 +51,9 @@ export class MarkerBase {
   }
   public set fillColor(color: string) {
     this._fillColor = color;
-    this.setFillColor();
+    this.applyFillColor();
   }
-  protected setFillColor() {}
+  protected applyFillColor() {}
 
   protected _strokeWidth = 0;
   public get strokeWidth() {
@@ -61,9 +61,9 @@ export class MarkerBase {
   }
   public set strokeWidth(value) {
     this._strokeWidth = value;
-    this.setStrokeWidth();
+    this.applyStrokeWidth();
   }
-  protected setStrokeWidth() {}
+  protected applyStrokeWidth() {}
 
   protected _strokeDasharray = '';
   public get strokeDasharray() {
@@ -71,9 +71,9 @@ export class MarkerBase {
   }
   public set strokeDasharray(value) {
     this._strokeDasharray = value;
-    this.setStrokeDasharray();
+    this.applyStrokeDasharray();
   }
-  protected setStrokeDasharray() {}
+  protected applyStrokeDasharray() {}
 
   protected _opacity = 1;
   public get opacity() {
@@ -81,18 +81,18 @@ export class MarkerBase {
   }
   public set opacity(value) {
     this._opacity = value;
-    this.setOpacity();
+    this.applyOpacity();
   }
-  protected setOpacity() {}
+  protected applyOpacity() {}
 
   constructor(container: SVGGElement) {
     this._container = container;
 
-    this.setFillColor = this.setFillColor.bind(this);
-    this.setStrokeColor = this.setStrokeColor.bind(this);
-    this.setStrokeWidth = this.setStrokeWidth.bind(this);
-    this.setStrokeDasharray = this.setStrokeDasharray.bind(this);
-    this.setOpacity = this.setOpacity.bind(this);
+    this.applyFillColor = this.applyFillColor.bind(this);
+    this.applyStrokeColor = this.applyStrokeColor.bind(this);
+    this.applyStrokeWidth = this.applyStrokeWidth.bind(this);
+    this.applyStrokeDasharray = this.applyStrokeDasharray.bind(this);
+    this.applyOpacity = this.applyOpacity.bind(this);
   }
 
   /**

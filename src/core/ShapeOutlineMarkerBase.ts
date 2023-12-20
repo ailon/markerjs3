@@ -5,13 +5,13 @@ import { SvgHelper } from './SvgHelper';
 export class ShapeOutlineMarkerBase extends RectangularBoxMarkerBase {
   public static title = 'Shape outline marker';
 
-  protected setStrokeColor() {
+  protected applyStrokeColor() {
     if (this.visual) {
       SvgHelper.setAttributes(this.visual, [['stroke', this._strokeColor]]);
     }
   }
 
-  protected setStrokeWidth() {
+  protected applyStrokeWidth() {
     if (this.visual) {
       SvgHelper.setAttributes(this.visual, [
         ['stroke-width', this._strokeWidth.toString()],
@@ -19,7 +19,7 @@ export class ShapeOutlineMarkerBase extends RectangularBoxMarkerBase {
     }
   }
 
-  protected setStrokeDasharray() {
+  protected applyStrokeDasharray() {
     if (this.visual) {
       SvgHelper.setAttributes(this.visual, [
         ['stroke-dasharray', this._strokeDasharray],
@@ -27,7 +27,7 @@ export class ShapeOutlineMarkerBase extends RectangularBoxMarkerBase {
     }
   }
 
-  protected setOpacity() {
+  protected applyOpacity() {
     if (this.visual) {
       SvgHelper.setAttributes(this.visual, [
         ['opacity', this._opacity.toString()],
