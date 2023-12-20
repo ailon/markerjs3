@@ -20,16 +20,4 @@ export interface LinearMarkerBaseState extends MarkerBaseState {
    * y coordinate for the second end-point.
    */
   y2: number,
-  /**
-   * Line color.
-   */
-  strokeColor: string,
-  /**
-   * Line width.
-   */
-  strokeWidth: number,
-  /**
-   * Line dash array.
-   */
-  strokeDasharray: string  
 }

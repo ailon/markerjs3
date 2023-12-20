@@ -19,12 +19,7 @@ export class PolygonMarker extends MarkerBase {
   public selectorVisualLines: SVGLineElement[] = [];
   public visibleVisual: SVGGraphicsElement | undefined;
 
-  protected _strokeColor = 'transparent';
-  public get strokeColor() {
-    return this._strokeColor;
-  }
-  public set strokeColor(color: string) {
-    this._strokeColor = color;
+  protected setStrokeColor() {
     if (this.visibleVisual) {
       SvgHelper.setAttributes(this.visibleVisual, [
         ['stroke', this._strokeColor],
@@ -32,12 +27,7 @@ export class PolygonMarker extends MarkerBase {
     }
   }
 
-  protected _strokeWidth = 0;
-  public get strokeWidth() {
-    return this._strokeWidth;
-  }
-  public set strokeWidth(value) {
-    this._strokeWidth = value;
+  protected setStrokeWidth() {
     if (this.visibleVisual) {
       SvgHelper.setAttributes(this.visibleVisual, [
         ['stroke-width', this._strokeWidth.toString()],
@@ -50,12 +40,7 @@ export class PolygonMarker extends MarkerBase {
     }
   }
 
-  protected _strokeDasharray = '';
-  public get strokeDasharray() {
-    return this._strokeDasharray;
-  }
-  public set strokeDasharray(value) {
-    this._strokeDasharray = value;
+  protected setStrokeDasharray() {
     if (this.visibleVisual) {
       SvgHelper.setAttributes(this.visibleVisual, [
         ['stroke-dasharray', this._strokeDasharray],
@@ -63,12 +48,7 @@ export class PolygonMarker extends MarkerBase {
     }
   }
 
-  protected _opacity = 1;
-  public get opacity() {
-    return this._opacity;
-  }
-  public set opacity(value) {
-    this._opacity = value;
+  protected setOpacity() {
     if (this.visual) {
       SvgHelper.setAttributes(this.visual, [
         ['opacity', this._opacity.toString()],
@@ -208,9 +188,6 @@ export class PolygonMarker extends MarkerBase {
     const result: PolygonMarkerState = Object.assign(
       {
         points: this.points,
-        strokeColor: this.strokeColor,
-        strokeWidth: this.strokeWidth,
-        strokeDasharray: this.strokeDasharray,
       },
       super.getState(),
     );
@@ -228,9 +205,6 @@ export class PolygonMarker extends MarkerBase {
 
     const pmState = state as PolygonMarkerState;
     this.points = pmState.points;
-    this.strokeColor = pmState.strokeColor;
-    this.strokeWidth = pmState.strokeWidth;
-    this.strokeDasharray = pmState.strokeDasharray;
 
     this.createVisual();
     this.adjustVisual();

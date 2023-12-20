@@ -35,8 +35,64 @@ export class MarkerBase {
 
   public stage: MarkerStage = 'normal';
 
+  protected _strokeColor = 'transparent';
+  public get strokeColor() {
+    return this._strokeColor;
+  }
+  public set strokeColor(color: string) {
+    this._strokeColor = color;
+    this.setStrokeColor();
+  }
+  protected setStrokeColor() {}
+
+  protected _fillColor = 'transparent';
+  public get fillColor() {
+    return this._fillColor;
+  }
+  public set fillColor(color: string) {
+    this._fillColor = color;
+    this.setFillColor();
+  }
+  protected setFillColor() {}
+
+  protected _strokeWidth = 0;
+  public get strokeWidth() {
+    return this._strokeWidth;
+  }
+  public set strokeWidth(value) {
+    this._strokeWidth = value;
+    this.setStrokeWidth();
+  }
+  protected setStrokeWidth() {}
+
+  protected _strokeDasharray = '';
+  public get strokeDasharray() {
+    return this._strokeDasharray;
+  }
+  public set strokeDasharray(value) {
+    this._strokeDasharray = value;
+    this.setStrokeDasharray();
+  }
+  protected setStrokeDasharray() {}
+
+  protected _opacity = 1;
+  public get opacity() {
+    return this._opacity;
+  }
+  public set opacity(value) {
+    this._opacity = value;
+    this.setOpacity();
+  }
+  protected setOpacity() {}
+
   constructor(container: SVGGElement) {
     this._container = container;
+
+    this.setFillColor = this.setFillColor.bind(this);
+    this.setStrokeColor = this.setStrokeColor.bind(this);
+    this.setStrokeWidth = this.setStrokeWidth.bind(this);
+    this.setStrokeDasharray = this.setStrokeDasharray.bind(this);
+    this.setOpacity = this.setOpacity.bind(this);
   }
 
   /**
@@ -74,6 +130,10 @@ export class MarkerBase {
     return {
       typeName: MarkerBase.typeName,
       notes: this.notes,
+      strokeColor: this._strokeColor,
+      strokeWidth: this._strokeWidth,
+      strokeDasharray: this._strokeDasharray,
+      opacity: this._opacity,
     };
   }
 
@@ -84,6 +144,10 @@ export class MarkerBase {
    */
   public restoreState(state: MarkerBaseState): void {
     this.notes = state.notes;
+    this._strokeColor = state.strokeColor ?? this._strokeColor;
+    this._strokeWidth = state.strokeWidth ?? this._strokeWidth;
+    this._strokeDasharray = state.strokeDasharray ?? this._strokeDasharray;
+    this._opacity = state.opacity ?? this._opacity;
   }
 
   /**

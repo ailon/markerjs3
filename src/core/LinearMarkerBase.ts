@@ -29,12 +29,7 @@ export class LinearMarkerBase extends MarkerBase {
   protected selectorVisual: SVGGraphicsElement | undefined;
   protected visibleVisual: SVGGraphicsElement | undefined;
 
-  protected _strokeColor = 'transparent';
-  public get strokeColor() {
-    return this._strokeColor;
-  }
-  public set strokeColor(color: string) {
-    this._strokeColor = color;
+  protected setStrokeColor() {
     if (this.visibleVisual) {
       SvgHelper.setAttributes(this.visibleVisual, [
         ['stroke', this._strokeColor],
@@ -42,12 +37,7 @@ export class LinearMarkerBase extends MarkerBase {
     }
   }
 
-  protected _strokeWidth = 0;
-  public get strokeWidth() {
-    return this._strokeWidth;
-  }
-  public set strokeWidth(value) {
-    this._strokeWidth = value;
+  protected setStrokeWidth() {
     if (this.visibleVisual) {
       SvgHelper.setAttributes(this.visibleVisual, [
         ['stroke-width', this._strokeWidth.toString()],
@@ -60,12 +50,7 @@ export class LinearMarkerBase extends MarkerBase {
     }
   }
 
-  protected _strokeDasharray = '';
-  public get strokeDasharray() {
-    return this._strokeDasharray;
-  }
-  public set strokeDasharray(value) {
-    this._strokeDasharray = value;
+  protected setStrokeDasharray() {
     if (this.visibleVisual) {
       SvgHelper.setAttributes(this.visibleVisual, [
         ['stroke-dasharray', this._strokeDasharray],
@@ -73,12 +58,7 @@ export class LinearMarkerBase extends MarkerBase {
     }
   }
 
-  protected _opacity = 1;
-  public get opacity() {
-    return this._opacity;
-  }
-  public set opacity(value) {
-    this._opacity = value;
+  protected setOpacity() {
     if (this.visual) {
       SvgHelper.setAttributes(this.visual, [
         ['opacity', this._opacity.toString()],
@@ -164,9 +144,6 @@ export class LinearMarkerBase extends MarkerBase {
         y1: this.y1,
         x2: this.x2,
         y2: this.y2,
-        strokeColor: this.strokeColor,
-        strokeWidth: this.strokeWidth,
-        strokeDasharray: this.strokeDasharray,
       },
       super.getState(),
     );
@@ -186,9 +163,6 @@ export class LinearMarkerBase extends MarkerBase {
     this.y1 = lmbState.y1;
     this.x2 = lmbState.x2;
     this.y2 = lmbState.y2;
-    this.strokeColor = lmbState.strokeColor;
-    this.strokeWidth = lmbState.strokeWidth;
-    this.strokeDasharray = lmbState.strokeDasharray;
 
     this.createVisual();
     this.adjustVisual();

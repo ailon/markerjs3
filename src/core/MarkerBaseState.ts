@@ -10,4 +10,10 @@ export interface MarkerBaseState {
    * Additional information about the marker.
    */
   notes?: string;
+
+  strokeColor?: string;
+  strokeWidth?: number;
+  strokeDasharray?: string;
+  opacity?: number;
+
 }

@@ -1,34 +1,17 @@
 import { MarkerBaseState } from './MarkerBaseState';
 import { RectangularBoxMarkerBase } from './RectangularBoxMarkerBase';
-import { ShapeOutlineMarkerBaseState } from './ShapeOutlineMarkerBaseState';
 import { SvgHelper } from './SvgHelper';
 
 export class ShapeOutlineMarkerBase extends RectangularBoxMarkerBase {
   public static title = 'Shape outline marker';
 
-  /**
-   * Rectangle stroke color.
-   */
-  protected _strokeColor = 'transparent';
-  public get strokeColor() {
-    return this._strokeColor;
-  }
-  public set strokeColor(color: string) {
-    this._strokeColor = color;
+  protected setStrokeColor() {
     if (this.visual) {
       SvgHelper.setAttributes(this.visual, [['stroke', this._strokeColor]]);
     }
   }
 
-  /**
-   * Rectangle border stroke width.
-   */
-  protected _strokeWidth = 0;
-  public get strokeWidth() {
-    return this._strokeWidth;
-  }
-  public set strokeWidth(value) {
-    this._strokeWidth = value;
+  protected setStrokeWidth() {
     if (this.visual) {
       SvgHelper.setAttributes(this.visual, [
         ['stroke-width', this._strokeWidth.toString()],
@@ -36,15 +19,7 @@ export class ShapeOutlineMarkerBase extends RectangularBoxMarkerBase {
     }
   }
 
-  /**
-   * Rectangle border stroke dash array.
-   */
-  protected _strokeDasharray = '';
-  public get strokeDasharray() {
-    return this._strokeDasharray;
-  }
-  public set strokeDasharray(value) {
-    this._strokeDasharray = value;
+  protected setStrokeDasharray() {
     if (this.visual) {
       SvgHelper.setAttributes(this.visual, [
         ['stroke-dasharray', this._strokeDasharray],
@@ -52,12 +27,7 @@ export class ShapeOutlineMarkerBase extends RectangularBoxMarkerBase {
     }
   }
 
-  protected _opacity = 1;
-  public get opacity() {
-    return this._opacity;
-  }
-  public set opacity(value) {
-    this._opacity = value;
+  protected setOpacity() {
     if (this.visual) {
       SvgHelper.setAttributes(this.visual, [
         ['opacity', this._opacity.toString()],
@@ -103,6 +73,19 @@ export class ShapeOutlineMarkerBase extends RectangularBoxMarkerBase {
     this.addMarkerVisualToContainer(this.visual);
   }
 
+  public adjustVisual(): void {
+    if (this.visual) {
+      SvgHelper.setAttributes(this.visual, [
+        ['d', this.getPath()],
+        ['fill', 'transparent'],
+        ['stroke', this._strokeColor],
+        ['stroke-width', this._strokeWidth.toString()],
+        ['stroke-dasharray', this._strokeDasharray],
+        ['opacity', this._opacity.toString()],
+      ]);
+    }
+  }
+
   public setSize(): void {
     super.setSize();
     if (this.visual) {
@@ -111,37 +94,14 @@ export class ShapeOutlineMarkerBase extends RectangularBoxMarkerBase {
   }
 
   /**
-   * Returns current marker state that can be restored in the future.
-   */
-  public getState(): ShapeOutlineMarkerBaseState {
-    const result: ShapeOutlineMarkerBaseState = Object.assign(
-      {
-        strokeColor: this._strokeColor,
-        strokeWidth: this._strokeWidth,
-        strokeDasharray: this._strokeDasharray,
-        opacity: this._opacity,
-      },
-      super.getState(),
-    );
-
-    return result;
-  }
-
-  /**
    * Restores previously saved marker state.
    *
    * @param state - previously saved state.
    */
   public restoreState(state: MarkerBaseState): void {
-    const rectState = state as ShapeOutlineMarkerBaseState;
-    this._strokeColor = rectState.strokeColor;
-    this._strokeWidth = rectState.strokeWidth;
-    this._strokeDasharray = rectState.strokeDasharray;
-    this._opacity = rectState.opacity;
-
     this.createVisual();
     super.restoreState(state);
-    this.setSize();
+    this.adjustVisual();
   }
 
   /**
