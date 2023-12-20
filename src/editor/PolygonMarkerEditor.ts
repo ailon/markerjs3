@@ -79,27 +79,12 @@ export class PolygonMarkerEditor<
     this.manipulationStartY = point.y;
 
     if (this.state === 'new') {
-      this.marker.stage = 'creating';
-      this.marker.points.push(point);
-      // this.marker.points.push(point);
-      this.marker.createVisual();
-      this.marker.adjustVisual();
-      this.addControlGrips();
-
-      this._state = 'creating';
+      this.startCreation(point);
     } else if (this._state === 'creating') {
       if (this.grips.length > 0 && target && this.grips[0].ownsTarget(target)) {
-        // connected the last point with the first one
-        this._state = 'select';
-        this.marker.stage = 'normal';
-        this.marker.adjustVisual();
-        if (this.onMarkerCreated) {
-          this.onMarkerCreated(this);
-        }
+        this.finishCreation();
       } else {
-        this.marker.points.push(point);
-        this.marker.adjustVisual();
-        this.addControlGrips();
+        this.addNewPointWhileCreating(point);
       }
     } else {
       this.select();
@@ -111,6 +96,49 @@ export class PolygonMarkerEditor<
       } else {
         this._state = 'move';
       }
+    }
+  }
+
+  private startCreation(point: IPoint) {
+    this.marker.stage = 'creating';
+    this.marker.points.push(point);
+    this.marker.points.push(point);
+    this.marker.createVisual();
+    this.marker.adjustVisual();
+    this.addControlGrips();
+
+    this.activeGrip = this.grips.at(-1);
+    if (this.activeGrip) {
+      this.activeGrip.visual.style.pointerEvents = 'none';
+    }
+
+    this._state = 'creating';
+  }
+
+  private addNewPointWhileCreating(point: IPoint) {
+    this.marker.points.push(point);
+    this.marker.adjustVisual();
+    this.addControlGrips();
+    this.activeGrip = this.grips.at(-1);
+    if (this.activeGrip) {
+      this.activeGrip.visual.style.pointerEvents = 'none';
+    }
+  }
+
+  private finishCreation() {
+    this.marker.stage = 'normal';
+    // connected the last point with the first one
+    // remove the last point and adjust grips
+    this.marker.points.pop();
+    this.marker.adjustVisual();
+    this.addControlGrips();
+    this.grips.forEach((grip) => {
+      grip.visual.style.pointerEvents = '';
+    });
+
+    this._state = 'select';
+    if (this.onMarkerCreated) {
+      this.onMarkerCreated(this);
     }
   }
 
