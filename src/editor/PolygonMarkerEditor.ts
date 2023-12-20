@@ -37,7 +37,7 @@ export class PolygonMarkerEditor<
     this.setupControlBox = this.setupControlBox.bind(this);
     this.adjustControlBox = this.adjustControlBox.bind(this);
 
-    this.addControlGrips = this.addControlGrips.bind(this);
+    this.adjustControlGrips = this.adjustControlGrips.bind(this);
     this.createGrip = this.createGrip.bind(this);
     this.positionGrip = this.positionGrip.bind(this);
     this.positionGrips = this.positionGrips.bind(this);
@@ -105,7 +105,7 @@ export class PolygonMarkerEditor<
     this.marker.points.push(point);
     this.marker.createVisual();
     this.marker.adjustVisual();
-    this.addControlGrips();
+    this.adjustControlGrips();
 
     this.activeGrip = this.grips.at(-1);
     if (this.activeGrip) {
@@ -118,7 +118,7 @@ export class PolygonMarkerEditor<
   private addNewPointWhileCreating(point: IPoint) {
     this.marker.points.push(point);
     this.marker.adjustVisual();
-    this.addControlGrips();
+    this.adjustControlGrips();
     this.activeGrip = this.grips.at(-1);
     if (this.activeGrip) {
       this.activeGrip.visual.style.pointerEvents = 'none';
@@ -131,7 +131,7 @@ export class PolygonMarkerEditor<
     // remove the last point and adjust grips
     this.marker.points.pop();
     this.marker.adjustVisual();
-    this.addControlGrips();
+    this.adjustControlGrips();
     this.grips.forEach((grip) => {
       grip.visual.style.pointerEvents = '';
     });
@@ -154,6 +154,7 @@ export class PolygonMarkerEditor<
     if (this._state !== 'creating') {
       this._state = 'select';
     }
+    this.stateChanged();
   }
 
   /**
@@ -199,13 +200,13 @@ export class PolygonMarkerEditor<
       if (selectorLineIndex > -1) {
         this.marker.points.splice(selectorLineIndex + 1, 0, point);
         this.marker.adjustVisual();
-        this.addControlGrips();
+        this.adjustControlGrips();
       } else {
         const gripIndex = this.grips.findIndex((g) => g.ownsTarget(target));
         if (gripIndex > -1) {
           this.marker.points.splice(gripIndex, 1);
           this.marker.adjustVisual();
-          this.addControlGrips();
+          this.adjustControlGrips();
         }
       }
     }
@@ -218,19 +219,20 @@ export class PolygonMarkerEditor<
     this.controlBox = SvgHelper.createGroup();
     this.container.appendChild(this.controlBox);
 
-    this.addControlGrips();
+    this.adjustControlGrips();
 
     this.controlBox.style.display = '';
   }
 
   protected adjustControlBox() {
-    this.positionGrips();
+    // this.positionGrips();
+    this.adjustControlGrips();
   }
 
   /**
    * Adds control grips to control box.
    */
-  protected addControlGrips(): void {
+  protected adjustControlGrips(): void {
     const noOfMissingGrips = this.marker.points.length - this.grips.length;
     if (noOfMissingGrips > 0) {
       for (let i = 0; i < noOfMissingGrips; i++) {
