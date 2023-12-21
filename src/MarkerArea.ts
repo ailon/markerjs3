@@ -1,6 +1,7 @@
 import {
   AnnotationState,
   FrameMarker,
+  FreehandMarker,
   IPoint,
   MarkerBase,
   PolygonMarker,
@@ -12,6 +13,7 @@ import { LinearMarkerEditor } from './editor/LinearMarkerEditor';
 import { MarkerBaseEditor } from './editor/MarkerBaseEditor';
 import { ShapeOutlineMarkerEditor } from './editor/ShapeOutlineMarkerEditor';
 import { UndoRedoManager } from './editor/UndoRedoManager';
+import { FreehandMarkerEditor } from './editor/FreehandMarkerEditor';
 
 export interface MarkerAreaEventMap {
   /**
@@ -168,6 +170,7 @@ export class MarkerArea extends HTMLElement {
     this.markerEditors.set(FrameMarker, ShapeOutlineMarkerEditor<FrameMarker>);
     this.markerEditors.set(LineMarker, LinearMarkerEditor<LineMarker>);
     this.markerEditors.set(PolygonMarker, PolygonMarkerEditor<PolygonMarker>);
+    this.markerEditors.set(FreehandMarker, FreehandMarkerEditor<FreehandMarker>);
 
     this.connectedCallback = this.connectedCallback.bind(this);
     this.disconnectedCallback = this.disconnectedCallback.bind(this);
@@ -449,13 +452,16 @@ export class MarkerArea extends HTMLElement {
       this._mainCanvas.style.cursor = 'default';
       this.editors.push(editor);
       this.setCurrentEditor(editor);
-      // @todo
-      // if (
-      //   editor instanceof FreehandMarker &&
-      //   this.settings.newFreehandMarkerOnPointerUp
-      // ) {
-      //   this.createNewMarker(FreehandMarker);
-      // }
+      if (
+        editor.is(FreehandMarkerEditor)
+      ) {
+        const newMarkerEditor = this.createMarker(FreehandMarker);
+        if (newMarkerEditor?.is(FreehandMarkerEditor)) {
+          newMarkerEditor.strokeColor = editor.strokeColor;
+          newMarkerEditor.strokeWidth = editor.strokeWidth;
+          newMarkerEditor.strokeDasharray = editor.strokeDasharray;
+        }
+      }
       this.addUndoStep();
       this.dispatchEvent(
         new CustomEvent<MarkerEditorEventData>('markercreate', {

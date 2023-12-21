@@ -14,6 +14,7 @@ export { RotateGrip } from './editor/RotateGrip';
 export { ShapeOutlineMarkerEditor } from './editor/ShapeOutlineMarkerEditor';
 export { LinearMarkerEditor } from './editor/LinearMarkerEditor';
 export { PolygonMarkerEditor } from './editor/PolygonMarkerEditor';
+export { FreehandMarkerEditor } from './editor/FreehandMarkerEditor';
 
 if (
   window &&
