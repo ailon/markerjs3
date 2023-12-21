@@ -12,3 +12,5 @@ export { LinearMarkerBaseState } from './core/LinearMarkerBaseState';
 export { LinearMarkerBase } from './core/LinearMarkerBase';
 export { PolygonMarkerState } from './core/PolygonMarkerState';
 export { PolygonMarker } from './core/PolygonMarker';
+export { FreehandMarkerState } from './core/FreehandMarkerState';
+export { FreehandMarker } from './core/FreehandMarker';
