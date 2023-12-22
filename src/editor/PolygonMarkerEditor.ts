@@ -303,6 +303,9 @@ export class PolygonMarkerEditor<
   public deselect(): void {
     super.deselect();
     this.controlBox.style.display = 'none';
+    if (this.state === 'creating') {
+      this.finishCreation();
+    }
   }
 
   /**
