@@ -120,6 +120,61 @@ export class MarkerBaseEditor<TMarkerType extends MarkerBase = MarkerBase> {
     return this._continuousCreation;
   }
 
+  /**
+   * Sets rectangle's border stroke color.
+   * @param color - color as string
+   */
+  public set strokeColor(color: string) {
+    this.marker.strokeColor = color;
+  }
+
+  public get strokeColor(): string {
+    return this.marker.strokeColor;
+  }
+
+  /**
+   * Sets rectangle's border stroke (line) width.
+   * @param color - color as string
+   */
+  public set strokeWidth(width: number) {
+    this.marker.strokeWidth = width;
+    this.adjustControlBox();
+    this.stateChanged();
+  }
+
+  public get strokeWidth(): number {
+    return this.marker.strokeWidth;
+  }
+
+  /**
+   * Sets rectangle's border stroke dash array.
+   * @param color - color as string
+   */
+  public set strokeDasharray(dashes: string) {
+    this.marker.strokeDasharray = dashes;
+    this.stateChanged();
+  }
+
+  public get strokeDasharray(): string {
+    return this.marker.strokeDasharray;
+  }
+
+  public set fillColor(color: string) {
+    this.marker.fillColor = color;
+  }
+
+  public get fillColor(): string {
+    return this.marker.fillColor;
+  }
+
+  public set opacity(value: number) {
+    this.marker.opacity = value;
+  }
+
+  public get opacity(): number {
+    return this.marker.opacity;
+  }
+
   constructor(properties: MarkerEditorProperties<TMarkerType>) {
     this._container = properties.container;
     this._overlayContainer = properties.overlayContainer;

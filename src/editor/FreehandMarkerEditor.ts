@@ -1,5 +1,4 @@
 import { FreehandMarker, IPoint, SvgHelper } from '../core';
-import { ColorType } from './ColorType';
 import { MarkerBaseEditor } from './MarkerBaseEditor';
 import { MarkerEditorProperties } from './MarkerEditorProperties';
 
@@ -181,57 +180,5 @@ export class FreehandMarkerEditor<
   public deselect(): void {
     super.deselect();
     this.controlBox.style.display = 'none';
-  }
-
-  /**
-   * Sets rectangle's border stroke color.
-   * @param color - color as string
-   */
-  public set strokeColor(color: string) {
-    this.marker.strokeColor = color;
-    this.colorChanged('stroke', color);
-  }
-
-  public get strokeColor(): string {
-    return this.marker.strokeColor;
-  }
-
-  /**
-   * Sets rectangle's border stroke (line) width.
-   * @param color - color as string
-   */
-  public set strokeWidth(width: number) {
-    this.marker.strokeWidth = width;
-    this.adjustControlBox();
-    this.stateChanged();
-  }
-
-  public get strokeWidth(): number {
-    return this.marker.strokeWidth;
-  }
-
-  /**
-   * Sets rectangle's border stroke dash array.
-   * @param color - color as string
-   */
-  public set strokeDasharray(dashes: string) {
-    this.marker.strokeDasharray = dashes;
-    this.stateChanged();
-  }
-
-  public get strokeDasharray(): string {
-    return this.marker.strokeDasharray;
-  }
-
-  /**
-   * Method to call when foreground color changes.
-   */
-  public onColorChanged?: (colorType: ColorType, color: string) => void;
-
-  public colorChanged(colorType: ColorType, color: string): void {
-    if (this.onColorChanged) {
-      this.onColorChanged(colorType, color);
-    }
-    this.stateChanged();
   }
 }
