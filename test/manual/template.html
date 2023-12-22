@@ -1,77 +1,101 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>marker.js 3 manual testing</title>
-  <script>
-    let experiments;
-    document.addEventListener("DOMContentLoaded", function () {
-      experiments = new markerjs3.Experiments();
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>marker.js 3 manual testing</title>
+    <script>
+      let experiments;
+      document.addEventListener('DOMContentLoaded', function () {
+        experiments = new markerjs3.Experiments();
 
-      experiments.setup();
-    });    
-  </script>
-  <style>
-    * {
-      box-sizing: border-box;
-    }
-    /* :root {
+        experiments.setup();
+      });
+    </script>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      /* :root {
       --mjs-grip-fill: rgba(255, 255, 255, 0.5);
       --mjs-grip-stroke: black;
     } */
-    body {
-      background-color: rgb(226, 226, 252);
-      font-size: 40px;
-      font-family: 'Times New Roman', Times, serif;
-      display: flex;
-      flex-direction: column;
-    }
-    .toolbar {
-      margin: 0 auto;
-      display: flex;
-      justify-items: center;
-      gap: 0.2rem;
-      width: 80%;
-      max-width: 800px;
-      justify-content: space-between;
-      padding: 5px;
-      border: 1px solid black;
-      background-color: lightgray;
-      border-radius: 5px;
-    }
-    .property-panel {
-      margin: 10px auto;
-      display: grid;
-      grid-template-columns: 1fr auto;
-      gap: 0.2rem;
-      max-width: 800px;
-      padding: 5px;
-      border: 1px solid black;
-      background-color: lightgray;
-      border-radius: 5px;
-    }
-    .property-panel label {
-      font-size: 1rem;
-      text-align: right;
-    }
-  </style>
-</head>
-<body>
-    <img id="testImg" src="./images/landscape.jpg" alt="test image" style="width: 400px;" />
-    <div style="width: 70%; min-width: 400px; height: 50vh; min-height: 500px; background-color: antiquewhite; margin: 10px auto; display: flex; flex-direction: column;">
+      body {
+        background-color: rgb(226, 226, 252);
+        font-size: 40px;
+        font-family: 'Times New Roman', Times, serif;
+        display: flex;
+        flex-direction: column;
+      }
+      .toolbar {
+        margin: 0 auto;
+        display: flex;
+        justify-items: center;
+        gap: 0.2rem;
+        width: 80%;
+        max-width: 800px;
+        justify-content: space-between;
+        padding: 5px;
+        border: 1px solid black;
+        background-color: lightgray;
+        border-radius: 5px;
+      }
+      .property-panel {
+        margin: 10px auto;
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 0.2rem;
+        max-width: 800px;
+        padding: 5px;
+        border: 1px solid black;
+        background-color: lightgray;
+        border-radius: 5px;
+      }
+      .property-panel label {
+        font-size: 1rem;
+        text-align: right;
+      }
+    </style>
+  </head>
+  <body>
+    <img
+      id="testImg"
+      src="./images/landscape.jpg"
+      alt="test image"
+      style="width: 400px"
+    />
+    <div
+      style="
+        width: 70%;
+        min-width: 400px;
+        height: 50vh;
+        min-height: 500px;
+        background-color: antiquewhite;
+        margin: 10px auto;
+        display: flex;
+        flex-direction: column;
+      "
+    >
       <mjs-marker-area id="markerArea1"></mjs-marker-area>
     </div>
 
     <div class="toolbar">
-      <div style="display: flex; gap: 0.2rem;">
-        <button onclick="experiments.addMarker('FrameMarker');">Frame</button>
-        <button onclick="experiments.addMarker('LineMarker');">Line</button>
-        <button onclick="experiments.addMarker('PolygonMarker');">Polygon</button>
-        <button onclick="experiments.addMarker('FreehandMarker');">Freehand</button>
+      <div style="display: flex; gap: 0.2rem">
+        <button onclick="experiments.switchToSelectMode();">👆</button>
       </div>
 
-      <div style="display: flex; gap: 0.2rem;">
+      <div style="display: flex; gap: 0.2rem">
+        <button onclick="experiments.addMarker('FrameMarker');">Frame</button>
+        <button onclick="experiments.addMarker('LineMarker');">Line</button>
+        <button onclick="experiments.addMarker('PolygonMarker');">
+          Polygon
+        </button>
+        <button onclick="experiments.addMarker('FreehandMarker');">
+          Freehand
+        </button>
+      </div>
+
+      <div style="display: flex; gap: 0.2rem">
         <button onclick="experiments.zoomOut();">-</button>
         <button onclick="experiments.zoomReset();">[=]</button>
         <button onclick="experiments.zoomIn();">+</button>
@@ -80,32 +104,46 @@
         <button onclick="experiments.redo();">redo</button>
       </div>
 
-      <div style="display: flex; gap: 0.2rem;">
+      <div style="display: flex; gap: 0.2rem">
         <button onclick="experiments.saveState();">Save state</button>
         <button onclick="experiments.restoreState();">Load state</button>
       </div>
     </div>
 
-    <div class="property-panel" id="shapePropertyPanel" style="display: none;">
+    <div class="property-panel" id="shapePropertyPanel" style="display: none">
       <label for="strokeColor">Stroke color:</label>
       <input type="color" id="strokeColor" />
 
       <label for="strokeWidth">Stroke width:</label>
-      <input type="number" id="strokeWidth" min="1" max="10" step="1" value="1" />
+      <input
+        type="number"
+        id="strokeWidth"
+        min="1"
+        max="10"
+        step="1"
+        value="1"
+      />
 
       <label for="strokeDasharray">Stroke Dash Array:</label>
       <input type="text" id="strokeDasharray" />
     </div>
 
-    <div style="display: flex; justify-content: center; margin-top: 50px;">
+    <div style="display: flex; justify-content: center; margin-top: 50px">
       <button id="restoreStateButton">restore state</button>
     </div>
 
-    <div style="height: 50vh; background-color: antiquewhite; margin: 10px auto; display: flex; flex-direction: column;">
+    <div
+      style="
+        height: 50vh;
+        background-color: antiquewhite;
+        margin: 10px auto;
+        display: flex;
+        flex-direction: column;
+      "
+    >
       <mjs-marker-view></mjs-marker-view>
     </div>
 
     <img id="rasterResult" title="result" />
-
-</body>
+  </body>
 </html>

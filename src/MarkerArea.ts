@@ -199,6 +199,8 @@ export class MarkerArea extends HTMLElement {
     this.markerCreated = this.markerCreated.bind(this);
     this.markerStateChanged = this.markerStateChanged.bind(this);
 
+    this.switchToSelectMode = this.switchToSelectMode.bind(this);
+
     this.showOutline = this.showOutline.bind(this);
     this.hideOutline = this.hideOutline.bind(this);
 
@@ -759,6 +761,13 @@ export class MarkerArea extends HTMLElement {
       }
     });
     return result;
+  }
+
+  public switchToSelectMode() {
+    this.setCurrentEditor();
+    if (this._mainCanvas) {
+      this._mainCanvas.style.cursor = 'default';
+    }
   }
 
   public getState(): AnnotationState {

@@ -202,4 +202,10 @@ export class Experiments {
       this.markerArea1.zoomLevel = 1;
     }
   }
+
+  public switchToSelectMode() {
+    if (this.markerArea1) {
+      this.markerArea1.switchToSelectMode();
+    }
+  }
 }
