@@ -194,6 +194,8 @@ export class RectangularBoxMarkerBase extends MarkerBase {
     this.height = rbmState.height;
     this.rotationAngle = rbmState.rotationAngle;
 
+    this.moveVisual({ x: this.left, y: this.top });
+
     if (rbmState.visualTransformMatrix && rbmState.containerTransformMatrix) {
       this.visual!.transform.baseVal.getItem(0).setMatrix(
         TransformMatrix.toSVGMatrix(
@@ -210,7 +212,6 @@ export class RectangularBoxMarkerBase extends MarkerBase {
           ),
         );
     } else {
-      this.moveVisual({ x: this.left, y: this.top });
       this.applyRotation();
     }
 
