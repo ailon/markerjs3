@@ -455,10 +455,10 @@ export class MarkerArea extends HTMLElement {
       this.editors.push(editor);
       this.setCurrentEditor(editor);
       if (
-        editor.is(FreehandMarkerEditor)
+        editor.continuousCreation
       ) {
-        const newMarkerEditor = this.createMarker(FreehandMarker);
-        if (newMarkerEditor?.is(FreehandMarkerEditor)) {
+        const newMarkerEditor = this.createMarker(editor.marker.typeName);
+        if (editor.is(FreehandMarkerEditor) && newMarkerEditor?.is(FreehandMarkerEditor)) {
           newMarkerEditor.strokeColor = editor.strokeColor;
           newMarkerEditor.strokeWidth = editor.strokeWidth;
           newMarkerEditor.strokeDasharray = editor.strokeDasharray;

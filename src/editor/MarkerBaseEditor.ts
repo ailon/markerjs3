@@ -115,6 +115,11 @@ export class MarkerBaseEditor<TMarkerType extends MarkerBase = MarkerBase> {
     return this._isSelected;
   }
 
+  protected _continuousCreation = false;
+  public get continuousCreation() {
+    return this._continuousCreation;
+  }
+
   constructor(properties: MarkerEditorProperties<TMarkerType>) {
     this._container = properties.container;
     this._overlayContainer = properties.overlayContainer;

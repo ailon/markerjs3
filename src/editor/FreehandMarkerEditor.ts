@@ -21,6 +21,8 @@ export class FreehandMarkerEditor<
   constructor(properties: MarkerEditorProperties<TMarkerType>) {
     super(properties);
 
+    this._continuousCreation = true;
+
     this.ownsTarget = this.ownsTarget.bind(this);
 
     this.setupControlBox = this.setupControlBox.bind(this);
