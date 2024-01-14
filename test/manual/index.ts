@@ -1,4 +1,4 @@
-import { MarkerArea } from '../../src/MarkerArea';
+import { MarkerArea, MarkerEditorEventData } from '../../src/MarkerArea';
 import { AnnotationState, ShapeOutlineMarkerBaseState } from '../../src/core';
 import {
   FreehandMarkerEditor,
@@ -75,7 +75,7 @@ export class Experiments {
 
     function setPropertyValues(
       e: CustomEvent<
-        import('c:/Work/dev/markerjs/markerjs3/markerjs3/src/MarkerArea').MarkerEditorEventData
+        MarkerEditorEventData
       >,
     ) {
       if (
