@@ -102,7 +102,6 @@ export class TextMarker extends RectangularBoxMarkerBase {
     this.setColor = this.setColor.bind(this);
     this.setFont = this.setFont.bind(this);
     this.setFontSize = this.setFontSize.bind(this);
-    this.addTextElement = this.addTextElement.bind(this);
     this.setSize = this.setSize.bind(this);
 
     this.createVisual = this.createVisual.bind(this);
@@ -110,20 +109,17 @@ export class TextMarker extends RectangularBoxMarkerBase {
     this.textBoundingBox = new DOMRect();
   }
 
-  protected addTextElement() {
-    if (this.visual) {
-      this.visual.appendChild(this.textBlock.textElement);
-    }
-  }
-
   public createVisual(): void {
-    this.visual = SvgHelper.createGroup();
-    this.addTextElement();
+    this.visual = this.textBlock.textElement;
     this.addMarkerVisualToContainer(this.visual);
   }
 
   public ownsTarget(el: EventTarget): boolean {
-    if (super.ownsTarget(el) || el === this.visual || this.textBlock.ownsTarget(el)) {
+    if (
+      super.ownsTarget(el) ||
+      el === this.visual ||
+      this.textBlock.ownsTarget(el)
+    ) {
       return true;
     } else {
       return false;
