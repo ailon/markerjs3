@@ -5,6 +5,7 @@ import {
   LinearMarkerEditor,
   PolygonMarkerEditor,
   ShapeOutlineMarkerEditor,
+  TextMarkerEditor,
 } from '../../src/editor';
 
 export * from './../../src/index';
@@ -35,19 +36,31 @@ export class Experiments {
       console.log('markerchange', e);
     });
     this.markerArea1.addEventListener('markerselect', (e) => {
-      const panel = document.getElementById('shapePropertyPanel');
-      if (panel) {
-        panel.style.display = '';
+      if (e.detail.markerEditor.is(TextMarkerEditor)) {
+        const panel = document.getElementById('textPropertyPanel');
+        if (panel) {
+          panel.style.display = '';
+        }
+        setTextPropertyValues(e);
+      } else {
+        const panel = document.getElementById('shapePropertyPanel');
+        if (panel) {
+          panel.style.display = '';
+        }
+        setPropertyValues(e);
       }
-      setPropertyValues(e);
       console.log('markerselect', e);
       console.log('marker type:', e.detail.markerEditor.marker.typeName);
     });
 
     this.markerArea1.addEventListener('markerdeselect', (e) => {
-      const panel = document.getElementById('shapePropertyPanel');
-      if (panel) {
-        panel.style.display = 'none';
+      const shapePanel = document.getElementById('shapePropertyPanel');
+      if (shapePanel) {
+        shapePanel.style.display = 'none';
+      }
+      const textPanel = document.getElementById('textPropertyPanel');
+      if (textPanel) {
+        textPanel.style.display = 'none';
       }
       console.log('markerdeselect', e);
     });
@@ -73,6 +86,34 @@ export class Experiments {
       this.setStrokeDasharray((ev.target as HTMLInputElement).value);
     });
 
+    const textColorInput = document.getElementById(
+      'textColor',
+    ) as HTMLInputElement;
+    textColorInput.addEventListener('change', (ev) => {
+      this.setTextColor((ev.target as HTMLInputElement).value);
+    });
+
+    const fontFamilyInput = document.getElementById(
+      'fontFamily',
+    ) as HTMLInputElement;
+    fontFamilyInput.addEventListener('change', (ev) => {
+      this.setFontFamily((ev.target as HTMLInputElement).value);
+    });
+
+    const decreaseFontSizeButton = document.getElementById(
+      'decreaseFontSize',
+    ) as HTMLButtonElement;
+    decreaseFontSizeButton.addEventListener('click', () => {
+      this.setFontSize(-1);
+    });
+    const increaseFontSizeButton = document.getElementById(
+      'increaseFontSize',
+    ) as HTMLButtonElement;
+    increaseFontSizeButton.addEventListener('click', () => {
+      this.setFontSize(1);
+    });
+
+
     function setPropertyValues(
       e: CustomEvent<
         MarkerEditorEventData
@@ -90,6 +131,20 @@ export class Experiments {
           e.detail.markerEditor.strokeWidth.toString();
         (document.getElementById('strokeDasharray') as HTMLInputElement).value =
           e.detail.markerEditor.strokeDasharray;
+      }
+    }
+    function setTextPropertyValues(
+      e: CustomEvent<
+        MarkerEditorEventData
+      >,
+    ) {
+      if (
+        e.detail.markerEditor.is(TextMarkerEditor)
+      ) {
+        (document.getElementById('textColor') as HTMLInputElement).value =
+          e.detail.markerEditor.marker.color;
+        (document.getElementById('fontFamily') as HTMLInputElement).value =
+          e.detail.markerEditor.marker.fontFamily;
       }
     }
   }
@@ -185,6 +240,42 @@ export class Experiments {
     }
     console.log('setStrokeDasharray', dashes);
   }
+
+  public setTextColor(color: string) {
+    const editor = this.markerArea1?.currentMarkerEditor;
+    if (
+      editor &&
+      editor.is(TextMarkerEditor)
+    ) {
+      editor.marker.color = color;
+    }
+    console.log('setTextColor', color);
+  }
+
+  public setFontFamily(fontFamily: string) {
+    const editor = this.markerArea1?.currentMarkerEditor;
+    if (
+      editor &&
+      editor.is(TextMarkerEditor)
+    ) {
+      editor.marker.fontFamily = fontFamily;
+    }
+    console.log('setFontFamily', fontFamily);
+  }
+
+  public setFontSize(sign: number) {
+    const editor = this.markerArea1?.currentMarkerEditor;
+    if (
+      editor &&
+      editor.is(TextMarkerEditor)
+    ) {
+      const fontSize = editor.marker.fontSize;
+      fontSize.value += fontSize.step * sign;
+      editor.marker.fontSize = fontSize;
+    }
+    console.log('setFontSize', sign);
+  }
+
 
   public zoomOut() {
     if (this.markerArea1) {
