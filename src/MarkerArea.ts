@@ -14,6 +14,8 @@ import { MarkerBaseEditor } from './editor/MarkerBaseEditor';
 import { ShapeOutlineMarkerEditor } from './editor/ShapeOutlineMarkerEditor';
 import { UndoRedoManager } from './editor/UndoRedoManager';
 import { FreehandMarkerEditor } from './editor/FreehandMarkerEditor';
+import { TextMarker } from './core/TextMarker';
+import { TextMarkerEditor } from './editor';
 
 export interface MarkerAreaEventMap {
   /**
@@ -171,6 +173,7 @@ export class MarkerArea extends HTMLElement {
     this.markerEditors.set(LineMarker, LinearMarkerEditor<LineMarker>);
     this.markerEditors.set(PolygonMarker, PolygonMarkerEditor<PolygonMarker>);
     this.markerEditors.set(FreehandMarker, FreehandMarkerEditor<FreehandMarker>);
+    this.markerEditors.set(TextMarker, TextMarkerEditor<TextMarker>);
 
     this.connectedCallback = this.connectedCallback.bind(this);
     this.disconnectedCallback = this.disconnectedCallback.bind(this);

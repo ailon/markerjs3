@@ -14,3 +14,4 @@ export { PolygonMarkerState } from './core/PolygonMarkerState';
 export { PolygonMarker } from './core/PolygonMarker';
 export { FreehandMarkerState } from './core/FreehandMarkerState';
 export { FreehandMarker } from './core/FreehandMarker';
+export { TextMarker } from './core/TextMarker';
