@@ -1,6 +1,5 @@
 import { FontSize } from './FontSize';
 import { RectangularBoxMarkerBase } from './RectangularBoxMarkerBase';
-import { SvgHelper } from './SvgHelper';
 import { TextBlock } from './TextBlock';
 
 export class TextMarker extends RectangularBoxMarkerBase {
@@ -9,8 +8,9 @@ export class TextMarker extends RectangularBoxMarkerBase {
   public static title = 'Text marker';
 
   protected static DEFAULT_TEXT = 'Text';
+  // protected static DEFAULT_TEXT = 'Longer text to see what happens when it is too long to fit the bounding box.';
 
-  private _color = 'transparent';
+  private _color = 'black';
   /**
    * Returns stencil's text color.
    */
@@ -110,6 +110,10 @@ export class TextMarker extends RectangularBoxMarkerBase {
   }
 
   public createVisual(): void {
+    this.textBlock.fontFamily = this.fontFamily;
+    this.textBlock.fontSize = this.fontSize;
+    this.textBlock.color = this.color;
+
     this.visual = this.textBlock.textElement;
     this.addMarkerVisualToContainer(this.visual);
   }

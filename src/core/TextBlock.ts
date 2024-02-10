@@ -48,7 +48,8 @@ export class TextBlock {
    */
   public set boundingBox(value: DOMRect) {
     this._boundingBox = value;
-    this.positionText();
+    this.renderText();
+    //this.positionText();
   }
 
   private _labelBackground: SVGRectElement = SvgHelper.createRect(10, 10, [
@@ -146,6 +147,7 @@ export class TextBlock {
     this.showControlBox = this.showControlBox.bind(this);
     this.hideControlBox = this.hideControlBox.bind(this);
     this.applyFontStyles = this.applyFontStyles.bind(this);
+    this.wrapText = this.wrapText.bind(this);
   }
 
   /**
@@ -177,6 +179,71 @@ export class TextBlock {
     this._labelBackground.style.strokeOpacity = '0';
   }
 
+  private wrapText(): string {
+    function getTextAspectRatio(textLines: string[]): number {
+      const charsLinesAspectRatio = 0.35;
+
+      let longestLineChars = textLines[0].length;
+      textLines.forEach(line => {
+        if (line.length > longestLineChars) {
+          longestLineChars = line.length;
+        }
+      });
+
+      return longestLineChars * charsLinesAspectRatio / textLines.length;
+    }
+
+    if (this.text !== '') {
+      const lines = this.text.split(/\r\n|[\n\v\f\r\x85\u2028\u2029]/);
+      const boxAspectRatio = this.boundingBox.width * 1.0 / this.boundingBox.height;
+      let processedLines = new Array<string>(...lines);
+      
+      let textAspectRatio = getTextAspectRatio(processedLines);
+
+      let maxLineLength = Number.MAX_VALUE;
+      while (textAspectRatio > boxAspectRatio) {
+        let longestLine = processedLines[0];
+        processedLines.forEach(line => {
+          if (line.length > longestLine.length) {
+            longestLine = line;
+          }
+        });
+        maxLineLength = longestLine.lastIndexOf(' ', maxLineLength - 1);
+
+        if (maxLineLength > 0) {
+          processedLines = [];
+          lines.forEach(line => {
+            let reminderLine = line;
+            while (reminderLine.length > maxLineLength) {
+              let maxEnd = reminderLine.lastIndexOf(' ', maxLineLength);
+              if (maxEnd < 0) {
+                // if the first word is longer than max, at least wrap after it
+                maxEnd = reminderLine.indexOf(' ');
+              }
+              if (maxEnd > 0) {
+                processedLines.push(reminderLine.substring(0, maxEnd));
+                reminderLine = reminderLine.substring(maxEnd).trim();
+              } else {
+                processedLines.push(reminderLine);
+                reminderLine = '';
+              }
+            }
+            processedLines.push(reminderLine);
+          });
+          textAspectRatio = getTextAspectRatio(processedLines);
+        } else {
+          // can't wrap no more
+          textAspectRatio = -1;
+        }
+      }
+
+      return processedLines.join(`\r\n`);
+    } else {
+      return this.text;
+    }
+  }
+
+  private prevWrappedText = '';
   /**
    * Renders text within the text block according to its settings.
    */
@@ -184,11 +251,18 @@ export class TextBlock {
     const LINE_SIZE = '1em'; // `${this.fontSize.value}${this.fontSize.units}`;
 
     if (this._textElement) {
+      const processedText = this.wrapText();
+      if (this.prevWrappedText === processedText) {
+        this.positionText();
+        return;
+      }
+      this.prevWrappedText = processedText;
+
       while (this._textElement.lastChild) {
         this._textElement.removeChild(this._textElement.lastChild);
       }
 
-      const lines = this.text.split(/\r\n|[\n\v\f\r\x85\u2028\u2029]/);
+      const lines = processedText.split(/\r\n|[\n\v\f\r\x85\u2028\u2029]/);
       lines.forEach((line, lineno) => {
         this._textElement.appendChild(
           SvgHelper.createTSpan(
