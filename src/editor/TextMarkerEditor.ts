@@ -10,7 +10,7 @@ export class TextMarkerEditor<
   constructor(properties: MarkerEditorProperties<TMarkerType>) {
     super(properties);
 
-    this._creationStyle = 'draw';
+    this._creationStyle = 'drop';
   }
 
   /**
