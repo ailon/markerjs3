@@ -7,8 +7,8 @@ export class TextMarker extends RectangularBoxMarkerBase {
 
   public static title = 'Text marker';
 
-  protected static DEFAULT_TEXT = 'Text';
-  // protected static DEFAULT_TEXT = 'Longer text to see what happens when it is too long to fit the bounding box.';
+  // protected static DEFAULT_TEXT = 'Text';
+  protected static DEFAULT_TEXT = 'Longer text to see what happens when it is too long to fit the bounding box.';
 
   private _color = 'black';
   /**
@@ -113,6 +113,7 @@ export class TextMarker extends RectangularBoxMarkerBase {
     this.textBlock.fontFamily = this.fontFamily;
     this.textBlock.fontSize = this.fontSize;
     this.textBlock.color = this.color;
+    this.textBlock.onTextSizeChanged = this.setSize;
 
     this.visual = this.textBlock.textElement;
     this.addMarkerVisualToContainer(this.visual);
@@ -133,8 +134,8 @@ export class TextMarker extends RectangularBoxMarkerBase {
   protected setTextBoundingBox() {
     this.textBoundingBox.x = this.padding;
     this.textBoundingBox.y = this.padding;
-    this.textBoundingBox.width = this.width - this.padding * 2;
-    this.textBoundingBox.height = this.height - this.padding * 2;
+    this.textBoundingBox.width = Number.MAX_VALUE; // this.width - this.padding * 2;
+    this.textBoundingBox.height = Number.MAX_VALUE; // this.height - this.padding * 2;
     this.textBlock.boundingBox = this.textBoundingBox;
   }
 
@@ -143,6 +144,12 @@ export class TextMarker extends RectangularBoxMarkerBase {
    */
   public setSize(): void {
     super.setSize();
+    
+    if (this.textBlock.textSize) {
+      this.width = this.textBlock.textSize.width + this.padding * 2;
+      this.height = this.textBlock.textSize.height + this.padding * 2;
+    }
+
     this.setTextBoundingBox();
   }
 

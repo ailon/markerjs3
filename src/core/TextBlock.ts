@@ -243,6 +243,7 @@ export class TextBlock {
     }
   }
 
+  public wordWrap = false;
   private prevWrappedText = '';
   /**
    * Renders text within the text block according to its settings.
@@ -251,7 +252,7 @@ export class TextBlock {
     const LINE_SIZE = '1em'; // `${this.fontSize.value}${this.fontSize.units}`;
 
     if (this._textElement) {
-      const processedText = this.wrapText();
+      const processedText = this.wordWrap ? this.wrapText() : this.text;
       if (this.prevWrappedText === processedText) {
         this.positionText();
         return;
@@ -313,7 +314,7 @@ export class TextBlock {
 
     self._textSize = self._textElement.getBBox();
     const centerX =
-      self.boundingBox.x + self.boundingBox.width / 2 + self.offsetX;
+      self.boundingBox.x + self._textSize.width / 2 + self.offsetX;
 
     const noOfLines = self._textElement.childNodes.length;
     const lineHeight = self._textSize.height / noOfLines;
@@ -323,7 +324,7 @@ export class TextBlock {
 
     const centerY =
       self.boundingBox.y +
-      self.boundingBox.height / 2 +
+      self._textSize.height / 2 +
       // - self._textSize.height / 2
       autoOffset +
       self.offsetY;
