@@ -1,10 +1,9 @@
 import { IPoint, RectangularBoxMarkerBase, SvgHelper } from '../core';
-import { Grip } from './Grip';
+import { Grip, GripLocation } from './Grip';
 import { MarkerBaseEditor } from './MarkerBaseEditor';
 import { MarkerEditorProperties } from './MarkerEditorProperties';
 import { RectangularBoxMarkerGrips } from './RectangularBoxMarkerGrips';
-import { ResizeGrip } from './ResizeGrip';
-import { RotateGrip as RotateGrip } from './RotateGrip';
+import { RotateGrip } from './RotateGrip';
 
 export class RectangularBoxMarkerBaseEditor<
   TMarkerType extends RectangularBoxMarkerBase = RectangularBoxMarkerBase,
@@ -52,7 +51,8 @@ export class RectangularBoxMarkerBaseEditor<
   private controlRect?: SVGRectElement;
   private rotatorGripLine?: SVGLineElement;
 
-  private controlGrips?: RectangularBoxMarkerGrips;
+  private controlGrips: RectangularBoxMarkerGrips = new RectangularBoxMarkerGrips();
+  protected disabledResizeGrips: GripLocation[] = [];
   private rotatorGrip?: RotateGrip;
   private activeGrip?: Grip;
   private disableRotation = false;
@@ -217,16 +217,16 @@ export class RectangularBoxMarkerBaseEditor<
     let newHeight = this.manipulationStartHeight;
 
     switch (this.activeGrip) {
-      case this.controlGrips?.bottomLeft:
-      case this.controlGrips?.centerLeft:
-      case this.controlGrips?.topLeft:
+      case this.controlGrips.getGrip("bottomleft"):
+      case this.controlGrips.getGrip("leftcenter"):
+      case this.controlGrips.getGrip("topleft"):
         newX = this.manipulationStartLeft + point.x - this.manipulationStartX;
         newWidth =
           this.manipulationStartWidth + this.manipulationStartLeft - newX;
         break;
-      case this.controlGrips?.bottomRight:
-      case this.controlGrips?.centerRight:
-      case this.controlGrips?.topRight:
+      case this.controlGrips.getGrip("bottomright"):
+      case this.controlGrips.getGrip("rightcenter"):
+      case this.controlGrips.getGrip("topright"):
       case undefined:
         newWidth =
           this.manipulationStartWidth + point.x - this.manipulationStartX;
@@ -234,16 +234,16 @@ export class RectangularBoxMarkerBaseEditor<
     }
 
     switch (this.activeGrip) {
-      case this.controlGrips?.topCenter:
-      case this.controlGrips?.topLeft:
-      case this.controlGrips?.topRight:
+      case this.controlGrips.getGrip("topcenter"):
+      case this.controlGrips.getGrip("topleft"):
+      case this.controlGrips.getGrip("topright"):
         newY = this.manipulationStartTop + point.y - this.manipulationStartY;
         newHeight =
           this.manipulationStartHeight + this.manipulationStartTop - newY;
         break;
-      case this.controlGrips?.bottomCenter:
-      case this.controlGrips?.bottomLeft:
-      case this.controlGrips?.bottomRight:
+      case this.controlGrips.getGrip("bottomcenter"):
+      case this.controlGrips.getGrip("bottomleft"):
+      case this.controlGrips.getGrip("bottomright"):
       case undefined:
         newHeight =
           this.manipulationStartHeight + point.y - this.manipulationStartY;
@@ -380,15 +380,11 @@ export class RectangularBoxMarkerBaseEditor<
   }
 
   private addControlGrips() {
-    if (this.controlGrips) {
-      this.controlGrips.topLeft = this.createResizeGrip();
-      this.controlGrips.topCenter = this.createResizeGrip();
-      this.controlGrips.topRight = this.createResizeGrip();
-      this.controlGrips.centerLeft = this.createResizeGrip();
-      this.controlGrips.centerRight = this.createResizeGrip();
-      this.controlGrips.bottomLeft = this.createResizeGrip();
-      this.controlGrips.bottomCenter = this.createResizeGrip();
-      this.controlGrips.bottomRight = this.createResizeGrip();
+    for (const grip of this.controlGrips.grips.values()) {
+      grip.visual.transform.baseVal.appendItem(SvgHelper.createTransform());
+      this.controlBox.appendChild(grip.visual);
+  
+      this.controlBox.appendChild(grip.visual);
     }
 
     if (this.disableRotation !== true) {
@@ -398,13 +394,13 @@ export class RectangularBoxMarkerBaseEditor<
     this.positionGrips();
   }
 
-  private createResizeGrip(): ResizeGrip {
-    const grip = new ResizeGrip();
-    grip.visual.transform.baseVal.appendItem(SvgHelper.createTransform());
-    this.controlBox.appendChild(grip.visual);
+  // private createResizeGrip(): ResizeGrip {
+  //   const grip = new ResizeGrip();
+  //   grip.visual.transform.baseVal.appendItem(SvgHelper.createTransform());
+  //   this.controlBox.appendChild(grip.visual);
 
-    return grip;
-  }
+  //   return grip;
+  // }
 
   private createRotateGrip(): RotateGrip {
     const grip = new RotateGrip();
@@ -416,7 +412,7 @@ export class RectangularBoxMarkerBaseEditor<
 
   private positionGrips() {
     if (this.controlGrips !== undefined) {
-      const gripSize = this.controlGrips.topLeft?.gripSize ?? 0;
+      const gripSize = this.controlGrips.getGrip('topleft').gripSize ?? 0;
 
       const left = -gripSize / 2;
       const top = left;
@@ -425,14 +421,14 @@ export class RectangularBoxMarkerBaseEditor<
       const bottom = this.marker.height + this.CB_DISTANCE - gripSize / 2;
       const right = this.marker.width + this.CB_DISTANCE - gripSize / 2;
 
-      this.positionGrip(this.controlGrips.topLeft?.visual, left, top);
-      this.positionGrip(this.controlGrips.topCenter?.visual, cx, top);
-      this.positionGrip(this.controlGrips.topRight?.visual, right, top);
-      this.positionGrip(this.controlGrips.centerLeft?.visual, left, cy);
-      this.positionGrip(this.controlGrips.centerRight?.visual, right, cy);
-      this.positionGrip(this.controlGrips.bottomLeft?.visual, left, bottom);
-      this.positionGrip(this.controlGrips.bottomCenter?.visual, cx, bottom);
-      this.positionGrip(this.controlGrips.bottomRight?.visual, right, bottom);
+      this.positionGrip(this.controlGrips.getGrip('topleft').visual, left, top);
+      this.positionGrip(this.controlGrips.getGrip('topcenter').visual, cx, top);
+      this.positionGrip(this.controlGrips.getGrip('topright').visual, right, top);
+      this.positionGrip(this.controlGrips.getGrip('leftcenter').visual, left, cy);
+      this.positionGrip(this.controlGrips.getGrip('rightcenter').visual, right, cy);
+      this.positionGrip(this.controlGrips.getGrip('bottomleft').visual, left, bottom);
+      this.positionGrip(this.controlGrips.getGrip('bottomcenter').visual, cx, bottom);
+      this.positionGrip(this.controlGrips.getGrip('bottomright').visual, right, bottom);
 
       if (this.rotatorGrip !== undefined) {
         const rotatorGripSize = this.rotatorGrip.gripSize ?? 0;
@@ -447,6 +443,7 @@ export class RectangularBoxMarkerBaseEditor<
         );
       }
     }
+    this.adjustGripVisibility();
   }
 
   private positionGrip(
@@ -472,6 +469,15 @@ export class RectangularBoxMarkerBaseEditor<
    */
   protected showControlBox(): void {
     this.controlBox.style.display = '';
+  }
+
+  protected adjustGripVisibility() {
+    for (const location of this.disabledResizeGrips) {
+      const grip = this.controlGrips.getGrip(location);
+      if (grip !== undefined) {
+        grip.visual.style.display = 'none';
+      }
+    }
   }
 
   /**

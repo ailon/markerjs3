@@ -6,16 +6,26 @@ import { RectangularBoxMarkerBaseEditor } from './RectangularBoxMarkerBaseEditor
 export class TextMarkerEditor<
   TMarkerType extends TextMarker = TextMarker,
 > extends RectangularBoxMarkerBaseEditor<TMarkerType> {
-
   constructor(properties: MarkerEditorProperties<TMarkerType>) {
     super(properties);
+
+    this.disabledResizeGrips = [
+      'topleft',
+      'topcenter',
+      'topright',
+      'bottomleft',
+      'bottomcenter',
+      'bottomright',
+      'leftcenter',
+      'rightcenter',
+    ];
 
     this._creationStyle = 'drop';
   }
 
   /**
    * Handles pointer (mouse, touch, stylus, etc.) down event.
-   * 
+   *
    * @param point - event coordinates.
    * @param target - direct event target element.
    */
@@ -41,7 +51,7 @@ export class TextMarkerEditor<
 
   /**
    * Handles pointer (mouse, touch, stylus, etc.) up event.
-   * 
+   *
    * @param point - event coordinates.
    * @param target - direct event target element.
    */

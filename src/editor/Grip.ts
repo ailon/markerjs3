@@ -1,5 +1,15 @@
 import { SvgHelper } from '../core/SvgHelper';
 
+export type GripLocation =
+  | 'topleft'
+  | 'topcenter'
+  | 'topright'
+  | 'leftcenter'
+  | 'rightcenter'
+  | 'bottomleft'
+  | 'bottomcenter'
+  | 'bottomright';
+
 /**
  * Represents a single resize-manipulation grip used in marker's manipulation controls.
  */
