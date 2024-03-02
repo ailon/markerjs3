@@ -103,6 +103,7 @@ export class TextMarker extends RectangularBoxMarkerBase {
     this.setFont = this.setFont.bind(this);
     this.setFontSize = this.setFontSize.bind(this);
     this.setSize = this.setSize.bind(this);
+    this.textSizeChanged = this.textSizeChanged.bind(this);
 
     this.createVisual = this.createVisual.bind(this);
 
@@ -113,10 +114,12 @@ export class TextMarker extends RectangularBoxMarkerBase {
     this.textBlock.fontFamily = this.fontFamily;
     this.textBlock.fontSize = this.fontSize;
     this.textBlock.color = this.color;
-    this.textBlock.onTextSizeChanged = this.setSize;
+    this.textBlock.onTextSizeChanged = this.textSizeChanged;
 
     this.visual = this.textBlock.textElement;
     this.addMarkerVisualToContainer(this.visual);
+
+    this.textBlock.text = this._text;
   }
 
   public ownsTarget(el: EventTarget): boolean {
@@ -136,7 +139,7 @@ export class TextMarker extends RectangularBoxMarkerBase {
     this.textBoundingBox.y = this.padding;
     this.textBoundingBox.width = Number.MAX_VALUE; // this.width - this.padding * 2;
     this.textBoundingBox.height = Number.MAX_VALUE; // this.height - this.padding * 2;
-    this.textBlock.boundingBox = this.textBoundingBox;
+    //this.textBlock.boundingBox = this.textBoundingBox;
   }
 
   /**
@@ -151,6 +154,11 @@ export class TextMarker extends RectangularBoxMarkerBase {
     }
 
     this.setTextBoundingBox();
+
+  }
+  
+  private textSizeChanged(): void {
+    this.setSize();
   }
 
   /**

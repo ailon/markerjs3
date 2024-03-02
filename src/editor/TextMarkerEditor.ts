@@ -58,5 +58,6 @@ export class TextMarkerEditor<
   public pointerUp(point: IPoint): void {
     super.pointerUp(point);
     this.setSize();
+    this.adjustControlBox();
   }
 }
