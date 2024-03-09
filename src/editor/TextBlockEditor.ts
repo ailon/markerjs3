@@ -179,6 +179,12 @@ export class TextBlockEditor {
     this.textEditor.addEventListener('pointerup', (ev) => {
       ev.stopPropagation();
     });
+    this.textEditor.addEventListener('keydown', (ev) => {
+      if (ev.key === 'Escape') {
+        ev.preventDefault();
+        this.textEditor.blur();
+      }
+    });
     this.textEditor.addEventListener('keyup', (ev) => {
       ev.cancelBubble = true;
       this._text = this.textEditor.innerText;
