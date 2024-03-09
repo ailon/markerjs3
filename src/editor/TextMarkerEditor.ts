@@ -127,6 +127,7 @@ export class TextMarkerEditor<
     this.container.appendChild(this.textBlockEditorContainer);
 
     this.marker.hideVisual();
+    this.hideControlBox();
 
     this.textBlockEditor.focus();
   }
@@ -134,6 +135,7 @@ export class TextMarkerEditor<
   private hideEditor(): void {
     this.marker.text = this.textBlockEditor.text;
     this.marker.showVisual();
+    this.showControlBox();
     this.state = 'select';
     this.container.removeChild(this.textBlockEditorContainer);
   }
