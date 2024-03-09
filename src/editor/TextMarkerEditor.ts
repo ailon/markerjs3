@@ -7,9 +7,8 @@ import { TextBlockEditor } from './TextBlockEditor';
 export class TextMarkerEditor<
   TMarkerType extends TextMarker = TextMarker,
 > extends RectangularBoxMarkerBaseEditor<TMarkerType> {
-
-  private textBlockEditorContainer: SVGForeignObjectElement = SvgHelper.createForeignObject();
-  ;
+  private textBlockEditorContainer: SVGForeignObjectElement =
+    SvgHelper.createForeignObject();
   private textBlockEditor: TextBlockEditor;
 
   constructor(properties: MarkerEditorProperties<TMarkerType>) {
@@ -40,6 +39,7 @@ export class TextMarkerEditor<
   }
 
   private _pointerDownTime: number = Number.MAX_VALUE;
+  private _pointerDownPoint: IPoint = { x: 0, y: 0 };
   /**
    * Handles pointer (mouse, touch, stylus, etc.) down event.
    *
@@ -50,6 +50,7 @@ export class TextMarkerEditor<
     super.pointerDown(point, target);
 
     this._pointerDownTime = Date.now();
+    this._pointerDownPoint = point;
 
     if (this.state === 'new') {
       this.marker.createVisual();
@@ -57,6 +58,13 @@ export class TextMarkerEditor<
       this.marker.moveVisual(point);
 
       this._state = 'creating';
+    }
+  }
+
+  public dblClick(point: IPoint, target?: EventTarget): void {
+    super.dblClick(point, target);
+    if (this.state !== 'edit') {
+      this.showEditor();
     }
   }
 
@@ -88,7 +96,12 @@ export class TextMarkerEditor<
     super.pointerUp(point);
     this.setSize();
 
-    if (this.state === 'creating' || (Date.now() - this._pointerDownTime > 500)) {
+    if (
+      this.state === 'creating' ||
+      (Date.now() - this._pointerDownTime > 500 &&
+        Math.abs(this._pointerDownPoint.x - point.x) < 5 &&
+        Math.abs(this._pointerDownPoint.y - point.y) < 5)
+    ) {
       this.showEditor();
     }
 
@@ -101,14 +114,16 @@ export class TextMarkerEditor<
     if (this.textBlockEditor.onTextChanged === undefined) {
       this.textBlockEditor.onTextChanged = (text: string) => {
         this.marker.text = text;
-      }
+      };
     }
     if (this.textBlockEditor.onBlur === undefined) {
       this.textBlockEditor.onBlur = () => {
         this.hideEditor();
-      }
+      };
     }
-    this.textBlockEditorContainer.appendChild(this.textBlockEditor.getEditorUi());
+    this.textBlockEditorContainer.appendChild(
+      this.textBlockEditor.getEditorUi(),
+    );
     this.container.appendChild(this.textBlockEditorContainer);
 
     this.marker.hideVisual();
@@ -125,5 +140,5 @@ export class TextMarkerEditor<
 
   private markerSizeChanged = () => {
     this.setSize();
-  }
+  };
 }
