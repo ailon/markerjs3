@@ -29,8 +29,17 @@ export class TextMarkerEditor<
     this._creationStyle = 'drop';
 
     this.textBlockEditor = new TextBlockEditor();
+    this.marker.onSizeChanged = this.markerSizeChanged;
+
+    this.showEditor = this.showEditor.bind(this);
+    this.hideEditor = this.hideEditor.bind(this);
+    this.pointerDown = this.pointerDown.bind(this);
+    this.pointerUp = this.pointerUp.bind(this);
+    this.resize = this.resize.bind(this);
+    this.markerSizeChanged = this.markerSizeChanged.bind(this);
   }
 
+  private _pointerDownTime: number = Number.MAX_VALUE;
   /**
    * Handles pointer (mouse, touch, stylus, etc.) down event.
    *
@@ -39,6 +48,9 @@ export class TextMarkerEditor<
    */
   public pointerDown(point: IPoint, target?: EventTarget): void {
     super.pointerDown(point, target);
+
+    this._pointerDownTime = Date.now();
+
     if (this.state === 'new') {
       this.marker.createVisual();
 
@@ -76,10 +88,42 @@ export class TextMarkerEditor<
     super.pointerUp(point);
     this.setSize();
 
-    this.textBlockEditor.text = this.marker.text;
-    this.textBlockEditorContainer.appendChild(this.textBlockEditor.getEditorUi());
-    this.container.appendChild(this.textBlockEditorContainer);      
+    if (this.state === 'creating' || (Date.now() - this._pointerDownTime > 500)) {
+      this.showEditor();
+    }
 
     this.adjustControlBox();
+  }
+
+  private showEditor(): void {
+    this.textBlockEditor.text = this.marker.text;
+
+    if (this.textBlockEditor.onTextChanged === undefined) {
+      this.textBlockEditor.onTextChanged = (text: string) => {
+        this.marker.text = text;
+      }
+    }
+    if (this.textBlockEditor.onBlur === undefined) {
+      this.textBlockEditor.onBlur = () => {
+        this.hideEditor();
+      }
+    }
+    this.textBlockEditorContainer.appendChild(this.textBlockEditor.getEditorUi());
+    this.container.appendChild(this.textBlockEditorContainer);
+
+    this.marker.hideVisual();
+
+    this.textBlockEditor.focus();
+  }
+
+  private hideEditor(): void {
+    this.marker.text = this.textBlockEditor.text;
+    this.marker.showVisual();
+    this.state = 'select';
+    this.container.removeChild(this.textBlockEditorContainer);
+  }
+
+  private markerSizeChanged = () => {
+    this.setSize();
   }
 }

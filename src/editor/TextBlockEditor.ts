@@ -3,6 +3,8 @@
  */
 export type TextChangedHandler = (text: string) => void;
 
+export type BlurHandler = () => void;
+
 /**
  * Represents a text block editor element.
  */
@@ -134,6 +136,8 @@ export class TextBlockEditor {
    */
   public onTextChanged?: TextChangedHandler;
 
+  public onBlur?: BlurHandler;
+
   /**
    * Creates a new text block editor instance.
    */
@@ -177,11 +181,18 @@ export class TextBlockEditor {
     });
     this.textEditor.addEventListener('keyup', (ev) => {
       ev.cancelBubble = true;
+      this._text = this.textEditor.innerText;
+      if (this.onTextChanged !== undefined) {
+        this.onTextChanged(this._text);
+      }
     });
     this.textEditor.addEventListener('blur', () => {
       this._text = this.textEditor.innerText;
       if (this.onTextChanged !== undefined) {
         this.onTextChanged(this._text);
+      }
+      if (this.onBlur !== undefined) {
+        this.onBlur();
       }
     });
     this.textEditor.addEventListener('paste', (ev) => {
