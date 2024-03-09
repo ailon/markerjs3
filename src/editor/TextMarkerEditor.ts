@@ -93,11 +93,12 @@ export class TextMarkerEditor<
    * @param target - direct event target element.
    */
   public pointerUp(point: IPoint): void {
+    const inState = this.state;
     super.pointerUp(point);
     this.setSize();
 
     if (
-      this.state === 'creating' ||
+      inState === 'creating' ||
       (Date.now() - this._pointerDownTime > 500 &&
         Math.abs(this._pointerDownPoint.x - point.x) < 5 &&
         Math.abs(this._pointerDownPoint.y - point.y) < 5)

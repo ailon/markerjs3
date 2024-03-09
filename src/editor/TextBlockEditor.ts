@@ -233,6 +233,14 @@ export class TextBlockEditor {
    */
   public focus() {
     this.textEditor.focus();
+
+    // position cursor at the end of the text
+    const range = document.createRange();
+    range.selectNodeContents(this.textEditor);
+    range.collapse(false);
+    const selection = window.getSelection();
+    selection?.removeAllRanges();
+    selection?.addRange(range);    
   }
   /**
    * Unfocuses the editor.
