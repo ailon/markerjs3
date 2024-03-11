@@ -1,4 +1,5 @@
 import { MarkerArea, MarkerEditorEventData } from '../../src/MarkerArea';
+import { Renderer } from '../../src/Renderer';
 import { AnnotationState, ShapeOutlineMarkerBaseState } from '../../src/core';
 import {
   FreehandMarkerEditor,
@@ -14,6 +15,7 @@ export * from './../../src/index';
 export class Experiments {
   markerArea1?: MarkerArea;
   markerView1?: MarkerView;
+  renderer?: Renderer;
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   public setup(): void {
     // const targetImg = document.getElementById('testImg') as HTMLImageElement;
@@ -21,8 +23,8 @@ export class Experiments {
     targetImg.src = './images/landscape_sm.jpg';
 
     this.markerArea1 = document.getElementById('markerArea1') as MarkerArea;
-    // markerArea1.targetWidth = 400;
-    // markerArea1.targetHeight = 300;
+    // this.markerArea1.targetWidth = 300;
+    // this.markerArea1.targetHeight = 300;
     this.markerArea1.targetImage = targetImg;
 
     this.markerView1 = document.getElementById('markerView1') as MarkerView;
@@ -118,12 +120,7 @@ export class Experiments {
       this.setFontSize(1);
     });
 
-
-    function setPropertyValues(
-      e: CustomEvent<
-        MarkerEditorEventData
-      >,
-    ) {
+    function setPropertyValues(e: CustomEvent<MarkerEditorEventData>) {
       if (
         e.detail.markerEditor.is(ShapeOutlineMarkerEditor) ||
         e.detail.markerEditor.is(LinearMarkerEditor) ||
@@ -138,14 +135,8 @@ export class Experiments {
           e.detail.markerEditor.strokeDasharray;
       }
     }
-    function setTextPropertyValues(
-      e: CustomEvent<
-        MarkerEditorEventData
-      >,
-    ) {
-      if (
-        e.detail.markerEditor.is(TextMarkerEditor)
-      ) {
+    function setTextPropertyValues(e: CustomEvent<MarkerEditorEventData>) {
+      if (e.detail.markerEditor.is(TextMarkerEditor)) {
         (document.getElementById('textColor') as HTMLInputElement).value =
           e.detail.markerEditor.marker.color;
         (document.getElementById('fontFamily') as HTMLInputElement).value =
@@ -187,13 +178,26 @@ export class Experiments {
       } as ShapeOutlineMarkerBaseState,
     ],
   };
-  public saveState() {
+  public async saveState() {
     this.savedState = this.markerArea1?.getState();
     console.log('saved state:', this.savedState);
     console.log(JSON.stringify(this.savedState));
 
-    if (this.markerView1 && this.savedState){
+    if (this.markerView1 && this.savedState) {
       this.markerView1.show(this.savedState);
+    }
+
+    if (this.savedState && this.markerArea1?.targetImage) {
+      const renderer = new Renderer();
+      // renderer.naturalSize = true;
+      // renderer.markersOnly = true;
+      renderer.targetImage = this.markerArea1.targetImage;
+      const renderedSrc = await renderer.rasterize(this.savedState);
+
+      const renderedImg = document.createElement('img');
+      renderedImg.src = renderedSrc;
+      renderedImg.style.alignSelf = 'center';
+      document.body.appendChild(renderedImg);
     }
   }
   public restoreState() {
@@ -252,10 +256,7 @@ export class Experiments {
 
   public setTextColor(color: string) {
     const editor = this.markerArea1?.currentMarkerEditor;
-    if (
-      editor &&
-      editor.is(TextMarkerEditor)
-    ) {
+    if (editor && editor.is(TextMarkerEditor)) {
       editor.marker.color = color;
     }
     console.log('setTextColor', color);
@@ -263,10 +264,7 @@ export class Experiments {
 
   public setFontFamily(fontFamily: string) {
     const editor = this.markerArea1?.currentMarkerEditor;
-    if (
-      editor &&
-      editor.is(TextMarkerEditor)
-    ) {
+    if (editor && editor.is(TextMarkerEditor)) {
       editor.marker.fontFamily = fontFamily;
     }
     console.log('setFontFamily', fontFamily);
@@ -274,17 +272,13 @@ export class Experiments {
 
   public setFontSize(sign: number) {
     const editor = this.markerArea1?.currentMarkerEditor;
-    if (
-      editor &&
-      editor.is(TextMarkerEditor)
-    ) {
+    if (editor && editor.is(TextMarkerEditor)) {
       const fontSize = editor.marker.fontSize;
       fontSize.value += fontSize.step * sign;
       editor.marker.fontSize = fontSize;
     }
     console.log('setFontSize', sign);
   }
-
 
   public zoomOut() {
     if (this.markerArea1) {
