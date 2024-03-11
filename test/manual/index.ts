@@ -7,11 +7,13 @@ import {
   ShapeOutlineMarkerEditor,
   TextMarkerEditor,
 } from '../../src/editor';
+import { MarkerView } from '../../src/viewer';
 
 export * from './../../src/index';
 
 export class Experiments {
   markerArea1?: MarkerArea;
+  markerView1?: MarkerView;
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   public setup(): void {
     // const targetImg = document.getElementById('testImg') as HTMLImageElement;
@@ -22,6 +24,9 @@ export class Experiments {
     // markerArea1.targetWidth = 400;
     // markerArea1.targetHeight = 300;
     this.markerArea1.targetImage = targetImg;
+
+    this.markerView1 = document.getElementById('markerView1') as MarkerView;
+    this.markerView1.targetImage = targetImg;
 
     // doesn't fire when component is added in html (this call is already after init)
     this.markerArea1.addEventListener('areainit', (e) => {
@@ -186,6 +191,10 @@ export class Experiments {
     this.savedState = this.markerArea1?.getState();
     console.log('saved state:', this.savedState);
     console.log(JSON.stringify(this.savedState));
+
+    if (this.markerView1 && this.savedState){
+      this.markerView1.show(this.savedState);
+    }
   }
   public restoreState() {
     if (this.savedState) {
