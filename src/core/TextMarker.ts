@@ -1,6 +1,8 @@
 import { FontSize } from './FontSize';
+import { MarkerBaseState } from './MarkerBaseState';
 import { RectangularBoxMarkerBase } from './RectangularBoxMarkerBase';
 import { TextBlock } from './TextBlock';
+import { TextMarkerState } from './TextMarkerState';
 
 export class TextMarker extends RectangularBoxMarkerBase {
   public static typeName = 'TextMarker';
@@ -207,4 +209,39 @@ export class TextMarker extends RectangularBoxMarkerBase {
       this.textBlock.renderText();
     }
   }
+
+  public getState(): TextMarkerState {
+    const result: TextMarkerState = Object.assign(
+      {
+        color: this.color,
+        fontFamily: this.fontFamily,
+        fontSize: this.fontSize,
+        text: this.text,
+      },
+      super.getState(),
+    );
+
+    result.typeName = TextMarker.typeName;
+
+    return result;
+  }
+
+  /**
+   * Restores previously saved marker state.
+   *
+   * @param state - previously saved state.
+   */
+  public restoreState(state: MarkerBaseState): void {
+    const textState = state as TextMarkerState;
+    this.color = textState.color;
+    this.fontFamily = textState.fontFamily;
+    this.fontSize = textState.fontSize;
+    this.text = textState.text;
+
+    this.createVisual();
+    
+    super.restoreState(state);
+    this.setSize();
+  }
+
 }
