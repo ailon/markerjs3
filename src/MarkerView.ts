@@ -377,9 +377,9 @@ export class MarkerView extends HTMLElement {
     if (
       stateCopy.width &&
       stateCopy.height &&
-      (stateCopy.width !== this.width || stateCopy.height !== this.height)
+      (stateCopy.width !== this.targetWidth || stateCopy.height !== this.targetHeight)
     ) {
-      this.scaleMarkers(this.width / stateCopy.width, this.height / stateCopy.height);
+      this.scaleMarkers(this.targetWidth / stateCopy.width, this.targetHeight / stateCopy.height);
     }
 
     this.dispatchEvent(

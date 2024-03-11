@@ -776,8 +776,8 @@ export class MarkerArea extends HTMLElement {
   public getState(): AnnotationState {
     const result: AnnotationState = {
       version: 3,
-      width: this.width,
-      height: this.height,
+      width: this.targetWidth,
+      height: this.targetHeight,
 
       markers: this.editors.map((editor) => {
         return editor.getState();
@@ -810,9 +810,9 @@ export class MarkerArea extends HTMLElement {
     if (
       stateCopy.width &&
       stateCopy.height &&
-      (stateCopy.width !== this.width || stateCopy.height !== this.height)
+      (stateCopy.width !== this.targetWidth || stateCopy.height !== this.targetHeight)
     ) {
-      this.scaleMarkers(this.width / stateCopy.width, this.height / stateCopy.height);
+      this.scaleMarkers(this.targetWidth / stateCopy.width, this.targetHeight / stateCopy.height);
     }
 
     this.dispatchEvent(
