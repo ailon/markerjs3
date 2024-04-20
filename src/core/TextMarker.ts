@@ -9,9 +9,9 @@ export class TextMarker extends RectangularBoxMarkerBase {
 
   public static title = 'Text marker';
 
-  // protected static DEFAULT_TEXT = 'Text';
-  protected static DEFAULT_TEXT =
-    'Longer text to see what happens when it is too long to fit the bounding box.';
+  protected static DEFAULT_TEXT = 'Text';
+  // protected static DEFAULT_TEXT =
+  //   'Longer text to see what happens when it is too long to fit the bounding box.';
 
   public onSizeChanged?: (textMarker: TextMarker) => void;
 
