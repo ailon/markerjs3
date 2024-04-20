@@ -33,7 +33,8 @@ export default [
       typescript({
         declaration: true,
         outDir: './dts/',
-        rootDir: './src/',
+        //rootDir: './src/',
+        include: ['./custom.d.ts', './src/**/*.ts'],
         exclude: ['./test/**/*', './dts/**/*', './dist/**/*'],
       }),
       svgo(),
