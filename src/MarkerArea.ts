@@ -16,6 +16,9 @@ import { UndoRedoManager } from './editor/UndoRedoManager';
 import { FreehandMarkerEditor } from './editor/FreehandMarkerEditor';
 import { TextMarker } from './core/TextMarker';
 import { TextMarkerEditor } from './editor';
+import { Activator } from './core/Activator';
+
+import Logo from './assets/markerjs-logo-m.svg';
 
 export interface MarkerAreaEventMap {
   /**
@@ -86,6 +89,8 @@ export class MarkerArea extends HTMLElement {
   }
 
   private mode: MarkerAreaMode = 'select';
+
+  private _logoUI?: HTMLElement;
 
   private _isInitialized = false;
 
@@ -216,6 +221,10 @@ export class MarkerArea extends HTMLElement {
     this.redo = this.redo.bind(this);
     this.redoStep = this.redoStep.bind(this);
 
+    this.toggleLogo = this.toggleLogo.bind(this);
+    this.addLogo = this.addLogo.bind(this);
+    this.removeLogo = this.removeLogo.bind(this);
+
     this.attachShadow({ mode: 'open' });
   }
 
@@ -225,6 +234,7 @@ export class MarkerArea extends HTMLElement {
         detail: { markerArea: this },
       }),
     );
+    Activator.addKeyAddListener(this.toggleLogo);
     this.createLayout();
     this.addMainCanvas();
     this.initOverlay();
@@ -234,6 +244,7 @@ export class MarkerArea extends HTMLElement {
       this.addTargetImage();
     }
     this.setMainCanvasSize();
+    this.toggleLogo();
     this.dispatchEvent(
       new CustomEvent<MarkerAreaEventData>('areashow', {
         detail: { markerArea: this },
@@ -842,6 +853,78 @@ export class MarkerArea extends HTMLElement {
       this.setCurrentEditor(preScaleSelectedMarker);
     }
   }
+
+  /**
+   * NOTE:
+   *
+   * before removing or modifying this method please consider supporting marker.js
+   * by visiting https://markerjs.com/buy for details
+   *
+   * thank you!
+   */
+    private toggleLogo() {
+      if (!Activator.isLicensed('MJS3')) {
+        // NOTE:
+        // before removing this call please consider supporting marker.js
+        // by visiting https://markerjs.com/ for details
+        // thank you!
+        this.addLogo();
+      } else {
+        this.removeLogo();
+      }
+    }
+  
+  private addLogo() {
+    if (this._logoUI !== undefined) {
+      this._contentContainer?.removeChild(this._logoUI);
+    }
+    this._logoUI = document.createElement('div');
+    this._logoUI.style.display = 'inline-block';
+    this._logoUI.style.margin = '0px';
+    this._logoUI.style.padding = '0px';
+    this._logoUI.style.fill = '#333333';
+
+    const link = document.createElement('a');
+    link.href = 'https://markerjs.com/';
+    link.target = '_blank';
+    link.innerHTML = Logo;
+    link.title = 'Powered by marker.js';
+
+    link.style.display = 'grid';
+    link.style.alignItems = 'center';
+    link.style.justifyItems = 'center';
+    link.style.padding = '3px';
+    link.style.width = '20px';
+    link.style.height = '20px';
+    link.style.cursor = 'pointer';
+
+    this._logoUI.appendChild(link);
+
+    this._contentContainer?.appendChild(this._logoUI);
+
+    this._logoUI.style.position = 'absolute';
+    this._logoUI.style.pointerEvents = 'all';
+    this.positionLogo();
+  }
+
+  private removeLogo() {
+    if (
+      this._contentContainer &&
+      this._logoUI !== undefined &&
+      this._contentContainer.contains(this._logoUI)
+    ) {
+      this._contentContainer.removeChild(this._logoUI);
+    }
+  }
+
+  private positionLogo() {
+    if (this._logoUI && this._contentContainer) {
+      this._logoUI.style.left = `20px`;
+      this._logoUI.style.top = `${
+        this._contentContainer.offsetHeight - this._logoUI.clientHeight - 20
+      }px`;
+    }
+  }  
 
   /**
    * Returns true if undo operation can be performed (undo stack is not empty).

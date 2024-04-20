@@ -1,5 +1,8 @@
 import { AnnotationState, FrameMarker, FreehandMarker, MarkerBase, PolygonMarker, SvgHelper, TextMarker } from "./core";
 import { LineMarker } from './core/LineMarker';
+import { Activator } from './core/Activator';
+
+import Logo from './assets/markerjs-logo-m.svg';
 
 export interface MarkerViewEventMap {
   /**
@@ -64,6 +67,8 @@ export class MarkerView extends HTMLElement {
 
   public markers: MarkerBase[] = [];
 
+  private _logoUI?: HTMLElement;
+
   private _zoomLevel = 1;
   /**
    * Returns the current zoom level.
@@ -113,7 +118,6 @@ export class MarkerView extends HTMLElement {
     this.setEditingTargetSize = this.setEditingTargetSize.bind(this);
     this.addTargetImage = this.addTargetImage.bind(this);
 
-    
     this.attachEvents = this.attachEvents.bind(this);
     this.attachWindowEvents = this.attachWindowEvents.bind(this);
     this.detachEvents = this.detachEvents.bind(this);
@@ -124,6 +128,10 @@ export class MarkerView extends HTMLElement {
     this.show = this.show.bind(this);
     this.scaleMarkers = this.scaleMarkers.bind(this);
 
+    this.toggleLogo = this.toggleLogo.bind(this);
+    this.addLogo = this.addLogo.bind(this);
+    this.removeLogo = this.removeLogo.bind(this);
+
     this.attachShadow({ mode: 'open' });
   }
 
@@ -133,6 +141,7 @@ export class MarkerView extends HTMLElement {
         detail: { markerView: this },
       }),
     );    
+    Activator.addKeyAddListener(this.toggleLogo);
     this.createLayout();
     this.addMainCanvas();
     this.attachEvents();
@@ -141,6 +150,7 @@ export class MarkerView extends HTMLElement {
       this.addTargetImage();
     }
     this.setMainCanvasSize();
+    this.toggleLogo();
     this.dispatchEvent(
       new CustomEvent<MarkerViewEventData>('viewshow', {
         detail: { markerView: this },
@@ -394,6 +404,78 @@ export class MarkerView extends HTMLElement {
       marker.scale(scaleX, scaleY);
     });
   }
+
+  /**
+   * NOTE:
+   *
+   * before removing or modifying this method please consider supporting marker.js
+   * by visiting https://markerjs.com/buy for details
+   *
+   * thank you!
+   */
+  private toggleLogo() {
+    if (!Activator.isLicensed('MJS3')) {
+      // NOTE:
+      // before removing this call please consider supporting marker.js
+      // by visiting https://markerjs.com/ for details
+      // thank you!
+      this.addLogo();
+    } else {
+      this.removeLogo();
+    }
+  }
+
+private addLogo() {
+  if (this._logoUI !== undefined) {
+    this._contentContainer?.removeChild(this._logoUI);
+  }
+  this._logoUI = document.createElement('div');
+  this._logoUI.style.display = 'inline-block';
+  this._logoUI.style.margin = '0px';
+  this._logoUI.style.padding = '0px';
+  this._logoUI.style.fill = '#333333';
+
+  const link = document.createElement('a');
+  link.href = 'https://markerjs.com/';
+  link.target = '_blank';
+  link.innerHTML = Logo;
+  link.title = 'Powered by marker.js';
+
+  link.style.display = 'grid';
+  link.style.alignItems = 'center';
+  link.style.justifyItems = 'center';
+  link.style.padding = '3px';
+  link.style.width = '20px';
+  link.style.height = '20px';
+  link.style.cursor = 'pointer';
+
+  this._logoUI.appendChild(link);
+
+  this._contentContainer?.appendChild(this._logoUI);
+
+  this._logoUI.style.position = 'absolute';
+  this._logoUI.style.pointerEvents = 'all';
+  this.positionLogo();
+}
+
+private removeLogo() {
+  if (
+    this._contentContainer &&
+    this._logoUI !== undefined &&
+    this._contentContainer.contains(this._logoUI)
+  ) {
+    this._contentContainer.removeChild(this._logoUI);
+  }
+}
+
+private positionLogo() {
+  if (this._logoUI && this._contentContainer) {
+    this._logoUI.style.left = `20px`;
+    this._logoUI.style.top = `${
+      this._contentContainer.offsetHeight - this._logoUI.clientHeight - 20
+    }px`;
+  }
+}    
 
   addEventListener<T extends keyof MarkerViewEventMap>(
     // the event name, a key of MarkerViewEventMap
