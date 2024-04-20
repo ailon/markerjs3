@@ -1,9 +1,9 @@
-# Contributing to marker.js 2
+# Contributing to marker.js 3
 
-Thank you for your interest in contributing to marker.js 2. Before you proceed, please read this short guide.
+Thank you for your interest in contributing to marker.js 3. Before you proceed, please read this short guide.
 
 ## No Pull Requests, please
-marker.js 2 is not a "true" OSS project. It's a personal (private) project with a source code repository publicly available.
+marker.js 3 is not a "true" OSS project. It's a personal (private) project with a source code repository publicly available.
 
 Therefore, it would be an unnecessary burden to resolve all the legal and other issues arising from accepting third party code contributions.
 

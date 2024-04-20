@@ -1,12 +1,21 @@
 {
-  "name": "markerjs3",
-  "version": "3.0.0",
+  "name": "@markerjs/markerjs3",
+  "version": "3.0.0-alpha.1",
   "description": "marker.js 3",
   "main": "umd/markerjs3.js",
   "module": "markerjs3.js",
   "types": "markerjs3.d.ts",
   "author": "Alan Mendelevich",
   "license": "SEE LICENSE IN LICENSE",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ailon/markerjs3"
+  },
+  "keywords": [
+    "image",
+    "annotation",
+    "web components"
+  ],  
   "scripts": {
     "lint": "eslint src",
     "build": "yarn lint && rollup --config rollup.config.prod.mjs",
