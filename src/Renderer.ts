@@ -126,6 +126,10 @@ export class Renderer {
     this._mainCanvas.style.gridColumnStart = '1';
     this._mainCanvas.style.gridRowStart = '1';
     this._mainCanvas.style.pointerEvents = 'auto';
+
+    // text isn't sized correctly without adding to the DOM
+    this._mainCanvas.style.visibility = 'hidden';
+    document.body.appendChild(this._mainCanvas);
   }
 
   private setMainCanvasSize() {
@@ -367,6 +371,9 @@ export class Renderer {
     if (this._editingTarget) {
       document.body.removeChild(this._editingTarget);
     }
+
+    // remove the helper main canvas from the page
+    document.body.removeChild(this._mainCanvas);
 
     return result;
   }
