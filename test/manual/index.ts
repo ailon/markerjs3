@@ -20,11 +20,11 @@ export class Experiments {
   public setup(): void {
     // const targetImg = document.getElementById('testImg') as HTMLImageElement;
     const targetImg = document.createElement('img');
-    targetImg.src = './images/landscape_sm.jpg';
+    targetImg.src = './images/landscape.jpg';
 
     this.markerArea1 = document.getElementById('markerArea1') as MarkerArea;
-    // this.markerArea1.targetWidth = 300;
-    // this.markerArea1.targetHeight = 300;
+    this.markerArea1.targetWidth = 400;
+    this.markerArea1.targetHeight = 300;
     this.markerArea1.targetImage = targetImg;
 
     this.markerView1 = document.getElementById('markerView1') as MarkerView;
@@ -189,7 +189,7 @@ export class Experiments {
 
     if (this.savedState && this.markerArea1?.targetImage) {
       const renderer = new Renderer();
-      // renderer.naturalSize = true;
+      renderer.naturalSize = true;
       // renderer.markersOnly = true;
       renderer.targetImage = this.markerArea1.targetImage;
       const renderedSrc = await renderer.rasterize(this.savedState);

@@ -244,4 +244,16 @@ export class TextMarker extends RectangularBoxMarkerBase {
     this.setSize();
   }
 
+  public scale(scaleX: number, scaleY: number): void {
+    super.scale(scaleX, scaleY);
+
+    const newFontSize = {
+      ...this.fontSize,
+      value: this.fontSize.value * Math.min(scaleX, scaleY),
+    };
+    this.fontSize = newFontSize;
+
+    this.setSize();
+  }  
+
 }
