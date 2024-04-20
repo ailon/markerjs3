@@ -15,7 +15,7 @@ import { ShapeOutlineMarkerEditor } from './editor/ShapeOutlineMarkerEditor';
 import { UndoRedoManager } from './editor/UndoRedoManager';
 import { FreehandMarkerEditor } from './editor/FreehandMarkerEditor';
 import { TextMarker } from './core/TextMarker';
-import { TextMarkerEditor } from './editor';
+import { TextMarkerEditor } from './editor/TextMarkerEditor';
 import { Activator } from './core/Activator';
 
 import Logo from './assets/markerjs-logo-m.svg';
