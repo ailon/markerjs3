@@ -1,6 +1,6 @@
 {
   "name": "@markerjs/markerjs3",
-  "version": "3.0.0-alpha.1",
+  "version": "3.0.0-alpha.2",
   "description": "marker.js 3",
   "main": "umd/markerjs3.js",
   "module": "markerjs3.js",
@@ -15,7 +15,7 @@
     "image",
     "annotation",
     "web components"
-  ],  
+  ],
   "scripts": {
     "lint": "eslint src",
     "build": "yarn lint && rollup --config rollup.config.prod.mjs",
