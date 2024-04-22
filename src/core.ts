@@ -1,17 +1,27 @@
 export { IPoint } from './core/IPoint';
 export { SvgHelper } from './core/SvgHelper';
-export { MarkerBaseState } from './core/MarkerBaseState';
-export { MarkerBase } from './core/MarkerBase';
-export { ShapeOutlineMarkerBaseState } from './core/ShapeOutlineMarkerBaseState';
-export { ShapeOutlineMarkerBase } from './core/ShapeOutlineMarkerBase';
-export { RectangularBoxMarkerBaseState } from './core/RectangularBoxMarkerBaseState';
-export { RectangularBoxMarkerBase } from './core/RectangularBoxMarkerBase';
-export { FrameMarker } from './core/FrameMarker';
+
 export { AnnotationState } from './core/AnnotationState';
-export { LinearMarkerBaseState } from './core/LinearMarkerBaseState';
+
+export { MarkerBase } from './core/MarkerBase';
+export { MarkerBaseState } from './core/MarkerBaseState';
+
+export { ShapeOutlineMarkerBase } from './core/ShapeOutlineMarkerBase';
+export { ShapeOutlineMarkerBaseState } from './core/ShapeOutlineMarkerBaseState';
+
+export { RectangularBoxMarkerBase } from './core/RectangularBoxMarkerBase';
+export { RectangularBoxMarkerBaseState } from './core/RectangularBoxMarkerBaseState';
+
+export { FrameMarker } from './core/FrameMarker';
+
 export { LinearMarkerBase } from './core/LinearMarkerBase';
-export { PolygonMarkerState } from './core/PolygonMarkerState';
+export { LinearMarkerBaseState } from './core/LinearMarkerBaseState';
+
 export { PolygonMarker } from './core/PolygonMarker';
-export { FreehandMarkerState } from './core/FreehandMarkerState';
+export { PolygonMarkerState } from './core/PolygonMarkerState';
+
 export { FreehandMarker } from './core/FreehandMarker';
+export { FreehandMarkerState } from './core/FreehandMarkerState';
+
 export { TextMarker } from './core/TextMarker';
+export { TextMarkerState } from './core/TextMarkerState';
