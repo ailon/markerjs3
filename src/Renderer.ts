@@ -3,6 +3,7 @@ import {
   CoverMarker,
   FrameMarker,
   FreehandMarker,
+  HighlightMarker,
   MarkerBase,
   PolygonMarker,
   SvgHelper,
@@ -94,6 +95,7 @@ export class Renderer {
       FreehandMarker,
       TextMarker,
       CoverMarker,
+      HighlightMarker,
     ];
 
     this.init = this.init.bind(this);

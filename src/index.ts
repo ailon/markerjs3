@@ -20,6 +20,7 @@ export {
   TextMarker,
   TextMarkerState,
   CoverMarker,
+  HighlightMarker,
 } from './core';
 
 export {

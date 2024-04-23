@@ -29,3 +29,4 @@ export { TextMarker } from './core/TextMarker';
 export { TextMarkerState } from './core/TextMarkerState';
 
 export { CoverMarker } from './core/CoverMarker';
+export { HighlightMarker } from './core/HighlightMarker';

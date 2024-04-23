@@ -3,6 +3,7 @@ import {
   CoverMarker,
   FrameMarker,
   FreehandMarker,
+  HighlightMarker,
   MarkerBase,
   PolygonMarker,
   SvgHelper,
@@ -116,6 +117,7 @@ export class MarkerView extends HTMLElement {
       FreehandMarker,
       TextMarker,
       CoverMarker,
+      HighlightMarker,
     ];
 
     this.connectedCallback = this.connectedCallback.bind(this);

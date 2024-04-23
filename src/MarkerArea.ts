@@ -3,6 +3,7 @@ import {
   CoverMarker,
   FrameMarker,
   FreehandMarker,
+  HighlightMarker,
   IPoint,
   MarkerBase,
   PolygonMarker,
@@ -185,6 +186,7 @@ export class MarkerArea extends HTMLElement {
     );
     this.markerEditors.set(TextMarker, TextMarkerEditor<TextMarker>);
     this.markerEditors.set(CoverMarker, ShapeMarkerEditor<CoverMarker>);
+    this.markerEditors.set(HighlightMarker, ShapeMarkerEditor<HighlightMarker>);
 
     this.connectedCallback = this.connectedCallback.bind(this);
     this.disconnectedCallback = this.disconnectedCallback.bind(this);
