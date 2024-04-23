@@ -19,8 +19,7 @@
   "scripts": {
     "lint": "eslint src",
     "build": "yarn lint && rollup --config rollup.config.prod.mjs",
-    "start": "rollup --config rollup.config.dev.mjs -w",
-    "old-docs": "typedoc --excludePrivate --excludeExternals --exclude \"src/index.ts\" -mode file --out docs src --name \"MJS Diagram Class Reference\" --disableSources --readme none",
+    "dev": "rollup --config rollup.config.dev.mjs -w",
     "docs": "typedoc"
   },
   "devDependencies": {
