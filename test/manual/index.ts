@@ -1,10 +1,15 @@
 import { MarkerArea, MarkerEditorEventData } from '../../src/MarkerArea';
 import { Renderer } from '../../src/Renderer';
-import { AnnotationState, ShapeOutlineMarkerBaseState } from '../../src/core';
+import {
+  AnnotationState,
+  ShapeMarkerBase,
+  ShapeOutlineMarkerBaseState,
+} from '../../src/core';
 import {
   FreehandMarkerEditor,
   LinearMarkerEditor,
   PolygonMarkerEditor,
+  ShapeMarkerEditor,
   ShapeOutlineMarkerEditor,
   TextMarkerEditor,
 } from '../../src/editor';
@@ -79,6 +84,13 @@ export class Experiments {
       this.setStrokeColor((ev.target as HTMLInputElement).value);
     });
 
+    const fillColorInput = document.getElementById(
+      'fillColor',
+    ) as HTMLInputElement;
+    fillColorInput.addEventListener('change', (ev) => {
+      this.setFillColor((ev.target as HTMLInputElement).value);
+    });
+
     const strokeWidthInput = document.getElementById(
       'strokeWidth',
     ) as HTMLInputElement;
@@ -129,6 +141,8 @@ export class Experiments {
       ) {
         (document.getElementById('strokeColor') as HTMLInputElement).value =
           e.detail.markerEditor.strokeColor;
+        (document.getElementById('fillColor') as HTMLInputElement).value =
+          e.detail.markerEditor.fillColor;
         (document.getElementById('strokeWidth') as HTMLInputElement).value =
           e.detail.markerEditor.strokeWidth.toString();
         (document.getElementById('strokeDasharray') as HTMLInputElement).value =
@@ -147,16 +161,17 @@ export class Experiments {
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   public addMarker(markerType: string) {
-    const newMarkerEditor = this.markerArea1?.createMarker(markerType);
-    if (
-      newMarkerEditor &&
-      (newMarkerEditor.is(ShapeOutlineMarkerEditor) ||
-        newMarkerEditor.is(LinearMarkerEditor) ||
-        newMarkerEditor.is(FreehandMarkerEditor) ||
-        newMarkerEditor.is(PolygonMarkerEditor))
-    ) {
-      newMarkerEditor.strokeColor = '#0000ff';
-    }
+    this.markerArea1?.createMarker(markerType);
+    // const newMarkerEditor = this.markerArea1?.createMarker(markerType);
+    // if (
+    //   newMarkerEditor &&
+    //   (newMarkerEditor.is(ShapeOutlineMarkerEditor) ||
+    //     newMarkerEditor.is(LinearMarkerEditor) ||
+    //     newMarkerEditor.is(FreehandMarkerEditor) ||
+    //     newMarkerEditor.is(PolygonMarkerEditor))
+    // ) {
+    //   newMarkerEditor.strokeColor = '#0000ff';
+    // }
   }
 
   savedState?: AnnotationState = {
@@ -224,6 +239,17 @@ export class Experiments {
       editor.strokeColor = color;
     }
     console.log('setStrokeColor', color);
+  }
+
+  public setFillColor(color: string) {
+    const editor = this.markerArea1?.currentMarkerEditor;
+    if (
+      editor &&
+      (editor.is(ShapeMarkerEditor) || editor.is(PolygonMarkerEditor))
+    ) {
+      editor.fillColor = color;
+    }
+    console.log('setFillColor', color);
   }
 
   public setStrokeWidth(width: string) {

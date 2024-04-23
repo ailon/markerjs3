@@ -13,10 +13,13 @@ export {
   PolygonMarkerState,
   ShapeOutlineMarkerBase,
   ShapeOutlineMarkerBaseState,
+  ShapeMarkerBase,
+  ShapeMarkerBaseState,
   RectangularBoxMarkerBase,
   RectangularBoxMarkerBaseState,
   TextMarker,
   TextMarkerState,
+  CoverMarker,
 } from './core';
 
 export {
@@ -34,6 +37,7 @@ export {
   ResizeGrip,
   RotateGrip,
   ShapeOutlineMarkerEditor,
+  ShapeMarkerEditor,
   TextMarkerEditor,
 } from './editor';
 

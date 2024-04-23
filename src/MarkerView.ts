@@ -1,4 +1,13 @@
-import { AnnotationState, FrameMarker, FreehandMarker, MarkerBase, PolygonMarker, SvgHelper, TextMarker } from "./core";
+import {
+  AnnotationState,
+  CoverMarker,
+  FrameMarker,
+  FreehandMarker,
+  MarkerBase,
+  PolygonMarker,
+  SvgHelper,
+  TextMarker,
+} from './core';
 import { LineMarker } from './core/LineMarker';
 import { Activator } from './core/Activator';
 
@@ -21,7 +30,6 @@ export interface MarkerViewEventData {
    */
   markerView: MarkerView;
 }
-
 
 export class MarkerView extends HTMLElement {
   private _contentContainer?: HTMLDivElement;
@@ -81,11 +89,7 @@ export class MarkerView extends HTMLElement {
    */
   public set zoomLevel(value: number) {
     this._zoomLevel = value;
-    if (
-      this._canvasContainer &&
-      this._contentContainer &&
-      this._mainCanvas
-    ) {
+    if (this._canvasContainer && this._contentContainer && this._mainCanvas) {
       //this.setMainCanvasSize();
       this._mainCanvas.style.transform = `scale(${this._zoomLevel})`;
       this.setEditingTargetSize();
@@ -106,7 +110,12 @@ export class MarkerView extends HTMLElement {
     super();
 
     this.markerTypes = [
-      FrameMarker, LineMarker, PolygonMarker, FreehandMarker, TextMarker
+      FrameMarker,
+      LineMarker,
+      PolygonMarker,
+      FreehandMarker,
+      TextMarker,
+      CoverMarker,
     ];
 
     this.connectedCallback = this.connectedCallback.bind(this);
@@ -140,7 +149,7 @@ export class MarkerView extends HTMLElement {
       new CustomEvent<MarkerViewEventData>('viewinit', {
         detail: { markerView: this },
       }),
-    );    
+    );
     Activator.addKeyAddListener(this.toggleLogo);
     this.createLayout();
     this.addMainCanvas();
@@ -155,7 +164,7 @@ export class MarkerView extends HTMLElement {
       new CustomEvent<MarkerViewEventData>('viewshow', {
         detail: { markerView: this },
       }),
-    );    
+    );
   }
 
   private disconnectedCallback() {
@@ -213,7 +222,7 @@ export class MarkerView extends HTMLElement {
     this._mainCanvas.appendChild(this._groupLayer);
 
     this._canvasContainer?.appendChild(this._mainCanvas);
-  }  
+  }
 
   private setMainCanvasSize() {
     if (
@@ -255,7 +264,7 @@ export class MarkerView extends HTMLElement {
         this._targetHeight * this.zoomLevel
       }px`;
     }
-  }  
+  }
 
   private addTargetImage() {
     if (
@@ -301,9 +310,7 @@ export class MarkerView extends HTMLElement {
     }
   }
 
-  private addNewMarker(
-    markerType: typeof MarkerBase,
-  ): MarkerBase {
+  private addNewMarker(markerType: typeof MarkerBase): MarkerBase {
     if (this._mainCanvas === undefined) {
       throw new Error('Main canvas is not initialized.');
     }
@@ -312,7 +319,7 @@ export class MarkerView extends HTMLElement {
     this._mainCanvas.appendChild(g);
 
     return new markerType(g);
-  }  
+  }
 
   private attachEvents() {
     // needed to distinguish when the element is in focus (active)
@@ -377,26 +384,30 @@ export class MarkerView extends HTMLElement {
 
     stateCopy.markers.forEach((markerState) => {
       const markerType = this.getMarkerTypeByName(markerState.typeName);
-        if (markerType !== undefined) {
-          const marker = this.addNewMarker(markerType);
-          marker.restoreState(markerState);
-          this.markers.push(marker);
-        }
+      if (markerType !== undefined) {
+        const marker = this.addNewMarker(markerType);
+        marker.restoreState(markerState);
+        this.markers.push(marker);
+      }
     });
 
     if (
       stateCopy.width &&
       stateCopy.height &&
-      (stateCopy.width !== this.targetWidth || stateCopy.height !== this.targetHeight)
+      (stateCopy.width !== this.targetWidth ||
+        stateCopy.height !== this.targetHeight)
     ) {
-      this.scaleMarkers(this.targetWidth / stateCopy.width, this.targetHeight / stateCopy.height);
+      this.scaleMarkers(
+        this.targetWidth / stateCopy.width,
+        this.targetHeight / stateCopy.height,
+      );
     }
 
     this.dispatchEvent(
       new CustomEvent<MarkerViewEventData>('viewrestorestate', {
         detail: { markerView: this },
       }),
-    );    
+    );
   }
 
   private scaleMarkers(scaleX: number, scaleY: number) {
@@ -425,57 +436,57 @@ export class MarkerView extends HTMLElement {
     }
   }
 
-private addLogo() {
-  if (this._logoUI !== undefined) {
-    this._contentContainer?.removeChild(this._logoUI);
+  private addLogo() {
+    if (this._logoUI !== undefined) {
+      this._contentContainer?.removeChild(this._logoUI);
+    }
+    this._logoUI = document.createElement('div');
+    this._logoUI.style.display = 'inline-block';
+    this._logoUI.style.margin = '0px';
+    this._logoUI.style.padding = '0px';
+    this._logoUI.style.fill = '#333333';
+
+    const link = document.createElement('a');
+    link.href = 'https://markerjs.com/';
+    link.target = '_blank';
+    link.innerHTML = Logo;
+    link.title = 'Powered by marker.js';
+
+    link.style.display = 'grid';
+    link.style.alignItems = 'center';
+    link.style.justifyItems = 'center';
+    link.style.padding = '3px';
+    link.style.width = '20px';
+    link.style.height = '20px';
+    link.style.cursor = 'pointer';
+
+    this._logoUI.appendChild(link);
+
+    this._contentContainer?.appendChild(this._logoUI);
+
+    this._logoUI.style.position = 'absolute';
+    this._logoUI.style.pointerEvents = 'all';
+    this.positionLogo();
   }
-  this._logoUI = document.createElement('div');
-  this._logoUI.style.display = 'inline-block';
-  this._logoUI.style.margin = '0px';
-  this._logoUI.style.padding = '0px';
-  this._logoUI.style.fill = '#333333';
 
-  const link = document.createElement('a');
-  link.href = 'https://markerjs.com/';
-  link.target = '_blank';
-  link.innerHTML = Logo;
-  link.title = 'Powered by marker.js';
-
-  link.style.display = 'grid';
-  link.style.alignItems = 'center';
-  link.style.justifyItems = 'center';
-  link.style.padding = '3px';
-  link.style.width = '20px';
-  link.style.height = '20px';
-  link.style.cursor = 'pointer';
-
-  this._logoUI.appendChild(link);
-
-  this._contentContainer?.appendChild(this._logoUI);
-
-  this._logoUI.style.position = 'absolute';
-  this._logoUI.style.pointerEvents = 'all';
-  this.positionLogo();
-}
-
-private removeLogo() {
-  if (
-    this._contentContainer &&
-    this._logoUI !== undefined &&
-    this._contentContainer.contains(this._logoUI)
-  ) {
-    this._contentContainer.removeChild(this._logoUI);
+  private removeLogo() {
+    if (
+      this._contentContainer &&
+      this._logoUI !== undefined &&
+      this._contentContainer.contains(this._logoUI)
+    ) {
+      this._contentContainer.removeChild(this._logoUI);
+    }
   }
-}
 
-private positionLogo() {
-  if (this._logoUI && this._contentContainer) {
-    this._logoUI.style.left = `20px`;
-    this._logoUI.style.top = `${
-      this._contentContainer.offsetHeight - this._logoUI.clientHeight - 20
-    }px`;
+  private positionLogo() {
+    if (this._logoUI && this._contentContainer) {
+      this._logoUI.style.left = `20px`;
+      this._logoUI.style.top = `${
+        this._contentContainer.offsetHeight - this._logoUI.clientHeight - 20
+      }px`;
+    }
   }
-}    
 
   addEventListener<T extends keyof MarkerViewEventMap>(
     // the event name, a key of MarkerViewEventMap
@@ -485,17 +496,17 @@ private positionLogo() {
     listener: (this: MarkerView, ev: MarkerViewEventMap[T]) => void,
 
     // any options
-    options?: boolean | AddEventListenerOptions
+    options?: boolean | AddEventListenerOptions,
   ): void;
   addEventListener<K extends keyof HTMLElementEventMap>(
     type: K,
     listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => void,
-    options?: boolean | AddEventListenerOptions | undefined
+    options?: boolean | AddEventListenerOptions | undefined,
   ): void;
   addEventListener(
     type: string,
     listener: EventListenerOrEventListenerObject,
-    options?: boolean | AddEventListenerOptions | undefined
+    options?: boolean | AddEventListenerOptions | undefined,
   ): void {
     super.addEventListener(type, listener, options);
   }
@@ -508,18 +519,18 @@ private positionLogo() {
     listener: (this: MarkerView, ev: MarkerViewEventMap[T]) => void,
 
     // any options
-    options?: boolean | EventListenerOptions
+    options?: boolean | EventListenerOptions,
   ): void;
   removeEventListener<K extends keyof HTMLElementEventMap>(
     type: K,
     listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => void,
-    options?: boolean | EventListenerOptions | undefined
+    options?: boolean | EventListenerOptions | undefined,
   ): void;
   removeEventListener(
     type: string,
     listener: EventListenerOrEventListenerObject,
-    options?: boolean | EventListenerOptions | undefined
+    options?: boolean | EventListenerOptions | undefined,
   ): void {
     super.removeEventListener(type, listener, options);
-  }  
+  }
 }

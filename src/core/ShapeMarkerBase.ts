@@ -51,9 +51,10 @@ export abstract class ShapeMarkerBase extends ShapeOutlineMarkerBase {
    */
   public restoreState(state: MarkerBaseState): void {
     const rectState = state as ShapeMarkerBaseState;
-    this._fillColor = rectState.fillColor;
-
     super.restoreState(state);
+
+    this.fillColor = rectState.fillColor;
+
     this.setSize();
   }
 }

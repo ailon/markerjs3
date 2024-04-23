@@ -1,5 +1,6 @@
 import {
   AnnotationState,
+  CoverMarker,
   FrameMarker,
   FreehandMarker,
   MarkerBase,
@@ -92,6 +93,7 @@ export class Renderer {
       PolygonMarker,
       FreehandMarker,
       TextMarker,
+      CoverMarker,
     ];
 
     this.init = this.init.bind(this);

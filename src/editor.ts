@@ -12,6 +12,7 @@ export { Grip } from './editor/Grip';
 export { ResizeGrip } from './editor/ResizeGrip';
 export { RotateGrip } from './editor/RotateGrip';
 export { ShapeOutlineMarkerEditor } from './editor/ShapeOutlineMarkerEditor';
+export { ShapeMarkerEditor } from './editor/ShapeMarkerEditor';
 export { LinearMarkerEditor } from './editor/LinearMarkerEditor';
 export { PolygonMarkerEditor } from './editor/PolygonMarkerEditor';
 export { FreehandMarkerEditor } from './editor/FreehandMarkerEditor';

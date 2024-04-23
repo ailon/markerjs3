@@ -1,5 +1,6 @@
 import {
   AnnotationState,
+  CoverMarker,
   FrameMarker,
   FreehandMarker,
   IPoint,
@@ -19,6 +20,7 @@ import { TextMarkerEditor } from './editor/TextMarkerEditor';
 import { Activator } from './core/Activator';
 
 import Logo from './assets/markerjs-logo-m.svg';
+import { ShapeMarkerEditor } from './editor/ShapeMarkerEditor';
 
 export interface MarkerAreaEventMap {
   /**
@@ -177,8 +179,12 @@ export class MarkerArea extends HTMLElement {
     this.markerEditors.set(FrameMarker, ShapeOutlineMarkerEditor<FrameMarker>);
     this.markerEditors.set(LineMarker, LinearMarkerEditor<LineMarker>);
     this.markerEditors.set(PolygonMarker, PolygonMarkerEditor<PolygonMarker>);
-    this.markerEditors.set(FreehandMarker, FreehandMarkerEditor<FreehandMarker>);
+    this.markerEditors.set(
+      FreehandMarker,
+      FreehandMarkerEditor<FreehandMarker>,
+    );
     this.markerEditors.set(TextMarker, TextMarkerEditor<TextMarker>);
+    this.markerEditors.set(CoverMarker, ShapeMarkerEditor<CoverMarker>);
 
     this.connectedCallback = this.connectedCallback.bind(this);
     this.disconnectedCallback = this.disconnectedCallback.bind(this);
@@ -468,11 +474,12 @@ export class MarkerArea extends HTMLElement {
       this._mainCanvas.style.cursor = 'default';
       this.editors.push(editor);
       this.setCurrentEditor(editor);
-      if (
-        editor.continuousCreation
-      ) {
+      if (editor.continuousCreation) {
         const newMarkerEditor = this.createMarker(editor.marker.typeName);
-        if (editor.is(FreehandMarkerEditor) && newMarkerEditor?.is(FreehandMarkerEditor)) {
+        if (
+          editor.is(FreehandMarkerEditor) &&
+          newMarkerEditor?.is(FreehandMarkerEditor)
+        ) {
           newMarkerEditor.strokeColor = editor.strokeColor;
           newMarkerEditor.strokeWidth = editor.strokeWidth;
           newMarkerEditor.strokeDasharray = editor.strokeDasharray;
@@ -821,9 +828,13 @@ export class MarkerArea extends HTMLElement {
     if (
       stateCopy.width &&
       stateCopy.height &&
-      (stateCopy.width !== this.targetWidth || stateCopy.height !== this.targetHeight)
+      (stateCopy.width !== this.targetWidth ||
+        stateCopy.height !== this.targetHeight)
     ) {
-      this.scaleMarkers(this.targetWidth / stateCopy.width, this.targetHeight / stateCopy.height);
+      this.scaleMarkers(
+        this.targetWidth / stateCopy.width,
+        this.targetHeight / stateCopy.height,
+      );
     }
 
     this.dispatchEvent(
@@ -862,18 +873,18 @@ export class MarkerArea extends HTMLElement {
    *
    * thank you!
    */
-    private toggleLogo() {
-      if (!Activator.isLicensed('MJS3')) {
-        // NOTE:
-        // before removing this call please consider supporting marker.js
-        // by visiting https://markerjs.com/ for details
-        // thank you!
-        this.addLogo();
-      } else {
-        this.removeLogo();
-      }
+  private toggleLogo() {
+    if (!Activator.isLicensed('MJS3')) {
+      // NOTE:
+      // before removing this call please consider supporting marker.js
+      // by visiting https://markerjs.com/ for details
+      // thank you!
+      this.addLogo();
+    } else {
+      this.removeLogo();
     }
-  
+  }
+
   private addLogo() {
     if (this._logoUI !== undefined) {
       this._contentContainer?.removeChild(this._logoUI);
@@ -924,7 +935,7 @@ export class MarkerArea extends HTMLElement {
         this._contentContainer.offsetHeight - this._logoUI.clientHeight - 20
       }px`;
     }
-  }  
+  }
 
   /**
    * Returns true if undo operation can be performed (undo stack is not empty).

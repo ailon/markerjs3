@@ -8,6 +8,8 @@ export { MarkerBaseState } from './core/MarkerBaseState';
 
 export { ShapeOutlineMarkerBase } from './core/ShapeOutlineMarkerBase';
 export { ShapeOutlineMarkerBaseState } from './core/ShapeOutlineMarkerBaseState';
+export { ShapeMarkerBase } from './core/ShapeMarkerBase';
+export { ShapeMarkerBaseState } from './core/ShapeMarkerBaseState';
 
 export { RectangularBoxMarkerBase } from './core/RectangularBoxMarkerBase';
 export { RectangularBoxMarkerBaseState } from './core/RectangularBoxMarkerBaseState';
@@ -25,3 +27,5 @@ export { FreehandMarkerState } from './core/FreehandMarkerState';
 
 export { TextMarker } from './core/TextMarker';
 export { TextMarkerState } from './core/TextMarkerState';
+
+export { CoverMarker } from './core/CoverMarker';

@@ -93,9 +93,8 @@
         <button onclick="experiments.addMarker('FreehandMarker');">
           Freehand
         </button>
-        <button onclick="experiments.addMarker('TextMarker');">
-          Text
-        </button>
+        <button onclick="experiments.addMarker('TextMarker');">Text</button>
+        <button onclick="experiments.addMarker('CoverMarker');">Cover</button>
       </div>
 
       <div style="display: flex; gap: 0.2rem">
@@ -116,6 +115,9 @@
     <div class="property-panel" id="shapePropertyPanel" style="display: none">
       <label for="strokeColor">Stroke color:</label>
       <input type="color" id="strokeColor" />
+
+      <label for="fillColor">Fill color:</label>
+      <input type="color" id="fillColor" />
 
       <label for="strokeWidth">Stroke width:</label>
       <input
