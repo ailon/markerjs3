@@ -113,6 +113,8 @@ export class ShapeOutlineMarkerBase extends RectangularBoxMarkerBase {
   public scale(scaleX: number, scaleY: number): void {
     super.scale(scaleX, scaleY);
 
+    this.strokeWidth *= (scaleX + scaleY) / 2;
+
     this.setSize();
   }
 }

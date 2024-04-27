@@ -186,6 +186,8 @@ export class LinearMarkerBase extends MarkerBase {
     this.x2 = this.x2 * scaleX;
     this.y2 = this.y2 * scaleY;
 
+    this.strokeWidth *= (scaleX + scaleY) / 2;
+
     this.adjustVisual();
   }
 }
