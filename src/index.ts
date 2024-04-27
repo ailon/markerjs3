@@ -21,6 +21,10 @@ export {
   TextMarkerState,
   CoverMarker,
   HighlightMarker,
+  ArrowMarker,
+  ArrowMarkerState,
+  ArrowType,
+  LineMarker,
 } from './core';
 
 export {

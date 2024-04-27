@@ -18,6 +18,9 @@ export { FrameMarker } from './core/FrameMarker';
 
 export { LinearMarkerBase } from './core/LinearMarkerBase';
 export { LinearMarkerBaseState } from './core/LinearMarkerBaseState';
+export { LineMarker } from './core/LineMarker';
+export { ArrowMarker } from './core/ArrowMarker';
+export { ArrowMarkerState, ArrowType } from './core/ArrowMarkerState';
 
 export { PolygonMarker } from './core/PolygonMarker';
 export { PolygonMarkerState } from './core/PolygonMarkerState';
