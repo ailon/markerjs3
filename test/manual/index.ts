@@ -3,7 +3,6 @@ import { Renderer } from '../../src/Renderer';
 import {
   AnnotationState,
   ArrowType,
-  ShapeMarkerBase,
   ShapeOutlineMarkerBaseState,
 } from '../../src/core';
 import {
