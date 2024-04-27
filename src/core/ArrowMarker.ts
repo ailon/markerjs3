@@ -7,7 +7,7 @@ export class ArrowMarker extends LineMarker {
   public static typeName = 'ArrowMarker';
   public static title = 'Arrow marker';
 
-  private _arrowType: ArrowType = 'both';
+  private _arrowType: ArrowType = 'end';
   public get arrowType(): ArrowType {
     return this._arrowType;
   }

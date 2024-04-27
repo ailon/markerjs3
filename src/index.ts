@@ -25,6 +25,7 @@ export {
   ArrowMarkerState,
   ArrowType,
   LineMarker,
+  MeasurementMarker,
 } from './core';
 
 export {

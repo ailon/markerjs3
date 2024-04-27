@@ -8,8 +8,10 @@ import {
   PolygonMarker,
   SvgHelper,
   TextMarker,
+  LineMarker,
+  ArrowMarker,
+  MeasurementMarker,
 } from './core';
-import { LineMarker } from './core/LineMarker';
 
 export class Renderer {
   private _mainCanvas?: SVGSVGElement;
@@ -91,6 +93,8 @@ export class Renderer {
     this.markerTypes = [
       FrameMarker,
       LineMarker,
+      ArrowMarker,
+      MeasurementMarker,
       PolygonMarker,
       FreehandMarker,
       TextMarker,

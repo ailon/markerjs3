@@ -8,8 +8,10 @@ import {
   PolygonMarker,
   SvgHelper,
   TextMarker,
+  LineMarker,
+  MeasurementMarker,
+  ArrowMarker,
 } from './core';
-import { LineMarker } from './core/LineMarker';
 import { Activator } from './core/Activator';
 
 import Logo from './assets/markerjs-logo-m.svg';
@@ -113,6 +115,8 @@ export class MarkerView extends HTMLElement {
     this.markerTypes = [
       FrameMarker,
       LineMarker,
+      ArrowMarker,
+      MeasurementMarker,
       PolygonMarker,
       FreehandMarker,
       TextMarker,
