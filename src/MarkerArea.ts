@@ -22,6 +22,7 @@ import { Activator } from './core/Activator';
 
 import Logo from './assets/markerjs-logo-m.svg';
 import { ShapeMarkerEditor } from './editor/ShapeMarkerEditor';
+import { ArrowMarker } from './core/ArrowMarker';
 
 export interface MarkerAreaEventMap {
   /**
@@ -187,6 +188,7 @@ export class MarkerArea extends HTMLElement {
     this.markerEditors.set(TextMarker, TextMarkerEditor<TextMarker>);
     this.markerEditors.set(CoverMarker, ShapeMarkerEditor<CoverMarker>);
     this.markerEditors.set(HighlightMarker, ShapeMarkerEditor<HighlightMarker>);
+    this.markerEditors.set(ArrowMarker, LinearMarkerEditor<ArrowMarker>);
 
     this.connectedCallback = this.connectedCallback.bind(this);
     this.disconnectedCallback = this.disconnectedCallback.bind(this);

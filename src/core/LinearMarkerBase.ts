@@ -99,20 +99,16 @@ export class LinearMarkerBase extends MarkerBase {
 
   public createVisual(): void {
     this.visual = SvgHelper.createGroup();
-    this.selectorVisual = SvgHelper.createPath(
-      this.getPath(),
-      [
-        ['stroke', 'transparent'],
-        ['stroke-width', Math.max(this.strokeWidth, 8).toString()],
-      ]
-    );
-    this.visibleVisual = SvgHelper.createPath(
-      this.getPath(),
-      [
-        ['stroke', this.strokeColor],
-        ['stroke-width', this.strokeWidth.toString()],
-      ]
-    );
+    this.selectorVisual = SvgHelper.createPath(this.getPath(), [
+      ['stroke', 'transparent'],
+      ['stroke-width', Math.max(this.strokeWidth, 8).toString()],
+    ]);
+    this.visibleVisual = SvgHelper.createPath(this.getPath(), [
+      ['stroke', this.strokeColor],
+      ['fill', this.strokeColor],
+      ['stroke-width', this.strokeWidth.toString()],
+      ['stroke-linejoin', 'round'],
+    ]);
     this.visual.appendChild(this.selectorVisual);
     this.visual.appendChild(this.visibleVisual);
 
@@ -128,9 +124,16 @@ export class LinearMarkerBase extends MarkerBase {
       SvgHelper.setAttributes(this.selectorVisual, [['d', this.getPath()]]);
       SvgHelper.setAttributes(this.visibleVisual, [['d', this.getPath()]]);
 
-      SvgHelper.setAttributes(this.visibleVisual, [['stroke', this.strokeColor]]);
-      SvgHelper.setAttributes(this.visibleVisual, [['stroke-width', this.strokeWidth.toString()]]);
-      SvgHelper.setAttributes(this.visibleVisual, [['stroke-dasharray', this.strokeDasharray.toString()]]);
+      SvgHelper.setAttributes(this.visibleVisual, [
+        ['stroke', this.strokeColor],
+      ]);
+      SvgHelper.setAttributes(this.visibleVisual, [['fill', this.strokeColor]]);
+      SvgHelper.setAttributes(this.visibleVisual, [
+        ['stroke-width', this.strokeWidth.toString()],
+      ]);
+      SvgHelper.setAttributes(this.visibleVisual, [
+        ['stroke-dasharray', this.strokeDasharray.toString()],
+      ]);
     }
   }
 
