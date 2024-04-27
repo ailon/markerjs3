@@ -2,10 +2,12 @@ import { MarkerArea, MarkerEditorEventData } from '../../src/MarkerArea';
 import { Renderer } from '../../src/Renderer';
 import {
   AnnotationState,
+  ArrowType,
   ShapeMarkerBase,
   ShapeOutlineMarkerBaseState,
 } from '../../src/core';
 import {
+  ArrowMarkerEditor,
   FreehandMarkerEditor,
   LinearMarkerEditor,
   PolygonMarkerEditor,
@@ -58,6 +60,13 @@ export class Experiments {
         const panel = document.getElementById('shapePropertyPanel');
         if (panel) {
           panel.style.display = '';
+        }
+
+        if (e.detail.markerEditor.is(ArrowMarkerEditor)) {
+          const arrowPanel = document.getElementById('arrowPropertyPanel');
+          if (arrowPanel) {
+            arrowPanel.style.display = '';
+          }
         }
         setPropertyValues(e);
       }
@@ -132,6 +141,17 @@ export class Experiments {
       this.setFontSize(1);
     });
 
+    const arrowTypeSelect = document.getElementById(
+      'arrowType',
+    ) as HTMLSelectElement;
+    arrowTypeSelect.addEventListener('change', (ev) => {
+      const value = (ev.target as HTMLSelectElement).value;
+      const editor = this.markerArea1?.currentMarkerEditor;
+      if (editor && editor.is(ArrowMarkerEditor)) {
+        editor.arrowType = value as ArrowType;
+      }
+    });
+
     function setPropertyValues(e: CustomEvent<MarkerEditorEventData>) {
       if (
         e.detail.markerEditor.is(ShapeOutlineMarkerEditor) ||
@@ -148,7 +168,13 @@ export class Experiments {
         (document.getElementById('strokeDasharray') as HTMLInputElement).value =
           e.detail.markerEditor.strokeDasharray;
       }
+
+      if (e.detail.markerEditor.is(ArrowMarkerEditor)) {
+        (document.getElementById('arrowType') as HTMLSelectElement).value =
+          e.detail.markerEditor.arrowType;
+      }
     }
+
     function setTextPropertyValues(e: CustomEvent<MarkerEditorEventData>) {
       if (e.detail.markerEditor.is(TextMarkerEditor)) {
         (document.getElementById('textColor') as HTMLInputElement).value =

@@ -17,6 +17,7 @@ export { LinearMarkerEditor } from './editor/LinearMarkerEditor';
 export { PolygonMarkerEditor } from './editor/PolygonMarkerEditor';
 export { FreehandMarkerEditor } from './editor/FreehandMarkerEditor';
 export { TextMarkerEditor } from './editor/TextMarkerEditor';
+export { ArrowMarkerEditor } from './editor/ArrowMarkerEditor';
 
 if (
   window &&

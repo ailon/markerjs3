@@ -44,6 +44,7 @@ export {
   ShapeOutlineMarkerEditor,
   ShapeMarkerEditor,
   TextMarkerEditor,
+  ArrowMarkerEditor,
 } from './editor';
 
 export { MarkerView, MarkerViewEventData, MarkerViewEventMap } from './viewer';
