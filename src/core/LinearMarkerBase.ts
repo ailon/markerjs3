@@ -33,6 +33,7 @@ export class LinearMarkerBase extends MarkerBase {
     if (this.visibleVisual) {
       SvgHelper.setAttributes(this.visibleVisual, [
         ['stroke', this._strokeColor],
+        ['fill', this._strokeColor],
       ]);
     }
   }
