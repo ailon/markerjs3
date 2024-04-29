@@ -1,6 +1,7 @@
 import { FontSize } from './FontSize';
 import { MarkerBaseState } from './MarkerBaseState';
 import { RectangularBoxMarkerBase } from './RectangularBoxMarkerBase';
+import { SvgHelper } from './SvgHelper';
 import { TextBlock } from './TextBlock';
 import { TextMarkerState } from './TextMarkerState';
 
@@ -111,6 +112,7 @@ export class TextMarker extends RectangularBoxMarkerBase {
     this.textSizeChanged = this.textSizeChanged.bind(this);
 
     this.createVisual = this.createVisual.bind(this);
+    this.adjustVisual = this.adjustVisual.bind(this);
 
     this.textBoundingBox = new DOMRect();
   }
@@ -119,12 +121,20 @@ export class TextMarker extends RectangularBoxMarkerBase {
     this.textBlock.fontFamily = this.fontFamily;
     this.textBlock.fontSize = this.fontSize;
     this.textBlock.color = this.color;
+    this.textBlock.offsetX = this.padding;
+    this.textBlock.offsetY = this.padding;
+
     this.textBlock.onTextSizeChanged = this.textSizeChanged;
 
-    this.visual = this.textBlock.textElement;
+    this.visual = SvgHelper.createGroup();
+    this.visual.appendChild(this.textBlock.textElement);
     this.addMarkerVisualToContainer(this.visual);
 
     this.textBlock.text = this._text;
+  }
+
+  public adjustVisual(): void {
+    this.setSize();
   }
 
   public ownsTarget(el: EventTarget): boolean {
@@ -160,6 +170,9 @@ export class TextMarker extends RectangularBoxMarkerBase {
       this.height = this.textBlock.textSize.height + this.padding * 2;
     }
 
+    this.textBlock.offsetX = this.padding;
+    this.textBlock.offsetY = this.padding;
+
     if (
       (prevWidth !== this.width || prevHeight !== this.height) &&
       this.onSizeChanged
@@ -171,7 +184,7 @@ export class TextMarker extends RectangularBoxMarkerBase {
   }
 
   private textSizeChanged(): void {
-    this.setSize();
+    this.adjustVisual();
   }
 
   /**
@@ -239,9 +252,9 @@ export class TextMarker extends RectangularBoxMarkerBase {
     this.text = textState.text;
 
     this.createVisual();
-    
+
     super.restoreState(state);
-    this.setSize();
+    this.adjustVisual();
   }
 
   public scale(scaleX: number, scaleY: number): void {
@@ -253,7 +266,6 @@ export class TextMarker extends RectangularBoxMarkerBase {
     };
     this.fontSize = newFontSize;
 
-    this.setSize();
-  }  
-
+    this.adjustVisual();
+  }
 }
