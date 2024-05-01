@@ -26,6 +26,8 @@ export {
   ArrowType,
   LineMarker,
   MeasurementMarker,
+  CalloutMarker,
+  CalloutMarkerState,
 } from './core';
 
 export {
@@ -46,6 +48,7 @@ export {
   ShapeMarkerEditor,
   TextMarkerEditor,
   ArrowMarkerEditor,
+  CalloutMarkerEditor,
 } from './editor';
 
 export { MarkerView, MarkerViewEventData, MarkerViewEventMap } from './viewer';

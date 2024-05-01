@@ -258,6 +258,9 @@ export class TextMarker extends RectangularBoxMarkerBase {
   }
 
   public scale(scaleX: number, scaleY: number): void {
+    // @todo for some reason causes wrong positioning in the Renderer
+    // this.padding = this.padding * ((scaleX + scaleY) / 2);
+
     super.scale(scaleX, scaleY);
 
     const newFontSize = {

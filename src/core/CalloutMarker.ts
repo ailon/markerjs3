@@ -9,7 +9,15 @@ export class CalloutMarker extends TextMarker {
 
   public static title = 'Callout marker';
 
-  private tipPosition: IPoint = { x: 0, y: 0 };
+  private _tipPosition: IPoint = { x: 0, y: 0 };
+  public get tipPosition(): IPoint {
+    return this._tipPosition;
+  }
+  public set tipPosition(value: IPoint) {
+    this._tipPosition = value;
+    this.adjustVisual();
+  }
+
   private tipBase1Position: IPoint = { x: 0, y: 0 };
   private tipBase2Position: IPoint = { x: 0, y: 0 };
 
@@ -145,14 +153,23 @@ export class CalloutMarker extends TextMarker {
         this.tipBase1Position = { x: offset, y: this.height };
         this.tipBase2Position = { x: offset + baseWidth, y: this.height };
       } else {
-        this.tipBase1Position = { x: 0, y: this.height - offset };
-        this.tipBase2Position = { x: 0, y: this.height - offset - baseWidth };
+        this.tipBase1Position = { x: 0, y: this.height - offset - baseWidth };
+        this.tipBase2Position = { x: 0, y: this.height - offset };
       }
     }
   }
 
   public createVisual(): void {
     super.createVisual();
+
+    this._tipPosition = {
+      // x: -50,
+      // x: this.width + 50,
+      x: this.width / 4,
+      // y: this.height / 4,
+      // y: -50,
+      y: this.height + 20,
+    };
 
     this._calloutVisual = SvgHelper.createPath(this.getPath(), [
       ['fill', this._fillColor],
@@ -166,14 +183,6 @@ export class CalloutMarker extends TextMarker {
 
   public adjustVisual(): void {
     super.adjustVisual();
-    this.tipPosition = {
-      // x: -50,
-      // x: this.width + 50,
-      x: this.width / 4,
-      // y: this.height / 4,
-      // y: -50,
-      y: this.height + 10,
-    };
     if (this._calloutVisual) {
       SvgHelper.setAttributes(this._calloutVisual, [
         ['d', this.getPath()],
@@ -209,8 +218,18 @@ export class CalloutMarker extends TextMarker {
 
   public restoreState(state: MarkerBaseState): void {
     const calloutState = state as CalloutMarkerState;
-    this.tipPosition = calloutState.tipPosition;
     super.restoreState(state);
+    this._tipPosition = calloutState.tipPosition;
+
+    this.adjustVisual();
+  }
+
+  public scale(scaleX: number, scaleY: number): void {
+    super.scale(scaleX, scaleY);
+    this._tipPosition = {
+      x: this._tipPosition.x * scaleX,
+      y: this._tipPosition.y * scaleY,
+    };
 
     this.adjustVisual();
   }

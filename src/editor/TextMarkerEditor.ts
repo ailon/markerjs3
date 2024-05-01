@@ -1,5 +1,4 @@
-import { IPoint, SvgHelper } from '../core';
-import { TextMarker } from '../core/TextMarker';
+import { IPoint, SvgHelper, TextMarker } from '../core';
 import { MarkerEditorProperties } from './MarkerEditorProperties';
 import { RectangularBoxMarkerBaseEditor } from './RectangularBoxMarkerBaseEditor';
 import { TextBlockEditor } from './TextBlockEditor';

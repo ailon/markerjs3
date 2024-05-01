@@ -34,3 +34,6 @@ export { TextMarkerState } from './core/TextMarkerState';
 
 export { CoverMarker } from './core/CoverMarker';
 export { HighlightMarker } from './core/HighlightMarker';
+
+export { CalloutMarker } from './core/CalloutMarker';
+export { CalloutMarkerState } from './core/CalloutMarkerState';

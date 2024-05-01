@@ -26,6 +26,7 @@ import { ArrowMarker } from './core/ArrowMarker';
 import { ArrowMarkerEditor } from './editor/ArrowMarkerEditor';
 import { MeasurementMarker } from './core/MeasurementMarker';
 import { CalloutMarker } from './core/CalloutMarker';
+import { CalloutMarkerEditor } from './editor/CalloutMarkerEditor';
 
 export interface MarkerAreaEventMap {
   /**
@@ -196,7 +197,7 @@ export class MarkerArea extends HTMLElement {
       MeasurementMarker,
       LinearMarkerEditor<MeasurementMarker>,
     );
-    this.markerEditors.set(CalloutMarker, TextMarkerEditor<CalloutMarker>);
+    this.markerEditors.set(CalloutMarker, CalloutMarkerEditor<CalloutMarker>);
 
     this.connectedCallback = this.connectedCallback.bind(this);
     this.disconnectedCallback = this.disconnectedCallback.bind(this);
