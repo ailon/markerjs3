@@ -111,6 +111,10 @@ export class TextMarkerEditor<
 
   private showEditor(): void {
     this.textBlockEditor.text = this.marker.text;
+    this.textBlockEditor.textColor = this.marker.color;
+    this.textBlockEditor.bgColor = this.marker.fillColor;
+    this.textBlockEditor.fontFamily = this.marker.fontFamily;
+    this.textBlockEditor.fontSize = `${this.marker.fontSize.value}${this.marker.fontSize.units}`;
 
     if (this.textBlockEditor.onTextChanged === undefined) {
       this.textBlockEditor.onTextChanged = (text: string) => {

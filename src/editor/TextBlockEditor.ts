@@ -26,7 +26,7 @@ export class TextBlockEditor {
     this._width = value;
     this.textEditor.style.width = `${this.width}px`;
   }
-  
+
   private _height = 0;
   /**
    * Returns editor height in pixels.
@@ -129,6 +129,15 @@ export class TextBlockEditor {
   public set textColor(value) {
     this._textColor = value;
     this.textEditor.style.color = this.textColor;
+  }
+
+  private _bgColor = 'transparent';
+  public get bgColor() {
+    return this._bgColor;
+  }
+  public set bgColor(value) {
+    this._bgColor = value;
+    this.textEditor.style.backgroundColor = this.bgColor;
   }
 
   /**
@@ -240,7 +249,7 @@ export class TextBlockEditor {
     range.collapse(false);
     const selection = window.getSelection();
     selection?.removeAllRanges();
-    selection?.addRange(range);    
+    selection?.addRange(range);
   }
   /**
    * Unfocuses the editor.
