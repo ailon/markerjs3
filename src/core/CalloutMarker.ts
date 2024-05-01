@@ -1,4 +1,6 @@
+import { CalloutMarkerState } from './CalloutMarkerState';
 import { IPoint } from './IPoint';
+import { MarkerBaseState } from './MarkerBaseState';
 import { SvgHelper } from './SvgHelper';
 import { TextMarker } from './TextMarker';
 
@@ -190,5 +192,26 @@ export class CalloutMarker extends TextMarker {
     } else {
       return false;
     }
+  }
+
+  public getState(): CalloutMarkerState {
+    const result: CalloutMarkerState = Object.assign(
+      {
+        tipPosition: this.tipPosition,
+      },
+      super.getState(),
+    );
+
+    result.typeName = CalloutMarker.typeName;
+
+    return result;
+  }
+
+  public restoreState(state: MarkerBaseState): void {
+    const calloutState = state as CalloutMarkerState;
+    this.tipPosition = calloutState.tipPosition;
+    super.restoreState(state);
+
+    this.adjustVisual();
   }
 }

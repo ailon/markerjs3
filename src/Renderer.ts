@@ -12,6 +12,7 @@ import {
   ArrowMarker,
   MeasurementMarker,
 } from './core';
+import { CalloutMarker } from './core/CalloutMarker';
 
 export class Renderer {
   private _mainCanvas?: SVGSVGElement;
@@ -100,6 +101,7 @@ export class Renderer {
       TextMarker,
       CoverMarker,
       HighlightMarker,
+      CalloutMarker,
     ];
 
     this.init = this.init.bind(this);

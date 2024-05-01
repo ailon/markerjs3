@@ -15,6 +15,7 @@ import {
 import { Activator } from './core/Activator';
 
 import Logo from './assets/markerjs-logo-m.svg';
+import { CalloutMarker } from './core/CalloutMarker';
 
 export interface MarkerViewEventMap {
   /**
@@ -122,6 +123,7 @@ export class MarkerView extends HTMLElement {
       TextMarker,
       CoverMarker,
       HighlightMarker,
+      CalloutMarker,
     ];
 
     this.connectedCallback = this.connectedCallback.bind(this);
