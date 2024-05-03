@@ -47,6 +47,7 @@ export class RectangularBoxMarkerBaseEditor<
    * Container for the marker's editing controls.
    */
   protected controlBox = SvgHelper.createGroup();
+  protected manipulationBox = SvgHelper.createGroup();
   private readonly CB_DISTANCE: number = 0;
   private controlRect?: SVGRectElement;
   private rotatorGripLine?: SVGLineElement;
@@ -109,7 +110,7 @@ export class RectangularBoxMarkerBaseEditor<
     this.offsetY = rotatedPoint.y - this.marker.top;
 
     if (this.state !== 'new') {
-      this.select();
+      this.select(this.isMultiSelected);
       this.activeGrip = this.controlGrips?.findGripByVisual(
         target as SVGGraphicsElement,
       );
@@ -279,9 +280,10 @@ export class RectangularBoxMarkerBaseEditor<
   /**
    * Displays marker's controls.
    */
-  public select(): void {
-    super.select();
+  public select(multi = false): void {
+    super.select(multi);
     this.adjustControlBox();
+    this.manipulationBox.style.display = multi ? 'none' : '';
     this.controlBox.style.display = '';
   }
 
@@ -300,6 +302,9 @@ export class RectangularBoxMarkerBaseEditor<
     this.controlBox.transform.baseVal.appendItem(translate);
 
     this.container.appendChild(this.controlBox);
+
+    this.manipulationBox = SvgHelper.createGroup();
+    this.controlBox.appendChild(this.manipulationBox);
 
     this.controlRect = SvgHelper.createRect(
       this.marker.width + this.CB_DISTANCE,
@@ -332,7 +337,7 @@ export class RectangularBoxMarkerBaseEditor<
       this.rotatorGripLine.style.filter =
         'drop-shadow(rgba(255, 255, 255, 0.7) 0px 2px 0px)';
 
-      this.controlBox.appendChild(this.rotatorGripLine);
+      this.manipulationBox.appendChild(this.rotatorGripLine);
     }
 
     this.controlGrips = new RectangularBoxMarkerGrips();
@@ -382,9 +387,9 @@ export class RectangularBoxMarkerBaseEditor<
   protected addControlGrips() {
     for (const grip of this.controlGrips.grips.values()) {
       grip.visual.transform.baseVal.appendItem(SvgHelper.createTransform());
-      this.controlBox.appendChild(grip.visual);
+      this.manipulationBox.appendChild(grip.visual);
 
-      this.controlBox.appendChild(grip.visual);
+      this.manipulationBox.appendChild(grip.visual);
     }
 
     if (this.disableRotation !== true) {
@@ -405,7 +410,7 @@ export class RectangularBoxMarkerBaseEditor<
   private createRotateGrip(): RotateGrip {
     const grip = new RotateGrip();
     grip.visual.transform.baseVal.appendItem(SvgHelper.createTransform());
-    this.controlBox.appendChild(grip.visual);
+    this.manipulationBox.appendChild(grip.visual);
 
     return grip;
   }

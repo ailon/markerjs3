@@ -560,8 +560,11 @@ export class MarkerArea extends HTMLElement {
 
   public selectEditor(editor: MarkerBaseEditor): void {
     if (this._selectedMarkerEditors.indexOf(editor) < 0) {
+      if (this._selectedMarkerEditors.length > 0) {
+        this._selectedMarkerEditors[0].select(true);
+      }
       this._selectedMarkerEditors.push(editor);
-      editor.select();
+      editor.select(true);
     }
   }
 

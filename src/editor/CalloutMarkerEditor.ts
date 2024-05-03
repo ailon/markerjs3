@@ -24,7 +24,7 @@ export class CalloutMarkerEditor<
   private createTipGrip(): ResizeGrip {
     const grip = new ResizeGrip();
     grip.visual.transform.baseVal.appendItem(SvgHelper.createTransform());
-    this.controlBox.appendChild(grip.visual);
+    this.manipulationBox.appendChild(grip.visual);
 
     return grip;
   }

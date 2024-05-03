@@ -26,6 +26,7 @@ export class LinearMarkerEditor<
    * Container for control elements.
    */
   protected controlBox: SVGGElement = SvgHelper.createGroup();
+  protected manipulationBox: SVGGElement = SvgHelper.createGroup();
 
   /**
    * First manipulation grip
@@ -42,12 +43,12 @@ export class LinearMarkerEditor<
 
   constructor(properties: MarkerEditorProperties<TMarkerType>) {
     super(properties);
-    
+
     this.ownsTarget = this.ownsTarget.bind(this);
 
     this.setupControlBox = this.setupControlBox.bind(this);
     this.adjustControlBox = this.adjustControlBox.bind(this);
-    
+
     this.addControlGrips = this.addControlGrips.bind(this);
     this.createGrip = this.createGrip.bind(this);
     this.positionGrip = this.positionGrip.bind(this);
@@ -64,24 +65,22 @@ export class LinearMarkerEditor<
 
   /**
    * Returns true if passed SVG element belongs to the marker. False otherwise.
-   * 
+   *
    * @param el - target element.
    */
   public ownsTarget(el: EventTarget): boolean {
     if (super.ownsTarget(el) || this.marker.ownsTarget(el)) {
       return true;
-    } else if (
-      this.grip1?.ownsTarget(el) || this.grip2?.ownsTarget(el)
-    ) {
+    } else if (this.grip1?.ownsTarget(el) || this.grip2?.ownsTarget(el)) {
       return true;
     } else {
       return false;
     }
-  }  
+  }
 
   /**
    * Handles pointer (mouse, touch, stylus, etc.) down event.
-   * 
+   *
    * @param point - event coordinates.
    * @param target - direct event target element.
    */
@@ -109,7 +108,7 @@ export class LinearMarkerEditor<
 
       this._state = 'creating';
     } else {
-      this.select();
+      this.select(this.isMultiSelected);
       if (target && this.grip1?.ownsTarget(target)) {
         this.activeGrip = this.grip1;
       } else if (target && this.grip2?.ownsTarget(target)) {
@@ -128,18 +127,21 @@ export class LinearMarkerEditor<
 
   /**
    * Handles pointer (mouse, touch, stylus, etc.) up event.
-   * 
+   *
    * @param point - event coordinates.
    * @param target - direct event target element.
    */
   public pointerUp(point: IPoint): void {
     const inState = this.state;
     super.pointerUp(point);
-    if (this.state === 'creating' && Math.abs(this.marker.x1 - this.marker.x2) < 10 
-    && Math.abs(this.marker.y1 - this.marker.y2) < 10) {
+    if (
+      this.state === 'creating' &&
+      Math.abs(this.marker.x1 - this.marker.x2) < 10 &&
+      Math.abs(this.marker.y1 - this.marker.y2) < 10
+    ) {
       this.marker.x2 = this.marker.x1 + this.defaultLength;
       this.marker.adjustVisual();
-      this.adjustControlBox()
+      this.adjustControlBox();
     } else {
       this.manipulate(point);
     }
@@ -148,42 +150,46 @@ export class LinearMarkerEditor<
       this.onMarkerCreated(this);
     }
   }
-  
+
   /**
    * Handles marker manipulation (move, resize, rotate, etc.).
-   * 
+   *
    * @param point - event coordinates.
    */
   public manipulate(point: IPoint): void {
     if (this.state === 'creating') {
       this.resize(point);
     } else if (this.state === 'move') {
-      this.marker.x1 = this.manipulationStartX1 + point.x - this.manipulationStartX;
-      this.marker.y1 = this.manipulationStartY1 + point.y - this.manipulationStartY;
-      this.marker.x2 = this.manipulationStartX2 + point.x - this.manipulationStartX;
-      this.marker.y2 = this.manipulationStartY2 + point.y - this.manipulationStartY;
+      this.marker.x1 =
+        this.manipulationStartX1 + point.x - this.manipulationStartX;
+      this.marker.y1 =
+        this.manipulationStartY1 + point.y - this.manipulationStartY;
+      this.marker.x2 =
+        this.manipulationStartX2 + point.x - this.manipulationStartX;
+      this.marker.y2 =
+        this.manipulationStartY2 + point.y - this.manipulationStartY;
       this.marker.adjustVisual();
       this.adjustControlBox();
     } else if (this.state === 'resize') {
       this.resize(point);
     }
-  } 
+  }
 
   /**
    * Resizes the line marker.
    * @param point - current manipulation coordinates.
    */
   protected resize(point: IPoint): void {
-    switch(this.activeGrip) {
+    switch (this.activeGrip) {
       case this.grip1:
         this.marker.x1 = point.x;
         this.marker.y1 = point.y;
-        break; 
+        break;
       case this.grip2:
       case undefined:
         this.marker.x2 = point.x;
         this.marker.y2 = point.y;
-        break; 
+        break;
     }
     this.marker.adjustVisual();
     this.adjustControlBox();
@@ -195,6 +201,8 @@ export class LinearMarkerEditor<
   protected setupControlBox(): void {
     this.controlBox = SvgHelper.createGroup();
     this.container.appendChild(this.controlBox);
+    this.manipulationBox = SvgHelper.createGroup();
+    this.controlBox.appendChild(this.manipulationBox);
 
     this.addControlGrips();
 
@@ -222,7 +230,7 @@ export class LinearMarkerEditor<
   protected createGrip(): ResizeGrip {
     const grip = new ResizeGrip();
     grip.visual.transform.baseVal.appendItem(SvgHelper.createTransform());
-    this.controlBox.appendChild(grip.visual);
+    this.manipulationBox.appendChild(grip.visual);
 
     return grip;
   }
@@ -234,8 +242,16 @@ export class LinearMarkerEditor<
     if (this.grip1 && this.grip2) {
       const gripSize = this.grip1.gripSize;
 
-      this.positionGrip(this.grip1.visual, this.marker.x1 - gripSize / 2, this.marker.y1 - gripSize / 2);
-      this.positionGrip(this.grip2.visual, this.marker.x2 - gripSize / 2, this.marker.y2 - gripSize / 2);
+      this.positionGrip(
+        this.grip1.visual,
+        this.marker.x1 - gripSize / 2,
+        this.marker.y1 - gripSize / 2,
+      );
+      this.positionGrip(
+        this.grip2.visual,
+        this.marker.x2 - gripSize / 2,
+        this.marker.y2 - gripSize / 2,
+      );
     }
   }
 
@@ -254,9 +270,10 @@ export class LinearMarkerEditor<
   /**
    * Displays marker's controls.
    */
-  public select(): void {
-    super.select();
+  public select(multi = false): void {
+    super.select(multi);
     this.adjustControlBox();
+    this.manipulationBox.style.display = multi ? 'none' : '';
     this.controlBox.style.display = '';
   }
 

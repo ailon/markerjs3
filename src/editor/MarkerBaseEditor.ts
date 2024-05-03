@@ -16,9 +16,8 @@ export type MarkerEditorState =
 export type MarkerCreationStyle = 'draw' | 'drop';
 
 export class MarkerBaseEditor<TMarkerType extends MarkerBase = MarkerBase> {
-  
   protected _markerType: new (container: SVGGElement) => TMarkerType;
-  
+
   protected _creationStyle: MarkerCreationStyle = 'draw';
   public get creationStyle(): MarkerCreationStyle {
     return this._creationStyle;
@@ -26,8 +25,8 @@ export class MarkerBaseEditor<TMarkerType extends MarkerBase = MarkerBase> {
 
   /**
    * Type guard for specific marker editor types.
-   * @param cls 
-   * @returns 
+   * @param cls
+   * @returns
    */
   public is<T>(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -35,7 +34,6 @@ export class MarkerBaseEditor<TMarkerType extends MarkerBase = MarkerBase> {
   ): this is T {
     return this instanceof cls;
   }
-  
 
   protected _marker: TMarkerType;
 
@@ -205,14 +203,16 @@ export class MarkerBaseEditor<TMarkerType extends MarkerBase = MarkerBase> {
     return found;
   }
 
+  protected isMultiSelected = false;
   /**
    * Selects this marker and displays appropriate selected marker UI.
    */
-  public select(): void {
+  public select(multi = false): void {
+    this.isMultiSelected = multi;
     this.container.style.cursor = 'move';
     this._isSelected = true;
     this.manipulationStartState = JSON.stringify(this._marker.getState());
-    console.log('manipulationStartState', this.manipulationStartState);
+    //console.log('manipulationStartState', this.manipulationStartState);
   }
 
   /**
@@ -290,10 +290,7 @@ export class MarkerBaseEditor<TMarkerType extends MarkerBase = MarkerBase> {
       //   this.manipulationStartState.state = 'select';
       // }
       // currentState.state = 'select';
-      if (
-        this.manipulationStartState !=
-        currentState
-      ) {
+      if (this.manipulationStartState != currentState) {
         this.manipulationStartState = currentState;
         this.onStateChanged(this);
       }
@@ -314,5 +311,4 @@ export class MarkerBaseEditor<TMarkerType extends MarkerBase = MarkerBase> {
     this.marker.restoreState(state);
     this.adjustControlBox();
   }
-
 }
