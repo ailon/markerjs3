@@ -106,6 +106,7 @@ export class MarkerArea extends HTMLElement {
   public get currentMarkerEditor(): MarkerBaseEditor | undefined {
     return this._currentMarkerEditor;
   }
+  private _selectedMarkerEditors: MarkerBaseEditor[] = [];
 
   private _newMarkerOutline: SVGPathElement = SvgHelper.createPath('', [
     ['stroke', '#333'],
@@ -444,6 +445,7 @@ export class MarkerArea extends HTMLElement {
     const markerEditor = this.markerEditors.get(mType);
     if (markerEditor && this._mainCanvas) {
       this.setCurrentEditor();
+      this.deselectEditor();
       this.addUndoStep();
       this._currentMarkerEditor = this.addNewMarker(markerEditor, mType);
       this._currentMarkerEditor.onMarkerCreated = this.markerCreated;
@@ -541,6 +543,7 @@ export class MarkerArea extends HTMLElement {
       !this._currentMarkerEditor.isSelected
     ) {
       if (this._currentMarkerEditor.state !== 'new') {
+        this._selectedMarkerEditors.push(this._currentMarkerEditor);
         this._currentMarkerEditor.select();
       }
 
@@ -552,6 +555,26 @@ export class MarkerArea extends HTMLElement {
         }),
       );
       // }
+    }
+  }
+
+  public selectEditor(editor: MarkerBaseEditor): void {
+    if (this._selectedMarkerEditors.indexOf(editor) < 0) {
+      this._selectedMarkerEditors.push(editor);
+      editor.select();
+    }
+  }
+
+  public deselectEditor(editor?: MarkerBaseEditor): void {
+    if (editor === undefined) {
+      this._selectedMarkerEditors.forEach((m) => m.deselect());
+      this._selectedMarkerEditors.splice(0);
+    } else {
+      const index = this._selectedMarkerEditors.indexOf(editor);
+      if (index >= 0) {
+        this._selectedMarkerEditors.splice(index, 1);
+        editor.deselect();
+      }
     }
   }
 
@@ -584,19 +607,25 @@ export class MarkerArea extends HTMLElement {
       } else if (this.mode === 'select') {
         const hitMarker = this.editors.find((m) => m.ownsTarget(ev.target));
         if (hitMarker !== undefined) {
-          this.setCurrentEditor(hitMarker);
           this.isDragging = true;
-          this._currentMarkerEditor!.pointerDown(
-            SvgHelper.clientToLocalCoordinates(
-              this._mainCanvas,
-              ev.clientX,
-              ev.clientY,
-              this.zoomLevel,
-            ),
-            ev.target ?? undefined,
+          if (ev.shiftKey) {
+            this.selectEditor(hitMarker);
+          } else if (!hitMarker.isSelected) {
+            this.deselectEditor();
+            this.setCurrentEditor(hitMarker);
+          }
+          const localPoint = SvgHelper.clientToLocalCoordinates(
+            this._mainCanvas,
+            ev.clientX,
+            ev.clientY,
+            this.zoomLevel,
+          );
+          this._selectedMarkerEditors.forEach((m) =>
+            m.pointerDown(localPoint, ev.target ?? undefined),
           );
         } else {
           this.setCurrentEditor();
+          this.deselectEditor();
           this.isDragging = true;
           this.prevPanPoint = { x: ev.clientX, y: ev.clientY };
         }
@@ -652,7 +681,13 @@ export class MarkerArea extends HTMLElement {
 
           this.showOutline(localPoint);
 
-          this._currentMarkerEditor.manipulate(localPoint);
+          if (this._selectedMarkerEditors.length > 1) {
+            this._selectedMarkerEditors.forEach((m) =>
+              m.manipulate(localPoint),
+            );
+          } else {
+            this._currentMarkerEditor.manipulate(localPoint);
+          }
         } else if (this.zoomLevel > 1) {
           this.panTo({ x: ev.clientX, y: ev.clientY });
         }
@@ -694,14 +729,18 @@ export class MarkerArea extends HTMLElement {
     }
     if (this.touchPoints === 0) {
       if (this.isDragging && this._currentMarkerEditor !== undefined) {
-        this._currentMarkerEditor.pointerUp(
-          SvgHelper.clientToLocalCoordinates(
-            this._mainCanvas,
-            ev.clientX,
-            ev.clientY,
-            this.zoomLevel,
-          ),
+        const localPoint = SvgHelper.clientToLocalCoordinates(
+          this._mainCanvas,
+          ev.clientX,
+          ev.clientY,
+          this.zoomLevel,
         );
+
+        if (this._selectedMarkerEditors.length > 1) {
+          this._selectedMarkerEditors.forEach((m) => m.pointerUp(localPoint));
+        } else {
+          this._currentMarkerEditor.pointerUp(localPoint);
+        }
 
         this.hideOutline();
       }
