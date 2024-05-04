@@ -226,6 +226,8 @@ export class MarkerArea extends HTMLElement {
     this.addNewMarker = this.addNewMarker.bind(this);
     this.markerCreated = this.markerCreated.bind(this);
     this.markerStateChanged = this.markerStateChanged.bind(this);
+    this.deleteMarker = this.deleteMarker.bind(this);
+    this.deleteSelectedMarkers = this.deleteSelectedMarkers.bind(this);
 
     this.switchToSelectMode = this.switchToSelectMode.bind(this);
 
@@ -516,6 +518,30 @@ export class MarkerArea extends HTMLElement {
         detail: { markerArea: this, markerEditor: markerEditor },
       }),
     );
+  }
+
+  public deleteMarker(markerEditor: MarkerBaseEditor): void {
+    if (this.editors.indexOf(markerEditor) >= 0) {
+      this.addUndoStep();
+      this.dispatchEvent(
+        new CustomEvent<MarkerEditorEventData>('markerbeforedelete', {
+          detail: { markerArea: this, markerEditor: markerEditor },
+        }),
+      );
+      this._mainCanvas?.removeChild(markerEditor.container);
+      markerEditor.dispose();
+      this.editors.splice(this.editors.indexOf(markerEditor), 1);
+      this.dispatchEvent(
+        new CustomEvent<MarkerEditorEventData>('markerdelete', {
+          detail: { markerArea: this, markerEditor: markerEditor },
+        }),
+      );
+    }
+  }
+
+  public deleteSelectedMarkers() {
+    this._selectedMarkerEditors.forEach((m) => this.deleteMarker(m));
+    this._selectedMarkerEditors.splice(0);
   }
 
   public setCurrentEditor(editor?: MarkerBaseEditor): void {

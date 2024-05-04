@@ -353,4 +353,10 @@ export class Experiments {
       this.markerArea1.switchToSelectMode();
     }
   }
+
+  public deleteMarker() {
+    if (this.markerArea1) {
+      this.markerArea1.deleteSelectedMarkers();
+    }
+  }
 }
