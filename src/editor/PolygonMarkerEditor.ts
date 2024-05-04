@@ -21,6 +21,7 @@ export class PolygonMarkerEditor<
    * Container for control elements.
    */
   protected controlBox: SVGGElement = SvgHelper.createGroup();
+  protected manipulationBox: SVGGElement = SvgHelper.createGroup();
 
   protected grips: ResizeGrip[] = [];
   /**
@@ -86,7 +87,7 @@ export class PolygonMarkerEditor<
         this.addNewPointWhileCreating(point);
       }
     } else {
-      this.select();
+      this.select(this.isMultiSelected);
       this.activeGrip =
         target && this.grips.find((grip) => grip.ownsTarget(target));
 
@@ -195,7 +196,9 @@ export class PolygonMarkerEditor<
 
   public dblClick(point: IPoint, target?: EventTarget | undefined): void {
     if (target && this.state === 'select') {
-      const selectorLineIndex = this.marker.selectorVisualLines.findIndex((l) => l === target);
+      const selectorLineIndex = this.marker.selectorVisualLines.findIndex(
+        (l) => l === target,
+      );
       if (selectorLineIndex > -1) {
         this.marker.points.splice(selectorLineIndex + 1, 0, point);
         this.marker.adjustVisual();
@@ -217,6 +220,8 @@ export class PolygonMarkerEditor<
   protected setupControlBox(): void {
     this.controlBox = SvgHelper.createGroup();
     this.container.appendChild(this.controlBox);
+    this.manipulationBox = SvgHelper.createGroup();
+    this.controlBox.appendChild(this.manipulationBox);
 
     this.adjustControlGrips();
 
@@ -241,7 +246,7 @@ export class PolygonMarkerEditor<
       for (let i = 0; i < -noOfMissingGrips; i++) {
         const grip = this.grips.pop();
         if (grip) {
-          this.controlBox.removeChild(grip.visual);
+          this.manipulationBox.removeChild(grip.visual);
         }
       }
     }
@@ -256,7 +261,7 @@ export class PolygonMarkerEditor<
   protected createGrip(): ResizeGrip {
     const grip = new ResizeGrip();
     grip.visual.transform.baseVal.appendItem(SvgHelper.createTransform());
-    this.controlBox.appendChild(grip.visual);
+    this.manipulationBox.appendChild(grip.visual);
 
     return grip;
   }
@@ -290,9 +295,10 @@ export class PolygonMarkerEditor<
   /**
    * Displays marker's controls.
    */
-  public select(): void {
-    super.select();
+  public select(multi = false): void {
+    super.select(multi);
     this.adjustControlBox();
+    this.manipulationBox.style.display = multi ? 'none' : '';
     this.controlBox.style.display = '';
   }
 

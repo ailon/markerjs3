@@ -583,12 +583,28 @@ export class MarkerArea extends HTMLElement {
 
   private touchPoints = 0;
   private isDragging = false;
+  private isSelecting = false;
+
+  private _marqueeSelectOutline: SVGRectElement = SvgHelper.createRect(0, 0, [
+    ['stroke', '#333'],
+    ['stroke-width', '0.5'],
+    ['stroke-dasharray', '5 5'],
+    ['fill', 'transparent'],
+    ['pointer-events', 'none'],
+  ]);
+  private _marqueeSelectRect = new DOMRect(0, 0, 0, 0);
+
+  private _manipulationStartX = 0;
+  private _manipulationStartY = 0;
 
   private onCanvasPointerDown(ev: PointerEvent) {
     // @todo ?
     // if (!this._isFocused) {
     //   this.focus();
     // }
+
+    this._manipulationStartX = ev.clientX;
+    this._manipulationStartY = ev.clientY;
 
     this.touchPoints++;
     if (this.touchPoints === 1 || ev.pointerType !== 'touch') {
@@ -608,6 +624,12 @@ export class MarkerArea extends HTMLElement {
           ev.target ?? undefined,
         );
       } else if (this.mode === 'select') {
+        const localPoint = SvgHelper.clientToLocalCoordinates(
+          this._mainCanvas,
+          ev.clientX,
+          ev.clientY,
+          this.zoomLevel,
+        );
         const hitMarker = this.editors.find((m) => m.ownsTarget(ev.target));
         if (hitMarker !== undefined) {
           this.isDragging = true;
@@ -617,19 +639,33 @@ export class MarkerArea extends HTMLElement {
             this.deselectEditor();
             this.setCurrentEditor(hitMarker);
           }
-          const localPoint = SvgHelper.clientToLocalCoordinates(
-            this._mainCanvas,
-            ev.clientX,
-            ev.clientY,
-            this.zoomLevel,
-          );
           this._selectedMarkerEditors.forEach((m) =>
             m.pointerDown(localPoint, ev.target ?? undefined),
           );
         } else {
           this.setCurrentEditor();
           this.deselectEditor();
+          this.isSelecting = true;
           this.isDragging = true;
+
+          // marquee select
+          this._marqueeSelectRect.x = localPoint.x;
+          this._marqueeSelectRect.y = localPoint.y;
+          this._marqueeSelectRect.width = 0;
+          this._marqueeSelectRect.height = 0;
+          SvgHelper.setAttributes(this._marqueeSelectOutline, [
+            ['x', localPoint.x.toString()],
+            ['y', localPoint.y.toString()],
+            ['width', '0'],
+            ['height', '0'],
+          ]);
+          if (
+            this._groupLayer &&
+            !this._groupLayer.contains(this._marqueeSelectOutline)
+          ) {
+            this._groupLayer.appendChild(this._marqueeSelectOutline);
+          }
+
           this.prevPanPoint = { x: ev.clientX, y: ev.clientY };
         }
       }
@@ -664,8 +700,21 @@ export class MarkerArea extends HTMLElement {
   }
 
   private onPointerMove(ev: PointerEvent) {
-    if (this.touchPoints === 1 || ev.pointerType !== 'touch') {
-      if (this._currentMarkerEditor !== undefined || this.isDragging) {
+    if (
+      this.touchPoints === 1 ||
+      (ev.pointerType !== 'touch' && this.isDragging)
+    ) {
+      const localPoint = SvgHelper.clientToLocalCoordinates(
+        this._mainCanvas,
+        ev.clientX,
+        ev.clientY,
+        this.zoomLevel,
+      );
+
+      if (
+        this._currentMarkerEditor !== undefined ||
+        this._selectedMarkerEditors.length > 0
+      ) {
         // don't swallow the event when editing text markers
         if (
           this._currentMarkerEditor === undefined ||
@@ -674,26 +723,50 @@ export class MarkerArea extends HTMLElement {
           ev.preventDefault();
         }
 
-        if (this._currentMarkerEditor !== undefined) {
-          const localPoint = SvgHelper.clientToLocalCoordinates(
-            this._mainCanvas,
-            ev.clientX,
-            ev.clientY,
-            this.zoomLevel,
-          );
-
+        if (
+          this._currentMarkerEditor !== undefined ||
+          this._selectedMarkerEditors.length > 0
+        ) {
           this.showOutline(localPoint);
 
-          if (this._selectedMarkerEditors.length > 1) {
+          if (this._selectedMarkerEditors.length > 0) {
             this._selectedMarkerEditors.forEach((m) =>
               m.manipulate(localPoint),
             );
           } else {
-            this._currentMarkerEditor.manipulate(localPoint);
+            this._currentMarkerEditor?.manipulate(localPoint);
           }
         } else if (this.zoomLevel > 1) {
           this.panTo({ x: ev.clientX, y: ev.clientY });
         }
+      } else if (this.isSelecting) {
+        // adjust marquee
+        const localManipulationStart = SvgHelper.clientToLocalCoordinates(
+          this._mainCanvas,
+          this._manipulationStartX,
+          this._manipulationStartY,
+          this.zoomLevel,
+        );
+
+        this._marqueeSelectRect.x = Math.min(
+          localPoint.x,
+          localManipulationStart.x,
+        );
+        this._marqueeSelectRect.y = Math.min(
+          localPoint.y,
+          localManipulationStart.y,
+        );
+        this._marqueeSelectRect.width =
+          Math.abs(ev.clientX - this._manipulationStartX) / this.zoomLevel;
+        this._marqueeSelectRect.height =
+          Math.abs(ev.clientY - this._manipulationStartY) / this.zoomLevel;
+
+        SvgHelper.setAttributes(this._marqueeSelectOutline, [
+          ['x', `${this._marqueeSelectRect.x}`],
+          ['y', `${this._marqueeSelectRect.y}`],
+          ['width', `${this._marqueeSelectRect.width}`],
+          ['height', `${this._marqueeSelectRect.height}`],
+        ]);
       }
     }
   }
@@ -746,10 +819,38 @@ export class MarkerArea extends HTMLElement {
         }
 
         this.hideOutline();
+      } else if (this.isSelecting) {
+        // finish marquee selection
+        if (
+          this._groupLayer &&
+          this._groupLayer.contains(this._marqueeSelectOutline)
+        ) {
+          this._groupLayer.removeChild(this._marqueeSelectOutline);
+        }
+        this.finishMarqueeSelection();
       }
     }
     this.isDragging = false;
+    this.isSelecting = false;
     this.addUndoStep();
+  }
+
+  private finishMarqueeSelection() {
+    this.deselectEditor();
+
+    this.editors.forEach((m) => {
+      const markerRect = m.marker.container.getBBox();
+      if (
+        markerRect.x <
+          this._marqueeSelectRect.x + this._marqueeSelectRect.width &&
+        markerRect.x + markerRect.width > this._marqueeSelectRect.x &&
+        markerRect.y <
+          this._marqueeSelectRect.y + this._marqueeSelectRect.height &&
+        markerRect.y + markerRect.height > this._marqueeSelectRect.y
+      ) {
+        this.selectEditor(m);
+      }
+    });
   }
 
   private onPointerOut(/*ev: PointerEvent*/) {
