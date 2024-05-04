@@ -172,6 +172,7 @@ export class TextBlock {
   private setupTextElement() {
     this._textElement.style.fontSize = `${this.fontSize.value}${this.fontSize.units}`;
     this._textElement.style.textAnchor = 'middle';
+    this._textElement.style.userSelect = 'none';
 
     this._labelBackground.style.stroke = '#aaa';
     this._labelBackground.style.strokeDasharray = '2 2';
@@ -184,26 +185,27 @@ export class TextBlock {
       const charsLinesAspectRatio = 0.35;
 
       let longestLineChars = textLines[0].length;
-      textLines.forEach(line => {
+      textLines.forEach((line) => {
         if (line.length > longestLineChars) {
           longestLineChars = line.length;
         }
       });
 
-      return longestLineChars * charsLinesAspectRatio / textLines.length;
+      return (longestLineChars * charsLinesAspectRatio) / textLines.length;
     }
 
     if (this.text !== '') {
       const lines = this.text.split(/\r\n|[\n\v\f\r\x85\u2028\u2029]/);
-      const boxAspectRatio = this.boundingBox.width * 1.0 / this.boundingBox.height;
+      const boxAspectRatio =
+        (this.boundingBox.width * 1.0) / this.boundingBox.height;
       let processedLines = new Array<string>(...lines);
-      
+
       let textAspectRatio = getTextAspectRatio(processedLines);
 
       let maxLineLength = Number.MAX_VALUE;
       while (textAspectRatio > boxAspectRatio) {
         let longestLine = processedLines[0];
-        processedLines.forEach(line => {
+        processedLines.forEach((line) => {
           if (line.length > longestLine.length) {
             longestLine = line;
           }
@@ -212,7 +214,7 @@ export class TextBlock {
 
         if (maxLineLength > 0) {
           processedLines = [];
-          lines.forEach(line => {
+          lines.forEach((line) => {
             let reminderLine = line;
             while (reminderLine.length > maxLineLength) {
               let maxEnd = reminderLine.lastIndexOf(' ', maxLineLength);
@@ -272,8 +274,8 @@ export class TextBlock {
             [
               // ['x', '0'],
               ['dy', lineno > 0 ? LINE_SIZE : '0'],
-            ]
-          )
+            ],
+          ),
         );
       });
 
@@ -347,12 +349,11 @@ export class TextBlock {
       ['x', (centerX - (self._textSize.width * bgPadding) / 2).toString()],
       [
         'y',
-        (
-          self._textSize.y - bgPadding
+        (self._textSize.y - bgPadding)
           // centerY -
           // (self._textSize.height / 2) * (bgPadding - 1) * 2
           // - lineHeight / 2
-        ).toString(),
+          .toString(),
       ],
     ]);
 
