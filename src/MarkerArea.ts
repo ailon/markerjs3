@@ -1056,7 +1056,7 @@ export class MarkerArea extends HTMLElement {
    * thank you!
    */
   private toggleLogo() {
-    if (!Activator.isLicensed('MJS3')) {
+    if (!Activator.isLicensed('MJS3E') && !Activator.isLicensed('MJS3')) {
       // NOTE:
       // before removing this call please consider supporting marker.js
       // by visiting https://markerjs.com/ for details
