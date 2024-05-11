@@ -1,6 +1,7 @@
 import {
   AnnotationState,
   CoverMarker,
+  EllipseFrameMarker,
   FrameMarker,
   FreehandMarker,
   HighlightMarker,
@@ -184,6 +185,10 @@ export class MarkerArea extends HTMLElement {
     super();
 
     this.markerEditors.set(FrameMarker, ShapeOutlineMarkerEditor<FrameMarker>);
+    this.markerEditors.set(
+      EllipseFrameMarker,
+      ShapeOutlineMarkerEditor<FrameMarker>,
+    );
     this.markerEditors.set(LineMarker, LinearMarkerEditor<LineMarker>);
     this.markerEditors.set(PolygonMarker, PolygonMarkerEditor<PolygonMarker>);
     this.markerEditors.set(
