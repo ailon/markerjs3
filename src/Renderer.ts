@@ -12,6 +12,7 @@ import {
   ArrowMarker,
   MeasurementMarker,
   EllipseFrameMarker,
+  EllipseMarker,
 } from './core';
 import { CalloutMarker } from './core/CalloutMarker';
 
@@ -104,6 +105,7 @@ export class Renderer {
       HighlightMarker,
       CalloutMarker,
       EllipseFrameMarker,
+      EllipseMarker,
     ];
 
     this.init = this.init.bind(this);

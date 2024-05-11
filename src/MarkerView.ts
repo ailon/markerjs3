@@ -12,6 +12,7 @@ import {
   MeasurementMarker,
   ArrowMarker,
   EllipseFrameMarker,
+  EllipseMarker,
 } from './core';
 import { Activator } from './core/Activator';
 
@@ -126,6 +127,7 @@ export class MarkerView extends HTMLElement {
       HighlightMarker,
       CalloutMarker,
       EllipseFrameMarker,
+      EllipseMarker,
     ];
 
     this.connectedCallback = this.connectedCallback.bind(this);

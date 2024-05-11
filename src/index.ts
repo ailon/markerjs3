@@ -29,6 +29,7 @@ export {
   CalloutMarker,
   CalloutMarkerState,
   EllipseFrameMarker,
+  EllipseMarker,
 } from './core';
 
 export {
