@@ -30,6 +30,7 @@ export {
   CalloutMarkerState,
   EllipseFrameMarker,
   EllipseMarker,
+  FontSize,
 } from './core';
 
 export {

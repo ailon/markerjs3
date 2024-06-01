@@ -40,3 +40,5 @@ export { CalloutMarkerState } from './core/CalloutMarkerState';
 
 export { EllipseFrameMarker } from './core/EllipseFrameMarker';
 export { EllipseMarker } from './core/EllipseMarker';
+
+export { FontSize } from './core/FontSize';
