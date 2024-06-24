@@ -128,8 +128,8 @@ export class PolygonMarkerEditor<
   private finishCreation() {
     this.marker.stage = 'normal';
     // connected the last point with the first one
-    // remove the last point and adjust grips
-    this.marker.points.pop();
+    // remove the first point and adjust grips
+    this.marker.points.splice(0, 1);
     this.marker.adjustVisual();
     this.adjustControlGrips();
     this.grips.forEach((grip) => {
