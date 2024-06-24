@@ -7,11 +7,7 @@ export abstract class ShapeMarkerBase extends ShapeOutlineMarkerBase {
   public static title = 'Shape marker';
 
   protected _fillColor = 'transparent';
-  public get fillColor() {
-    return this._fillColor;
-  }
-  public set fillColor(value) {
-    this._fillColor = value;
+  protected applyFillColor() {
     if (this.visual) {
       SvgHelper.setAttributes(this.visual, [['fill', this._fillColor]]);
     }
