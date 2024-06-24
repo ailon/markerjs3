@@ -21,6 +21,8 @@ export class Renderer {
 
   private _editingTarget?: HTMLImageElement;
 
+  private _renderHelperContainer?: HTMLDivElement;
+
   private _targetWidth = -1;
   public get targetWidth() {
     return this._targetWidth;
@@ -143,7 +145,19 @@ export class Renderer {
 
     // text isn't sized correctly without adding to the DOM
     this._mainCanvas.style.visibility = 'hidden';
-    document.body.appendChild(this._mainCanvas);
+
+    this._renderHelperContainer = document.createElement('div');
+    this._renderHelperContainer.style.position = 'absolute';
+    this._renderHelperContainer.style.top = '0px';
+    this._renderHelperContainer.style.left = '0px';
+    this._renderHelperContainer.style.width = '10px';
+    this._renderHelperContainer.style.height = '10px';
+    this._renderHelperContainer.style.overflow = 'hidden';
+    this._renderHelperContainer.style.visibility = 'hidden';
+
+    this._renderHelperContainer.appendChild(this._mainCanvas);
+
+    document.body.appendChild(this._renderHelperContainer);
   }
 
   private setMainCanvasSize() {
@@ -216,8 +230,11 @@ export class Renderer {
       this._editingTarget.style.visibility = 'hidden';
       this._editingTarget.src = this.targetImage.src;
 
-      // this._canvasContainer.insertBefore(this._editingTarget, this._mainCanvas);
-      document.body.appendChild(this._editingTarget);
+      this._renderHelperContainer?.insertBefore(
+        this._editingTarget,
+        this._mainCanvas,
+      );
+      // document.body.appendChild(this._editingTarget);
     }
   }
 
@@ -383,11 +400,12 @@ export class Renderer {
     }
 
     if (this._editingTarget) {
-      document.body.removeChild(this._editingTarget);
+      this._renderHelperContainer?.removeChild(this._editingTarget);
     }
 
     // remove the helper main canvas from the page
-    document.body.removeChild(this._mainCanvas);
+    this._renderHelperContainer?.removeChild(this._mainCanvas);
+    document.body.removeChild(this._renderHelperContainer!);
 
     return result;
   }
