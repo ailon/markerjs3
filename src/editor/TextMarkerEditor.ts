@@ -1,4 +1,4 @@
-import { IPoint, SvgHelper, TextMarker } from '../core';
+import { FontSize, IPoint, SvgHelper, TextMarker } from '../core';
 import { MarkerEditorProperties } from './MarkerEditorProperties';
 import { RectangularBoxMarkerBaseEditor } from './RectangularBoxMarkerBaseEditor';
 import { TextBlockEditor } from './TextBlockEditor';
@@ -9,6 +9,30 @@ export class TextMarkerEditor<
   private textBlockEditorContainer: SVGForeignObjectElement =
     SvgHelper.createForeignObject();
   private textBlockEditor: TextBlockEditor;
+
+  public set color(color: string) {
+    this.marker.color = color;
+    this.stateChanged();
+  }
+  public get color(): string {
+    return this.marker.color;
+  }
+
+  public set fontFamily(font: string) {
+    this.marker.fontFamily = font;
+    this.stateChanged();
+  }
+  public get fontFamily(): string {
+    return this.marker.fontFamily;
+  }
+
+  public set fontSize(size: FontSize) {
+    this.marker.fontSize = size;
+    this.stateChanged();
+  }
+  public get fontSize(): FontSize {
+    return this.marker.fontSize;
+  }
 
   constructor(properties: MarkerEditorProperties<TMarkerType>) {
     super(properties);

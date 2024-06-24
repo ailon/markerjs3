@@ -314,7 +314,7 @@ export class Experiments {
   public setTextColor(color: string) {
     const editor = this.markerArea1?.currentMarkerEditor;
     if (editor && editor.is(TextMarkerEditor)) {
-      editor.marker.color = color;
+      editor.color = color;
     }
     console.log('setTextColor', color);
   }
@@ -322,7 +322,7 @@ export class Experiments {
   public setFontFamily(fontFamily: string) {
     const editor = this.markerArea1?.currentMarkerEditor;
     if (editor && editor.is(TextMarkerEditor)) {
-      editor.marker.fontFamily = fontFamily;
+      editor.fontFamily = fontFamily;
     }
     console.log('setFontFamily', fontFamily);
   }
@@ -330,9 +330,9 @@ export class Experiments {
   public setFontSize(sign: number) {
     const editor = this.markerArea1?.currentMarkerEditor;
     if (editor && editor.is(TextMarkerEditor)) {
-      const fontSize = editor.marker.fontSize;
+      const fontSize = editor.fontSize;
       fontSize.value += fontSize.step * sign;
-      editor.marker.fontSize = fontSize;
+      editor.fontSize = fontSize;
     }
     console.log('setFontSize', sign);
   }
