@@ -38,6 +38,34 @@ export class CalloutMarker extends TextMarker {
     this.setTipPoints = this.setTipPoints.bind(this);
   }
 
+  protected applyStrokeColor() {
+    SvgHelper.setAttributes(this._calloutVisual, [
+      ['stroke', this._strokeColor],
+    ]);
+  }
+
+  protected applyStrokeWidth() {
+    SvgHelper.setAttributes(this._calloutVisual, [
+      ['stroke-width', this._strokeWidth.toString()],
+    ]);
+  }
+
+  protected applyStrokeDasharray() {
+    SvgHelper.setAttributes(this._calloutVisual, [
+      ['stroke-dasharray', this._strokeDasharray],
+    ]);
+  }
+
+  protected applyOpacity() {
+    SvgHelper.setAttributes(this._calloutVisual, [
+      ['opacity', this._opacity.toString()],
+    ]);
+  }
+
+  protected applyFillColor() {
+    SvgHelper.setAttributes(this._calloutVisual, [['fill', this._fillColor]]);
+  }
+
   protected getPath(): string {
     const r = 5;
     this.setTipPoints();

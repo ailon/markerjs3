@@ -7,6 +7,7 @@ import {
 } from '../../src/core';
 import {
   ArrowMarkerEditor,
+  CalloutMarkerEditor,
   FreehandMarkerEditor,
   LinearMarkerEditor,
   PolygonMarkerEditor,
@@ -55,20 +56,20 @@ export class Experiments {
           panel.style.display = '';
         }
         setTextPropertyValues(e);
-      } else {
-        const panel = document.getElementById('shapePropertyPanel');
-        if (panel) {
-          panel.style.display = '';
-        }
-
-        if (e.detail.markerEditor.is(ArrowMarkerEditor)) {
-          const arrowPanel = document.getElementById('arrowPropertyPanel');
-          if (arrowPanel) {
-            arrowPanel.style.display = '';
-          }
-        }
-        setPropertyValues(e);
       }
+      const panel = document.getElementById('shapePropertyPanel');
+      if (panel) {
+        panel.style.display = '';
+      }
+
+      if (e.detail.markerEditor.is(ArrowMarkerEditor)) {
+        const arrowPanel = document.getElementById('arrowPropertyPanel');
+        if (arrowPanel) {
+          arrowPanel.style.display = '';
+        }
+      }
+      setPropertyValues(e);
+
       console.log('markerselect', e);
       console.log('marker type:', e.detail.markerEditor.marker.typeName);
     });
@@ -259,7 +260,8 @@ export class Experiments {
       (editor.is(ShapeOutlineMarkerEditor) ||
         editor.is(LinearMarkerEditor) ||
         editor.is(FreehandMarkerEditor) ||
-        editor.is(PolygonMarkerEditor))
+        editor.is(PolygonMarkerEditor) ||
+        editor.is(CalloutMarkerEditor))
     ) {
       editor.strokeColor = color;
     }
@@ -270,7 +272,9 @@ export class Experiments {
     const editor = this.markerArea1?.currentMarkerEditor;
     if (
       editor &&
-      (editor.is(ShapeMarkerEditor) || editor.is(PolygonMarkerEditor))
+      (editor.is(ShapeMarkerEditor) ||
+        editor.is(PolygonMarkerEditor) ||
+        editor.is(CalloutMarkerEditor))
     ) {
       editor.fillColor = color;
     }
@@ -284,7 +288,8 @@ export class Experiments {
       (editor.is(ShapeOutlineMarkerEditor) ||
         editor.is(LinearMarkerEditor) ||
         editor.is(FreehandMarkerEditor) ||
-        editor.is(PolygonMarkerEditor))
+        editor.is(PolygonMarkerEditor) ||
+        editor.is(CalloutMarkerEditor))
     ) {
       editor.strokeWidth = Number.parseInt(width);
     }
@@ -298,7 +303,8 @@ export class Experiments {
       (editor.is(ShapeOutlineMarkerEditor) ||
         editor.is(LinearMarkerEditor) ||
         editor.is(FreehandMarkerEditor) ||
-        editor.is(PolygonMarkerEditor))
+        editor.is(PolygonMarkerEditor) ||
+        editor.is(CalloutMarkerEditor))
     ) {
       editor.strokeDasharray = dashes;
     }
