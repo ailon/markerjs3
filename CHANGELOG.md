@@ -5,7 +5,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.0.0-beta.0] - 2024-06-24
+
+### Fixed
+
+- `FontSize` interface isn't exported
+- logo positioning
+- last point in `PolygonMarker` is removed when closing the loop
+- rasterizing the result causes a layout shift
+- `fillColor` applied in incorrect way
+- shape properties not applied to `CalloutMarker`
+- `TextMarkerEditor` doesn't expose marker properties (`color`, `fontFamily`, `fontSize`)
+
+### Misc
+
+- Updated readme with usage basics and demo link
+
 ## [3.0.0-alpha.4] - 2024-05-11
+
+### Added
 
 - Ellipse frame marker
 - Ellipse marker
@@ -43,6 +61,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Initial public release.
 
+[3.0.0-beta.0]: https://github.com/ailon/markerjs3/releases/tag/v3.0.0-beta.0
 [3.0.0-alpha.4]: https://github.com/ailon/markerjs3/releases/tag/v3.0.0-alpha.4
 [3.0.0-alpha.3]: https://github.com/ailon/markerjs3/releases/tag/v3.0.0-alpha.3
 [3.0.0-alpha.2]: https://github.com/ailon/markerjs3/releases/tag/v3.0.0-alpha.2
