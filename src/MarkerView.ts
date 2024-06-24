@@ -494,9 +494,7 @@ export class MarkerView extends HTMLElement {
   private positionLogo() {
     if (this._logoUI && this._contentContainer) {
       this._logoUI.style.left = `20px`;
-      this._logoUI.style.top = `${
-        this._contentContainer.offsetHeight - this._logoUI.clientHeight - 20
-      }px`;
+      this._logoUI.style.bottom = `20px`;
     }
   }
 
