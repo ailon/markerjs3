@@ -254,6 +254,10 @@ export class MarkerArea extends HTMLElement {
     this.addLogo = this.addLogo.bind(this);
     this.removeLogo = this.removeLogo.bind(this);
 
+    this.adjustMarqueeSelectOutline =
+      this.adjustMarqueeSelectOutline.bind(this);
+    this.hideMarqueeSelectOutline = this.hideMarqueeSelectOutline.bind(this);
+
     this.attachShadow({ mode: 'open' });
   }
 
@@ -619,11 +623,11 @@ export class MarkerArea extends HTMLElement {
   private isSelecting = false;
 
   private _marqueeSelectOutline: SVGRectElement = SvgHelper.createRect(0, 0, [
-    ['stroke', '#333'],
-    ['stroke-width', '0.5'],
-    ['stroke-dasharray', '5 5'],
-    ['fill', 'transparent'],
+    ['stroke', 'rgb(35, 35, 255)'],
+    ['stroke-width', '1'],
+    ['fill', 'rgba(129, 129, 255, 0.3)'],
     ['pointer-events', 'none'],
+    ['cursor', 'move'],
   ]);
   private _marqueeSelectRect = new DOMRect(0, 0, 0, 0);
 
@@ -672,6 +676,14 @@ export class MarkerArea extends HTMLElement {
             this.deselectEditor();
             this.setCurrentEditor(hitMarker);
           }
+          this._selectedMarkerEditors.forEach((m) =>
+            m.pointerDown(localPoint, ev.target ?? undefined),
+          );
+        } else if (
+          ev.target === this._marqueeSelectOutline &&
+          this._selectedMarkerEditors.length > 1
+        ) {
+          this.isDragging = true;
           this._selectedMarkerEditors.forEach((m) =>
             m.pointerDown(localPoint, ev.target ?? undefined),
           );
@@ -772,6 +784,8 @@ export class MarkerArea extends HTMLElement {
         } else if (this.zoomLevel > 1) {
           this.panTo({ x: ev.clientX, y: ev.clientY });
         }
+
+        this.adjustMarqueeSelectOutline();
       } else if (this.isSelecting) {
         // adjust marquee
         const localManipulationStart = SvgHelper.clientToLocalCoordinates(
@@ -854,13 +868,10 @@ export class MarkerArea extends HTMLElement {
         this.hideOutline();
       } else if (this.isSelecting) {
         // finish marquee selection
-        if (
-          this._groupLayer &&
-          this._groupLayer.contains(this._marqueeSelectOutline)
-        ) {
-          this._groupLayer.removeChild(this._marqueeSelectOutline);
-        }
         this.finishMarqueeSelection();
+        if (this._selectedMarkerEditors.length < 2) {
+          this.hideMarqueeSelectOutline();
+        }
       }
     }
     this.isDragging = false;
@@ -872,7 +883,7 @@ export class MarkerArea extends HTMLElement {
     this.deselectEditor();
 
     this.editors.forEach((m) => {
-      const markerRect = m.marker.container.getBBox();
+      const markerRect = m.marker.getBBox();
       if (
         markerRect.x <
           this._marqueeSelectRect.x + this._marqueeSelectRect.width &&
@@ -884,6 +895,50 @@ export class MarkerArea extends HTMLElement {
         this.selectEditor(m);
       }
     });
+
+    this.adjustMarqueeSelectOutline();
+  }
+
+  private adjustMarqueeSelectOutline() {
+    let x = Number.MAX_VALUE;
+    let y = Number.MAX_VALUE;
+    let width = 0;
+    let height = 0;
+
+    this._selectedMarkerEditors.forEach((m) => {
+      const markerRect = m.marker.getBBox();
+
+      x = Math.min(x, markerRect.x);
+      y = Math.min(y, markerRect.y);
+      width = Math.max(width, markerRect.x + markerRect.width);
+      height = Math.max(height, markerRect.y + markerRect.height);
+    });
+
+    if (this._selectedMarkerEditors.length > 1) {
+      this._marqueeSelectRect.x = x;
+      this._marqueeSelectRect.y = y;
+      this._marqueeSelectRect.width = width - x;
+      this._marqueeSelectRect.height = height - y;
+
+      SvgHelper.setAttributes(this._marqueeSelectOutline, [
+        ['x', `${this._marqueeSelectRect.x}`],
+        ['y', `${this._marqueeSelectRect.y}`],
+        ['width', `${this._marqueeSelectRect.width}`],
+        ['height', `${this._marqueeSelectRect.height}`],
+        ['pointer-events', ''],
+      ]);
+    } else {
+      this.hideMarqueeSelectOutline();
+    }
+  }
+
+  private hideMarqueeSelectOutline() {
+    if (
+      this._groupLayer &&
+      this._groupLayer.contains(this._marqueeSelectOutline)
+    ) {
+      this._groupLayer.removeChild(this._marqueeSelectOutline);
+    }
   }
 
   private onPointerOut(/*ev: PointerEvent*/) {
@@ -918,6 +973,13 @@ export class MarkerArea extends HTMLElement {
       ev.preventDefault(),
     );
     this._mainCanvas?.addEventListener('dblclick', this.onCanvasDblClick);
+
+    this._marqueeSelectOutline.addEventListener('dblclick', (ev) => {
+      ev.preventDefault();
+      ev.stopPropagation();
+      this.deselectEditor();
+      this.hideMarqueeSelectOutline();
+    });
 
     // @todo - using these in Diagrams but not in mjs2 - why?
     // this._mainCanvas?.addEventListener('pointermove', this.onCanvasPointerMove);
