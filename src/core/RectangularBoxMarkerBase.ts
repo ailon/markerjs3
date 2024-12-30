@@ -214,7 +214,6 @@ export class RectangularBoxMarkerBase extends MarkerBase {
     } else {
       this.applyRotation();
     }
-
   }
 
   /**
@@ -236,5 +235,30 @@ export class RectangularBoxMarkerBase extends MarkerBase {
     this.top = point.y;
     this.width = this.width * scaleX;
     this.height = this.height * scaleY;
+  }
+
+  public getBBox(): DOMRect {
+    const rotatedTL = this.rotatePoint({ x: this.left, y: this.top });
+    const rotatedTR = this.rotatePoint({
+      x: this.left + this.width,
+      y: this.top,
+    });
+    const rotatedBL = this.rotatePoint({
+      x: this.left,
+      y: this.top + this.height,
+    });
+    const rotatedBR = this.rotatePoint({
+      x: this.left + this.width,
+      y: this.top + this.height,
+    });
+    const absTL = {
+      x: Math.min(rotatedTL.x, rotatedTR.x, rotatedBL.x, rotatedBR.x),
+      y: Math.min(rotatedTL.y, rotatedTR.y, rotatedBL.y, rotatedBR.y),
+    };
+    const absBR = {
+      x: Math.max(rotatedTL.x, rotatedTR.x, rotatedBL.x, rotatedBR.x),
+      y: Math.max(rotatedTL.y, rotatedTR.y, rotatedBL.y, rotatedBR.y),
+    };
+    return new DOMRect(absTL.x, absTL.y, absBR.x - absTL.x, absBR.y - absTL.y);
   }
 }

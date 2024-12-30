@@ -93,6 +93,7 @@ export class MarkerBase {
     this.applyStrokeWidth = this.applyStrokeWidth.bind(this);
     this.applyStrokeDasharray = this.applyStrokeDasharray.bind(this);
     this.applyOpacity = this.applyOpacity.bind(this);
+    this.getBBox = this.getBBox.bind(this);
   }
 
   /**
@@ -158,4 +159,15 @@ export class MarkerBase {
    */
   // eslint-disable-next-line @typescript-eslint/no-empty-function, @typescript-eslint/no-unused-vars
   public scale(scaleX: number, scaleY: number): void {}
+
+  /**
+   * Returns markers bounding box.
+   *
+   * Override to return a custom bounding box.
+   *
+   * @returns rectangle fitting the marker.
+   */
+  public getBBox(): DOMRect {
+    return this.container.getBBox();
+  }
 }
