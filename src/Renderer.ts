@@ -13,8 +13,9 @@ import {
   MeasurementMarker,
   EllipseFrameMarker,
   EllipseMarker,
+  CalloutMarker,
+  CustomImageMarker,
 } from './core';
-import { CalloutMarker } from './core/CalloutMarker';
 
 export class Renderer {
   private _mainCanvas?: SVGSVGElement;
@@ -108,6 +109,7 @@ export class Renderer {
       CalloutMarker,
       EllipseFrameMarker,
       EllipseMarker,
+      CustomImageMarker,
     ];
 
     this.init = this.init.bind(this);

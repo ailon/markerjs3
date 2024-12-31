@@ -1,6 +1,7 @@
 import {
   AnnotationState,
   CoverMarker,
+  CustomImageMarker,
   EllipseFrameMarker,
   EllipseMarker,
   FrameMarker,
@@ -29,6 +30,7 @@ import { ArrowMarkerEditor } from './editor/ArrowMarkerEditor';
 import { MeasurementMarker } from './core/MeasurementMarker';
 import { CalloutMarker } from './core/CalloutMarker';
 import { CalloutMarkerEditor } from './editor/CalloutMarkerEditor';
+import { ImageMarkerEditor } from './editor/ImageMarkerEditor';
 
 export interface MarkerAreaEventMap {
   /**
@@ -206,6 +208,10 @@ export class MarkerArea extends HTMLElement {
       LinearMarkerEditor<MeasurementMarker>,
     );
     this.markerEditors.set(CalloutMarker, CalloutMarkerEditor<CalloutMarker>);
+    this.markerEditors.set(
+      CustomImageMarker,
+      ImageMarkerEditor<CustomImageMarker>,
+    );
 
     this.connectedCallback = this.connectedCallback.bind(this);
     this.disconnectedCallback = this.disconnectedCallback.bind(this);

@@ -42,3 +42,7 @@ export { EllipseFrameMarker } from './core/EllipseFrameMarker';
 export { EllipseMarker } from './core/EllipseMarker';
 
 export { FontSize } from './core/FontSize';
+
+export { ImageMarkerBase } from './core/ImageMarkerBase';
+export { ImageMarkerBaseState, ImageType } from './core/ImageMarkerBaseState';
+export { CustomImageMarker } from './core/CustomImageMarker';

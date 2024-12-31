@@ -31,6 +31,10 @@ export {
   EllipseFrameMarker,
   EllipseMarker,
   FontSize,
+  ImageMarkerBase,
+  ImageMarkerBaseState,
+  ImageType,
+  CustomImageMarker,
 } from './core';
 
 export {
@@ -52,6 +56,7 @@ export {
   TextMarkerEditor,
   ArrowMarkerEditor,
   CalloutMarkerEditor,
+  ImageMarkerEditor,
 } from './editor';
 
 export { MarkerView, MarkerViewEventData, MarkerViewEventMap } from './viewer';

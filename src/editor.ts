@@ -19,6 +19,7 @@ export { FreehandMarkerEditor } from './editor/FreehandMarkerEditor';
 export { TextMarkerEditor } from './editor/TextMarkerEditor';
 export { ArrowMarkerEditor } from './editor/ArrowMarkerEditor';
 export { CalloutMarkerEditor } from './editor/CalloutMarkerEditor';
+export { ImageMarkerEditor } from './editor/ImageMarkerEditor';
 
 if (
   window &&
