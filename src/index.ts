@@ -35,6 +35,8 @@ export {
   ImageMarkerBaseState,
   ImageType,
   CustomImageMarker,
+  CheckImageMarker,
+  XImageMarker,
 } from './core';
 
 export {

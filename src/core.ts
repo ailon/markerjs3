@@ -46,3 +46,5 @@ export { FontSize } from './core/FontSize';
 export { ImageMarkerBase } from './core/ImageMarkerBase';
 export { ImageMarkerBaseState, ImageType } from './core/ImageMarkerBaseState';
 export { CustomImageMarker } from './core/CustomImageMarker';
+export { CheckImageMarker } from './core/CheckImageMarker';
+export { XImageMarker } from './core/XImageMarker';

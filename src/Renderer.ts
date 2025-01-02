@@ -15,6 +15,8 @@ import {
   EllipseMarker,
   CalloutMarker,
   CustomImageMarker,
+  CheckImageMarker,
+  XImageMarker,
 } from './core';
 
 export class Renderer {
@@ -110,6 +112,8 @@ export class Renderer {
       EllipseFrameMarker,
       EllipseMarker,
       CustomImageMarker,
+      CheckImageMarker,
+      XImageMarker,
     ];
 
     this.init = this.init.bind(this);

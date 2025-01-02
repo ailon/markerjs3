@@ -1,5 +1,7 @@
 import {
   AnnotationState,
+  CalloutMarker,
+  CheckImageMarker,
   CoverMarker,
   CustomImageMarker,
   EllipseFrameMarker,
@@ -8,10 +10,12 @@ import {
   FreehandMarker,
   HighlightMarker,
   IPoint,
+  LineMarker,
   MarkerBase,
   PolygonMarker,
+  TextMarker,
+  XImageMarker,
 } from './core';
-import { LineMarker } from './core/LineMarker';
 import { SvgHelper } from './core/SvgHelper';
 import { PolygonMarkerEditor } from './editor/PolygonMarkerEditor';
 import { LinearMarkerEditor } from './editor/LinearMarkerEditor';
@@ -19,7 +23,6 @@ import { MarkerBaseEditor } from './editor/MarkerBaseEditor';
 import { ShapeOutlineMarkerEditor } from './editor/ShapeOutlineMarkerEditor';
 import { UndoRedoManager } from './editor/UndoRedoManager';
 import { FreehandMarkerEditor } from './editor/FreehandMarkerEditor';
-import { TextMarker } from './core/TextMarker';
 import { TextMarkerEditor } from './editor/TextMarkerEditor';
 import { Activator } from './core/Activator';
 
@@ -28,7 +31,6 @@ import { ShapeMarkerEditor } from './editor/ShapeMarkerEditor';
 import { ArrowMarker } from './core/ArrowMarker';
 import { ArrowMarkerEditor } from './editor/ArrowMarkerEditor';
 import { MeasurementMarker } from './core/MeasurementMarker';
-import { CalloutMarker } from './core/CalloutMarker';
 import { CalloutMarkerEditor } from './editor/CalloutMarkerEditor';
 import { ImageMarkerEditor } from './editor/ImageMarkerEditor';
 
@@ -212,6 +214,11 @@ export class MarkerArea extends HTMLElement {
       CustomImageMarker,
       ImageMarkerEditor<CustomImageMarker>,
     );
+    this.markerEditors.set(
+      CheckImageMarker,
+      ImageMarkerEditor<CheckImageMarker>,
+    );
+    this.markerEditors.set(XImageMarker, ImageMarkerEditor<CheckImageMarker>);
 
     this.connectedCallback = this.connectedCallback.bind(this);
     this.disconnectedCallback = this.disconnectedCallback.bind(this);

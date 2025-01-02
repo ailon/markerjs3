@@ -87,6 +87,7 @@ export class ImageMarkerBase extends RectangularBoxMarkerBase {
           ['viewBox', `0 0 ${this.naturalWidth} ${this.naturalHeight}`],
           ['fill', this._fillColor],
           ['stroke', this._strokeColor],
+          ['color', this._strokeColor],
           ['stroke-width', this.strokeWidth.toString()],
           ['stroke-dasharray', this.strokeDasharray],
           ['pointer-events', 'bounding-box'],
@@ -150,6 +151,12 @@ export class ImageMarkerBase extends RectangularBoxMarkerBase {
     );
 
     return result;
+  }
+
+  protected applyStrokeColor() {
+    if (this.visual) {
+      SvgHelper.setAttributes(this.visual, [['color', this._strokeColor]]);
+    }
   }
 
   public restoreState(state: ImageMarkerBaseState): void {
