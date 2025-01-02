@@ -7,5 +7,6 @@ export type ImageType = 'svg' | 'bitmap';
  */
 export interface ImageMarkerBaseState extends RectangularBoxMarkerBaseState {
   imageType?: ImageType;
+  svgString?: string;
   imageSrc?: string;
 }
