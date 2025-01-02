@@ -129,7 +129,7 @@ export class MarkerBase {
    */
   public getState(): MarkerBaseState {
     return {
-      typeName: MarkerBase.typeName,
+      typeName: Object.getPrototypeOf(this).constructor.typeName,
       notes: this.notes,
       strokeColor: this._strokeColor,
       strokeWidth: this._strokeWidth,
