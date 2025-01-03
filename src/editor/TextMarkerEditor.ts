@@ -6,9 +6,9 @@ import { TextBlockEditor } from './TextBlockEditor';
 export class TextMarkerEditor<
   TMarkerType extends TextMarker = TextMarker,
 > extends RectangularBoxMarkerBaseEditor<TMarkerType> {
-  private textBlockEditorContainer: SVGForeignObjectElement =
+  protected textBlockEditorContainer: SVGForeignObjectElement =
     SvgHelper.createForeignObject();
-  private textBlockEditor: TextBlockEditor;
+  protected textBlockEditor: TextBlockEditor;
 
   public set color(color: string) {
     this.marker.color = color;

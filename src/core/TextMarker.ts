@@ -90,7 +90,7 @@ export class TextMarker extends RectangularBoxMarkerBase {
   /**
    * Text padding from the bounding box.
    */
-  protected padding = 2;
+  public padding = 2;
 
   /**
    * Text's bounding box where text should fit and/or be anchored to.
@@ -110,6 +110,7 @@ export class TextMarker extends RectangularBoxMarkerBase {
     this.setFontSize = this.setFontSize.bind(this);
     this.setSize = this.setSize.bind(this);
     this.textSizeChanged = this.textSizeChanged.bind(this);
+    this.setSizeFromTextSize = this.setSizeFromTextSize.bind(this);
 
     this.createVisual = this.createVisual.bind(this);
     this.adjustVisual = this.adjustVisual.bind(this);
@@ -161,17 +162,10 @@ export class TextMarker extends RectangularBoxMarkerBase {
    * Sets (adjusts) the stencil's size.
    */
   public setSize(): void {
-    super.setSize();
-
     const [prevWidth, prevHeight] = [this.width, this.height];
 
-    if (this.textBlock.textSize) {
-      this.width = this.textBlock.textSize.width + this.padding * 2;
-      this.height = this.textBlock.textSize.height + this.padding * 2;
-    }
-
-    this.textBlock.offsetX = this.padding;
-    this.textBlock.offsetY = this.padding;
+    super.setSize();
+    this.setSizeFromTextSize();
 
     if (
       (prevWidth !== this.width || prevHeight !== this.height) &&
@@ -181,6 +175,16 @@ export class TextMarker extends RectangularBoxMarkerBase {
     }
 
     this.setTextBoundingBox();
+  }
+
+  protected setSizeFromTextSize(): void {
+    if (this.textBlock.textSize) {
+      this.width = this.textBlock.textSize.width + this.padding * 2;
+      this.height = this.textBlock.textSize.height + this.padding * 2;
+    }
+
+    this.textBlock.offsetX = this.padding;
+    this.textBlock.offsetY = this.padding;
   }
 
   private textSizeChanged(): void {
@@ -233,9 +237,6 @@ export class TextMarker extends RectangularBoxMarkerBase {
       },
       super.getState(),
     );
-
-    result.typeName = TextMarker.typeName;
-
     return result;
   }
 
