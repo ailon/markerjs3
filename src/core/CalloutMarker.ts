@@ -239,8 +239,6 @@ export class CalloutMarker extends TextMarker {
       super.getState(),
     );
 
-    result.typeName = CalloutMarker.typeName;
-
     return result;
   }
 
