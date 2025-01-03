@@ -37,6 +37,8 @@ export {
   CustomImageMarker,
   CheckImageMarker,
   XImageMarker,
+  CaptionFrameMarker,
+  CaptionFrameMarkerState,
 } from './core';
 
 export {
@@ -59,6 +61,7 @@ export {
   ArrowMarkerEditor,
   CalloutMarkerEditor,
   ImageMarkerEditor,
+  CaptionFrameMarkerEditor,
 } from './editor';
 
 export { MarkerView, MarkerViewEventData, MarkerViewEventMap } from './viewer';

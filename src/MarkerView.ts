@@ -16,6 +16,7 @@ import {
   CustomImageMarker,
   CheckImageMarker,
   XImageMarker,
+  CaptionFrameMarker,
 } from './core';
 import { Activator } from './core/Activator';
 
@@ -134,6 +135,7 @@ export class MarkerView extends HTMLElement {
       CustomImageMarker,
       CheckImageMarker,
       XImageMarker,
+      CaptionFrameMarker,
     ];
 
     this.connectedCallback = this.connectedCallback.bind(this);

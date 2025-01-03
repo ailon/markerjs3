@@ -9,6 +9,7 @@ import {
 import {
   ArrowMarkerEditor,
   CalloutMarkerEditor,
+  CaptionFrameMarkerEditor,
   FreehandMarkerEditor,
   LinearMarkerEditor,
   PolygonMarkerEditor,
@@ -268,7 +269,8 @@ export class Experiments {
         editor.is(LinearMarkerEditor) ||
         editor.is(FreehandMarkerEditor) ||
         editor.is(PolygonMarkerEditor) ||
-        editor.is(CalloutMarkerEditor))
+        editor.is(CalloutMarkerEditor) ||
+        editor.is(CaptionFrameMarkerEditor))
     ) {
       editor.strokeColor = color;
     }
@@ -281,7 +283,8 @@ export class Experiments {
       editor &&
       (editor.is(ShapeMarkerEditor) ||
         editor.is(PolygonMarkerEditor) ||
-        editor.is(CalloutMarkerEditor))
+        editor.is(CalloutMarkerEditor) ||
+        editor.is(CaptionFrameMarkerEditor))
     ) {
       editor.fillColor = color;
     }
@@ -296,7 +299,8 @@ export class Experiments {
         editor.is(LinearMarkerEditor) ||
         editor.is(FreehandMarkerEditor) ||
         editor.is(PolygonMarkerEditor) ||
-        editor.is(CalloutMarkerEditor))
+        editor.is(CalloutMarkerEditor) ||
+        editor.is(CaptionFrameMarkerEditor))
     ) {
       editor.strokeWidth = Number.parseInt(width);
     }
@@ -311,7 +315,8 @@ export class Experiments {
         editor.is(LinearMarkerEditor) ||
         editor.is(FreehandMarkerEditor) ||
         editor.is(PolygonMarkerEditor) ||
-        editor.is(CalloutMarkerEditor))
+        editor.is(CalloutMarkerEditor) ||
+        editor.is(CaptionFrameMarkerEditor))
     ) {
       editor.strokeDasharray = dashes;
     }

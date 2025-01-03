@@ -48,3 +48,6 @@ export { ImageMarkerBaseState, ImageType } from './core/ImageMarkerBaseState';
 export { CustomImageMarker } from './core/CustomImageMarker';
 export { CheckImageMarker } from './core/CheckImageMarker';
 export { XImageMarker } from './core/XImageMarker';
+
+export { CaptionFrameMarker } from './core/CaptionFrameMarker';
+export { CaptionFrameMarkerState } from './core/CaptionFrameMarkerState';

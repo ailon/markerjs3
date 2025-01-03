@@ -17,6 +17,7 @@ import {
   CustomImageMarker,
   CheckImageMarker,
   XImageMarker,
+  CaptionFrameMarker,
 } from './core';
 
 export class Renderer {
@@ -114,6 +115,7 @@ export class Renderer {
       CustomImageMarker,
       CheckImageMarker,
       XImageMarker,
+      CaptionFrameMarker,
     ];
 
     this.init = this.init.bind(this);
