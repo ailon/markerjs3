@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.0.0-beta.1] - 2025-01-03
+
+### Added
+
+- Image markers: `ImageMarkerBase`, `CustomImageMarker` (for user-set images), `CheckImageMarker` (preset check mark), and `XImageMarker` (preset X).
+- Caption frame marker (`CaptionFrameMarker`).
+
+### Changed
+
+- improved multi-select behavior (visible marque when selected, moving markers by moving marque, double-click marque to deselect)
+- `getState()` to take `typeName` value via a constructor property so extending classes don't need to override `getState()` just to set the `typeName`
+
 ## [3.0.0-beta.0] - 2024-06-24
 
 ### Fixed
@@ -61,6 +73,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Initial public release.
 
+[3.0.0-beta.1]: https://github.com/ailon/markerjs3/releases/tag/v3.0.0-beta.1
 [3.0.0-beta.0]: https://github.com/ailon/markerjs3/releases/tag/v3.0.0-beta.0
 [3.0.0-alpha.4]: https://github.com/ailon/markerjs3/releases/tag/v3.0.0-alpha.4
 [3.0.0-alpha.3]: https://github.com/ailon/markerjs3/releases/tag/v3.0.0-alpha.3
