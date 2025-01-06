@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.0.0-beta.2] - 2025-01-06
+
+### Changed
+
+- if marquee-select results in single element being selected revert to simple selection
+
+### Fixed
+
+- the whole image gets selected as if it was text when dragging the mouse out of image bounds
+- multi-selecting by holding shift and clicking doesn't show marquee outline
+- attempt to fix the release GA workflow
+
 ## [3.0.0-beta.1] - 2025-01-03
 
 ### Added
@@ -73,6 +85,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Initial public release.
 
+[3.0.0-beta.2]: https://github.com/ailon/markerjs3/releases/tag/v3.0.0-beta.2
 [3.0.0-beta.1]: https://github.com/ailon/markerjs3/releases/tag/v3.0.0-beta.1
 [3.0.0-beta.0]: https://github.com/ailon/markerjs3/releases/tag/v3.0.0-beta.0
 [3.0.0-alpha.4]: https://github.com/ailon/markerjs3/releases/tag/v3.0.0-alpha.4
