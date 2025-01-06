@@ -331,6 +331,8 @@ export class MarkerArea extends HTMLElement {
     this._canvasContainer.style.justifyItems = 'center';
     this._canvasContainer.style.alignItems = 'center';
     this._canvasContainer.style.overflow = 'auto';
+    this._canvasContainer.style.userSelect = 'none';
+
     this._contentContainer.appendChild(this._canvasContainer);
 
     this.shadowRoot?.appendChild(this._contentContainer);
