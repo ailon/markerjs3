@@ -890,6 +890,12 @@ export class MarkerArea extends HTMLElement {
         this.finishMarqueeSelection();
         if (this._selectedMarkerEditors.length < 2) {
           this.hideMarqueeSelectOutline();
+          if (this._selectedMarkerEditors.length === 1) {
+            // revert to single selection
+            const onlySelected = this._selectedMarkerEditors[0];
+            this.deselectEditor();
+            this.setCurrentEditor(onlySelected);
+          }
         }
       }
     }
