@@ -693,6 +693,7 @@ export class MarkerArea extends HTMLElement {
           this.isDragging = true;
           if (ev.shiftKey) {
             this.selectEditor(hitMarker);
+            this.initializeMarqueeSelection(localPoint);
           } else if (!hitMarker.isSelected) {
             this.deselectEditor();
             this.setCurrentEditor(hitMarker);
@@ -715,26 +716,30 @@ export class MarkerArea extends HTMLElement {
           this.isDragging = true;
 
           // marquee select
-          this._marqueeSelectRect.x = localPoint.x;
-          this._marqueeSelectRect.y = localPoint.y;
-          this._marqueeSelectRect.width = 0;
-          this._marqueeSelectRect.height = 0;
-          SvgHelper.setAttributes(this._marqueeSelectOutline, [
-            ['x', localPoint.x.toString()],
-            ['y', localPoint.y.toString()],
-            ['width', '0'],
-            ['height', '0'],
-          ]);
-          if (
-            this._groupLayer &&
-            !this._groupLayer.contains(this._marqueeSelectOutline)
-          ) {
-            this._groupLayer.appendChild(this._marqueeSelectOutline);
-          }
+          this.initializeMarqueeSelection(localPoint);
 
           this.prevPanPoint = { x: ev.clientX, y: ev.clientY };
         }
       }
+    }
+  }
+
+  private initializeMarqueeSelection(localPoint: IPoint) {
+    this._marqueeSelectRect.x = localPoint.x;
+    this._marqueeSelectRect.y = localPoint.y;
+    this._marqueeSelectRect.width = 0;
+    this._marqueeSelectRect.height = 0;
+    SvgHelper.setAttributes(this._marqueeSelectOutline, [
+      ['x', localPoint.x.toString()],
+      ['y', localPoint.y.toString()],
+      ['width', '0'],
+      ['height', '0'],
+    ]);
+    if (
+      this._groupLayer &&
+      !this._groupLayer.contains(this._marqueeSelectOutline)
+    ) {
+      this._groupLayer.appendChild(this._marqueeSelectOutline);
     }
   }
 
@@ -882,6 +887,7 @@ export class MarkerArea extends HTMLElement {
 
         if (this._selectedMarkerEditors.length > 1) {
           this._selectedMarkerEditors.forEach((m) => m.pointerUp(localPoint));
+          this.adjustMarqueeSelectOutline();
         } else {
           this._currentMarkerEditor.pointerUp(localPoint);
         }
