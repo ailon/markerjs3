@@ -394,6 +394,12 @@ export class MarkerView extends HTMLElement {
     return result;
   }
 
+  public registerMarkerType(markerType: typeof MarkerBase): void {
+    if (this.markerTypes.indexOf(markerType) < 0) {
+      this.markerTypes.push(markerType);
+    }
+  }
+
   public show(state: AnnotationState): void {
     const stateCopy: AnnotationState = JSON.parse(JSON.stringify(state));
     this.markers.splice(0);

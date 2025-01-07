@@ -18,6 +18,7 @@ import {
   TextMarkerEditor,
 } from '../../src/editor';
 import { MarkerView } from '../../src/viewer';
+import { TriangleMarker } from './TriangleMarker';
 
 export * from './../../src/index';
 
@@ -32,11 +33,21 @@ export class Experiments {
     targetImg.src = './images/landscape.jpg';
 
     this.markerArea1 = document.getElementById('markerArea1') as MarkerArea;
+
+    // register custom marker type
+    this.markerArea1.registerMarkerType(
+      TriangleMarker,
+      ShapeOutlineMarkerEditor<TriangleMarker>,
+    );
+
     this.markerArea1.targetWidth = 400;
     this.markerArea1.targetHeight = 300;
     this.markerArea1.targetImage = targetImg;
 
     this.markerView1 = document.getElementById('markerView1') as MarkerView;
+    // register custom marker type
+    this.markerView1.registerMarkerType(TriangleMarker);
+
     this.markerView1.targetImage = targetImg;
 
     // doesn't fire when component is added in html (this call is already after init)
@@ -238,6 +249,9 @@ export class Experiments {
 
     if (this.savedState && this.markerArea1?.targetImage) {
       const renderer = new Renderer();
+      // register custom marker type
+      renderer.registerMarkerType(TriangleMarker);
+
       renderer.naturalSize = true;
       // renderer.markersOnly = true;
       renderer.targetImage = this.markerArea1.targetImage;

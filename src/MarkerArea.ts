@@ -469,6 +469,13 @@ export class MarkerArea extends HTMLElement {
     }
   }
 
+  public registerMarkerType(
+    markerType: typeof MarkerBase,
+    editorType: typeof MarkerBaseEditor<MarkerBase>,
+  ) {
+    this.markerEditors.set(markerType, editorType);
+  }
+
   public createMarker(markerType: typeof MarkerBase | string) {
     let mType: typeof MarkerBase = FrameMarker;
     if (typeof markerType === 'string') {

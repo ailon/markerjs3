@@ -267,6 +267,12 @@ export class Renderer {
     return result;
   }
 
+  public registerMarkerType(markerType: typeof MarkerBase) {
+    if (this.markerTypes.indexOf(markerType) < 0) {
+      this.markerTypes.push(markerType);
+    }
+  }
+
   public restoreState(state: AnnotationState): void {
     const stateCopy: AnnotationState = JSON.parse(JSON.stringify(state));
     this.markers.splice(0);
