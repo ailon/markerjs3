@@ -1160,7 +1160,7 @@ export class MarkerArea extends HTMLElement {
    * NOTE:
    *
    * before removing or modifying this method please consider supporting marker.js
-   * by visiting https://markerjs.com/buy for details
+   * by visiting https://markerjs.com/ for details
    *
    * thank you!
    */

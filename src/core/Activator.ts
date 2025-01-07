@@ -13,14 +13,14 @@ export class Activator {
    */
   public static addKey(product: string, key: string): void {
     Activator.keys.set(product, key);
-    Activator.keyAddListeners.forEach(listener => {
+    Activator.keyAddListeners.forEach((listener) => {
       listener();
     });
   }
 
   /**
    * Add a function to be called when license key is added.
-   * @param listener 
+   * @param listener
    */
   public static addKeyAddListener(listener: () => void) {
     Activator.keyAddListeners.push(listener);
@@ -28,7 +28,7 @@ export class Activator {
 
   /**
    * Remove a function called when key is added.
-   * @param listener 
+   * @param listener
    */
   public static removeKeyAddListener(listener: () => void) {
     const li = Activator.keyAddListeners.indexOf(listener);
@@ -43,11 +43,14 @@ export class Activator {
    */
   public static isLicensed(product: string): boolean {
     // NOTE:
-    // before removing or modifying this please consider supporting MJS Diagram development
+    // before removing or modifying this please consider supporting marker.js development
     // by visiting https://markerjs.com/ for details
     // thank you!
     if (Activator.keys.has(product)) {
-      const keyRegex = new RegExp(`${product}-[A-Z][0-9]{3}-[A-Z][0-9]{3}-[0-9]{4}`, 'i');
+      const keyRegex = new RegExp(
+        `${product}-[A-Z][0-9]{3}-[A-Z][0-9]{3}-[0-9]{4}`,
+        'i',
+      );
       const key = Activator.keys.get(product);
       return key === undefined ? false : keyRegex.test(key);
     } else {
