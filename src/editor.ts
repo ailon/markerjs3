@@ -1,3 +1,7 @@
+/**
+ * @module Editor
+ * @category API Reference
+ */
 import { MarkerArea } from './MarkerArea';
 
 export {

@@ -1,3 +1,7 @@
+/**
+ * @module Viewer
+ * @category API Reference
+ */
 import { MarkerView } from './MarkerView';
 
 export {

@@ -1,3 +1,7 @@
+/**
+ * @module Renderer
+ * @category API Reference
+ */
 import {
   AnnotationState,
   CoverMarker,
