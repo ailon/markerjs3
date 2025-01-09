@@ -5,9 +5,9 @@ export interface IPoint {
   /**
    * Horizontal (X) coordinate.
    */
-  x: number,
+  x: number;
   /**
    * Vertical (Y) coordinate.
    */
-  y: number
+  y: number;
 }
