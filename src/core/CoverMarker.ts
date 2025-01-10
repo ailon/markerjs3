@@ -1,15 +1,12 @@
 import { ShapeMarkerBase } from './ShapeMarkerBase';
-import { ShapeMarkerBaseState } from './ShapeMarkerBaseState';
 
+/**
+ * Cover marker is a filled rectangle marker.
+ *
+ * A typical use case is to cover some area of the image with a colored rectangle as a "redaction".
+ */
 export class CoverMarker extends ShapeMarkerBase {
-  /**
-   * String type name of the marker type.
-   */
   public static typeName = 'CoverMarker';
-
-  /**
-   * Marker type title (display name) used for accessibility and other attributes.
-   */
   public static title = 'Cover marker';
 
   constructor(container: SVGGElement) {
@@ -30,12 +27,6 @@ export class CoverMarker extends ShapeMarkerBase {
       H 0 
       V 0 Z`;
 
-    return result;
-  }
-
-  public getState(): ShapeMarkerBaseState {
-    const result = super.getState();
-    result.typeName = CoverMarker.typeName;
     return result;
   }
 }
