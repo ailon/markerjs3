@@ -1,15 +1,10 @@
 import { ShapeOutlineMarkerBase } from './ShapeOutlineMarkerBase';
-import { ShapeOutlineMarkerBaseState } from './ShapeOutlineMarkerBaseState';
 
+/**
+ * Ellipse frame marker represents unfilled circle/ellipse shape.
+ */
 export class EllipseFrameMarker extends ShapeOutlineMarkerBase {
-  /**
-   * String type name of the marker type.
-   */
   public static typeName = 'EllipseFrameMarker';
-
-  /**
-   * Marker type title (display name) used for accessibility and other attributes.
-   */
   public static title = 'Ellipse frame marker';
 
   constructor(container: SVGGElement) {
@@ -27,12 +22,6 @@ export class EllipseFrameMarker extends ShapeOutlineMarkerBase {
        a ${width / 2} ${height / 2} 0 1 0 0 ${height} 
        a ${width / 2} ${height / 2} 0 1 0 0 -${height} z`;
 
-    return result;
-  }
-
-  public getState(): ShapeOutlineMarkerBaseState {
-    const result = super.getState();
-    result.typeName = EllipseFrameMarker.typeName;
     return result;
   }
 }
