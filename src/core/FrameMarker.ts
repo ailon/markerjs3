@@ -1,5 +1,4 @@
 import { ShapeOutlineMarkerBase } from './ShapeOutlineMarkerBase';
-import { ShapeOutlineMarkerBaseState } from './ShapeOutlineMarkerBaseState';
 
 export class FrameMarker extends ShapeOutlineMarkerBase {
   /**
@@ -29,12 +28,6 @@ export class FrameMarker extends ShapeOutlineMarkerBase {
       H 0 
       V 0 Z`;
 
-    return result;
-  }
-
-  public getState(): ShapeOutlineMarkerBaseState {
-    const result = super.getState();
-    result.typeName = FrameMarker.typeName;
     return result;
   }
 }

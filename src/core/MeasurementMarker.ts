@@ -1,6 +1,5 @@
 import { IPoint } from './IPoint';
 import { LineMarker } from './LineMarker';
-import { LinearMarkerBaseState } from './LinearMarkerBaseState';
 
 export class MeasurementMarker extends LineMarker {
   public static typeName = 'MeasurementMarker';
@@ -52,15 +51,5 @@ export class MeasurementMarker extends LineMarker {
   protected applyStrokeWidth() {
     super.applyStrokeWidth();
     this.adjustVisual();
-  }
-
-  /**
-   * Returns marker's state.
-   */
-  public getState(): LinearMarkerBaseState {
-    const result = super.getState();
-    result.typeName = MeasurementMarker.typeName;
-
-    return result;
   }
 }

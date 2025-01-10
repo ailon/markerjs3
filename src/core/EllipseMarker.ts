@@ -1,15 +1,10 @@
 import { ShapeMarkerBase } from './ShapeMarkerBase';
-import { ShapeMarkerBaseState } from './ShapeMarkerBaseState';
 
+/**
+ * Ellipse marker is a filled ellipse marker.
+ */
 export class EllipseMarker extends ShapeMarkerBase {
-  /**
-   * String type name of the marker type.
-   */
   public static typeName = 'EllipseMarker';
-
-  /**
-   * Marker type title (display name) used for accessibility and other attributes.
-   */
   public static title = 'Ellipse marker';
 
   constructor(container: SVGGElement) {
@@ -27,12 +22,6 @@ export class EllipseMarker extends ShapeMarkerBase {
     a ${width / 2} ${height / 2} 0 1 0 0 ${height} 
     a ${width / 2} ${height / 2} 0 1 0 0 -${height} z`;
 
-    return result;
-  }
-
-  public getState(): ShapeMarkerBaseState {
-    const result = super.getState();
-    result.typeName = EllipseMarker.typeName;
     return result;
   }
 }

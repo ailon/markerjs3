@@ -1,5 +1,4 @@
 import { ShapeMarkerBase } from './ShapeMarkerBase';
-import { ShapeMarkerBaseState } from './ShapeMarkerBaseState';
 
 export class HighlightMarker extends ShapeMarkerBase {
   /**
@@ -31,12 +30,6 @@ export class HighlightMarker extends ShapeMarkerBase {
       H 0 
       V 0 Z`;
 
-    return result;
-  }
-
-  public getState(): ShapeMarkerBaseState {
-    const result = super.getState();
-    result.typeName = HighlightMarker.typeName;
     return result;
   }
 }
