@@ -94,6 +94,13 @@ export class LinearMarkerBase extends MarkerBase {
     }
   }
 
+  /**
+   * The path representing the marker visual.
+   *
+   * When implemented in derived class should return SVG path for the marker.
+   *
+   * @returns SVG path for the marker.
+   */
   protected getPath(): string {
     return 'M0,0';
   }

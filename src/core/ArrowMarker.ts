@@ -3,11 +3,19 @@ import { IPoint } from './IPoint';
 import { LineMarker } from './LineMarker';
 import { MarkerBaseState } from './MarkerBaseState';
 
+/**
+ * Arrow marker represents a line with arrow heads at the ends.
+ */
 export class ArrowMarker extends LineMarker {
   public static typeName = 'ArrowMarker';
   public static title = 'Arrow marker';
 
   private _arrowType: ArrowType = 'end';
+  /**
+   * Type of the arrow.
+   *
+   * Specify whether the arrow should be drawn at the start, end, both ends or none.
+   */
   public get arrowType(): ArrowType {
     return this._arrowType;
   }
@@ -97,9 +105,6 @@ export class ArrowMarker extends LineMarker {
     this.adjustVisual();
   }
 
-  /**
-   * Returns marker's state.
-   */
   public getState(): ArrowMarkerState {
     const result: ArrowMarkerState = Object.assign(
       {
@@ -112,10 +117,6 @@ export class ArrowMarker extends LineMarker {
     return result;
   }
 
-  /**
-   * Restores marker's state to the previously saved one.
-   * @param state - previously saved state.
-   */
   public restoreState(state: MarkerBaseState): void {
     const arrowState = state as ArrowMarkerState;
     this.arrowType = arrowState.arrowType;

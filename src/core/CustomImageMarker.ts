@@ -2,15 +2,11 @@ import { ImageMarkerBase } from './ImageMarkerBase';
 
 /**
  * Used to represent user-set images.
+ *
+ * Use this marker to display custom images at runtime.
+ * For example, you can use this type to represent emojis selected in an emoji picker.
  */
 export class CustomImageMarker extends ImageMarkerBase {
-  /**
-   * String type name of the marker type.
-   */
   public static typeName = 'CustomImageMarker';
-
-  /**
-   * Marker type title (display name) used for accessibility and other attributes.
-   */
   public static title = 'Custom image marker';
 }

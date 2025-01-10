@@ -4,12 +4,19 @@ import { MarkerBaseState } from './MarkerBaseState';
 import { SvgHelper } from './SvgHelper';
 import { TextMarker } from './TextMarker';
 
+/**
+ * Callout marker is a text-based marker with a callout outline with a tip that can point to specific place
+ * on the underlying image or annotation.
+ */
 export class CalloutMarker extends TextMarker {
   public static typeName = 'CalloutMarker';
 
   public static title = 'Callout marker';
 
   private _tipPosition: IPoint = { x: 0, y: 0 };
+  /**
+   * Coordinates of the position of the tip of the callout.
+   */
   public get tipPosition(): IPoint {
     return this._tipPosition;
   }
@@ -66,6 +73,11 @@ export class CalloutMarker extends TextMarker {
     SvgHelper.setAttributes(this._calloutVisual, [['fill', this._fillColor]]);
   }
 
+  /**
+   * Returns the SVG path string for the callout outline.
+   *
+   * @returns Path string for the callout outline.
+   */
   protected getPath(): string {
     const r = 5;
     this.setTipPoints();

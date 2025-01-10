@@ -2,16 +2,12 @@ import { ImageMarkerBase } from './ImageMarkerBase';
 
 /**
  * Check mark marker.
+ *
+ * Represents a check mark image marker. Can be used to quickly mark something as correct, or
+ * similar use cases.
  */
 export class CheckImageMarker extends ImageMarkerBase {
-  /**
-   * String type name of the marker type.
-   */
   public static typeName = 'CheckImageMarker';
-
-  /**
-   * Marker type title (display name) used for accessibility and other attributes.
-   */
   public static title = 'Check image marker';
 
   constructor(container: SVGGElement) {

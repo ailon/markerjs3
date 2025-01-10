@@ -3,6 +3,9 @@ import { MarkerBaseState } from './MarkerBaseState';
 import { SvgHelper } from './SvgHelper';
 import { TextMarker } from './TextMarker';
 
+/**
+ * Caption frame marker is a combination of a frame (rectangle) and a text caption that goes with it.
+ */
 export class CaptionFrameMarker extends TextMarker {
   public static typeName = 'CaptionFrameMarker';
 
@@ -71,6 +74,13 @@ export class CaptionFrameMarker extends TextMarker {
     ]);
   }
 
+  /**
+   * Returns the SVG path strings for the frame and the caption background.
+   *
+   * @param width
+   * @param height
+   * @returns SVG path strings for the frame and the caption background.
+   */
   protected getPaths(
     width: number = this.width,
     height: number = this.height,
@@ -125,6 +135,9 @@ export class CaptionFrameMarker extends TextMarker {
     this.adjustFrameVisual();
   }
 
+  /**
+   * Adjusts text position inside the caption frame.
+   */
   protected adjustTextPosition(): void {
     if (this.textBlock.textSize) {
       this.textBlock.textElement.style.transform = `translate(${
@@ -133,6 +146,9 @@ export class CaptionFrameMarker extends TextMarker {
     }
   }
 
+  /**
+   * Adjusts frame visual according to the current marker properties.
+   */
   protected adjustFrameVisual(): void {
     const paths = this.getPaths();
     if (this._outerFrameVisual) {
@@ -175,9 +191,19 @@ export class CaptionFrameMarker extends TextMarker {
   }
   protected setSizeFromTextSize(): void {}
 
+  /**
+   * Hides the marker visual.
+   *
+   * Used by the editor to hide rendered marker while editing the text.
+   */
   public hideVisual(): void {
     this.textBlock.hide();
   }
+  /**
+   * Shows the marker visual.
+   *
+   * Used by the editor to show rendered marker after editing the text.
+   */
   public showVisual() {
     this.textBlock.show();
     this.textBlock.renderText();
@@ -202,12 +228,6 @@ export class CaptionFrameMarker extends TextMarker {
     this.adjustVisual();
   }
 
-  /**
-   * Scales marker. Used after the image resize.
-   *
-   * @param scaleX - horizontal scale
-   * @param scaleY - vertical scale
-   */
   public scale(scaleX: number, scaleY: number): void {
     super.scale(scaleX, scaleY);
 
