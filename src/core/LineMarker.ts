@@ -1,5 +1,8 @@
 import { LinearMarkerBase } from './LinearMarkerBase';
 
+/**
+ * Line marker represents a simple straight line.
+ */
 export class LineMarker extends LinearMarkerBase {
   public static typeName = 'LineMarker';
   public static title = 'Line marker';

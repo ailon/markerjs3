@@ -1,8 +1,20 @@
 import { ISize } from './ISize';
 import { MarkerBaseState } from './MarkerBaseState';
 
+/**
+ * Represents a stage in a marker's lifecycle.
+ *
+ * Most markers are created immediately after the user clicks on the canvas.
+ * However, some markers are only finished creating after additional interactions.
+ */
 export type MarkerStage = 'creating' | 'normal';
 
+/**
+ * Base class for all markers.
+ *
+ * When creating custom marker types usually you will want to extend one of the derived classes.
+ * However, if you cannot find a suitable base class, you can and you should extend this class.
+ */
 export class MarkerBase {
   public static typeName = 'MarkerBase';
 

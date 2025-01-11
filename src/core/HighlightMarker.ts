@@ -1,14 +1,10 @@
 import { ShapeMarkerBase } from './ShapeMarkerBase';
 
+/**
+ * Highlight marker is a semi-transparent rectangular marker.
+ */
 export class HighlightMarker extends ShapeMarkerBase {
-  /**
-   * String type name of the marker type.
-   */
   public static typeName = 'HighlightMarker';
-
-  /**
-   * Marker type title (display name) used for accessibility and other attributes.
-   */
   public static title = 'Highlight marker';
 
   constructor(container: SVGGElement) {

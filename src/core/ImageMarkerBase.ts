@@ -2,16 +2,30 @@ import { ImageMarkerBaseState, ImageType } from './ImageMarkerBaseState';
 import { RectangularBoxMarkerBase } from './RectangularBoxMarkerBase';
 import { SvgHelper } from './SvgHelper';
 
+/**
+ * Base class for image markers.
+ *
+ * This class isn't meant to be used directly. Use one of the derived classes instead.
+ */
 export class ImageMarkerBase extends RectangularBoxMarkerBase {
   public static title = 'Image marker';
 
   /**
-   * Main SVG or image element of the stencil.
+   * Main SVG or image element of the marker.
    */
   protected SVGImage?: SVGSVGElement | SVGImageElement;
+  /**
+   * Type of the image: SVG or bitmap.
+   */
   protected imageType: ImageType = 'svg';
 
+  /**
+   * For SVG images this holds the SVG markup of the image.
+   */
   protected _svgString?: string;
+  /**
+   * For SVG images this holds the SVG markup of the image.
+   */
   public get svgString() {
     return this._svgString;
   }
@@ -26,7 +40,21 @@ export class ImageMarkerBase extends RectangularBoxMarkerBase {
     }
   }
 
+  /**
+   * For bitmap images this holds the base64 encoded image.
+   */
   protected _imageSrc?: string; // = 'data:image/png;base64,...';
+  /**
+   * For bitmap images this holds the base64 encoded image.
+   *
+   * @remarks
+   * Technically this could be any URL but due to browser security constraints
+   * an external image will almost certainly cause bitmap rendering of the image to fail.
+   *
+   * In cases you know you will never render the annotation as a static image,
+   * it should be safe to use external URLs. Otherwise, use base64 encoded images
+   * like 'data:image/png;base64,...'.
+   */
   public get imageSrc() {
     return this._imageSrc;
   }
@@ -59,6 +87,9 @@ export class ImageMarkerBase extends RectangularBoxMarkerBase {
     this.createVisual = this.createVisual.bind(this);
   }
 
+  /**
+   * Creates the image element based on the image type and source.
+   */
   protected createImage(): void {
     if (this._svgString !== undefined) {
       this.imageType = 'svg';
@@ -77,6 +108,9 @@ export class ImageMarkerBase extends RectangularBoxMarkerBase {
     }
   }
 
+  /**
+   * Creates marker's visual, including its image element.
+   */
   public createVisual(): void {
     this.createImage();
     if (this.SVGImage !== undefined) {
@@ -100,6 +134,9 @@ export class ImageMarkerBase extends RectangularBoxMarkerBase {
     }
   }
 
+  /**
+   * Adjusts the image size and position.
+   */
   public adjustImage(): void {
     if (this.SVGImage !== undefined) {
       this.SVGImage.setAttribute('x', `0px`);
@@ -175,12 +212,6 @@ export class ImageMarkerBase extends RectangularBoxMarkerBase {
     this.setSize();
   }
 
-  /**
-   * Scales marker. Used after the image resize.
-   *
-   * @param scaleX - horizontal scale
-   * @param scaleY - vertical scale
-   */
   public scale(scaleX: number, scaleY: number): void {
     super.scale(scaleX, scaleY);
 

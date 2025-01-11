@@ -1,5 +1,5 @@
 /**
- * Describes point objects used internally
+ * Describes a point objects use internally
  */
 export interface IPoint {
   /**

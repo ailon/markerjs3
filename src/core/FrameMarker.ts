@@ -1,14 +1,10 @@
 import { ShapeOutlineMarkerBase } from './ShapeOutlineMarkerBase';
 
+/**
+ * Frame marker represents unfilled rectangle shape.
+ */
 export class FrameMarker extends ShapeOutlineMarkerBase {
-  /**
-   * String type name of the marker type.
-   */
   public static typeName = 'FrameMarker';
-
-  /**
-   * Marker type title (display name) used for accessibility and other attributes.
-   */
   public static title = 'Frame marker';
 
   constructor(container: SVGGElement) {

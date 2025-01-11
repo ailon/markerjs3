@@ -2,6 +2,12 @@
  * Describes a size
  */
 export interface ISize {
-  width: number,
-  height: number
+  /**
+   * Width
+   */
+  width: number;
+  /**
+   * Height
+   */
+  height: number;
 }
