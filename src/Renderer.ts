@@ -24,6 +24,29 @@ import {
   CaptionFrameMarker,
 } from './core';
 
+/**
+ * Renderer is used to rasterize annotations.
+ *
+ * @example
+ * To render the annotation as a static image you use `Renderer`.
+ *
+ * ```js
+ * import { MarkerArea, Renderer } from '@markerjs/markerjs3';
+ * ```
+ *
+ * Just create an instance of it and pass the annotation state to the `rasterize()` method:
+ *
+ * ```js
+ * const renderer = new Renderer();
+ * renderer.targetImage = targetImg;
+ * const dataUrl = await renderer.rasterize(markerArea.getState());
+ *
+ * const img = document.createElement('img');
+ * img.src = dataUrl;
+ *
+ * someDiv.appendChild(img);
+ * ```
+ */
 export class Renderer {
   private _mainCanvas?: SVGSVGElement;
 
@@ -32,17 +55,29 @@ export class Renderer {
   private _renderHelperContainer?: HTMLDivElement;
 
   private _targetWidth = -1;
+  /**
+   * Width of the target image.
+   */
   public get targetWidth() {
     return this._targetWidth;
   }
+  /**
+   * Width of the target image.
+   */
   public set targetWidth(value) {
     this._targetWidth = value;
     this.setMainCanvasSize();
   }
   private _targetHeight = -1;
+  /**
+   * Height of the target image.
+   */
   public get targetHeight() {
     return this._targetHeight;
   }
+  /**
+   * Height of the target image.
+   */
   public set targetHeight(value) {
     this._targetHeight = value;
     this.setMainCanvasSize();
@@ -51,9 +86,15 @@ export class Renderer {
   private _targetImageLoaded = false;
 
   private _targetImage: HTMLImageElement | undefined;
+  /**
+   * Target image to render annotations on.
+   */
   public get targetImage(): HTMLImageElement | undefined {
     return this._targetImage;
   }
+  /**
+   * Target image to render annotations on.
+   */
   public set targetImage(value: HTMLImageElement | undefined) {
     this._targetImageLoaded = false;
     this._targetImage = value;
@@ -62,8 +103,14 @@ export class Renderer {
     }
   }
 
+  /**
+   * Marker types available for rendering.
+   */
   public markerTypes: Array<typeof MarkerBase> = [];
 
+  /**
+   * Array of markers to render.
+   */
   public markers: MarkerBase[] = [];
 
   private _isInitialized = false;
@@ -271,12 +318,20 @@ export class Renderer {
     return result;
   }
 
+  /**
+   * Adds a new marker type to the list of available marker types.
+   * @param markerType - Marker type to register.
+   */
   public registerMarkerType(markerType: typeof MarkerBase) {
     if (this.markerTypes.indexOf(markerType) < 0) {
       this.markerTypes.push(markerType);
     }
   }
 
+  /**
+   * Restores the annotation state.
+   * @param state - Annotation state to restore.
+   */
   public restoreState(state: AnnotationState): void {
     const stateCopy: AnnotationState = JSON.parse(JSON.stringify(state));
     this.markers.splice(0);
@@ -313,6 +368,12 @@ export class Renderer {
     });
   }
 
+  /**
+   * Rasterizes the annotation.
+   * @param state - annotation state to render.
+   * @param targetCanvas - optional target canvas to render the annotation on.
+   * @returns
+   */
   public async rasterize(
     state: AnnotationState,
     targetCanvas?: HTMLCanvasElement,
