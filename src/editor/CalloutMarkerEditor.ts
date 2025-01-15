@@ -3,6 +3,9 @@ import { MarkerEditorProperties } from './MarkerEditorProperties';
 import { ResizeGrip } from './ResizeGrip';
 import { TextMarkerEditor } from './TextMarkerEditor';
 
+/**
+ * Editor for callout markers.
+ */
 export class CalloutMarkerEditor<
   TMarkerType extends CalloutMarker = CalloutMarker,
 > extends TextMarkerEditor<TMarkerType> {

@@ -26,9 +26,7 @@ export class RectangularBoxMarkerGrips {
    * Returns a marker grip owning the specified visual.
    * @param gripVisual - visual for owner to be determined.
    */
-  public findGripByVisual(
-    gripVisual: EventTarget
-  ): ResizeGrip | undefined {
+  public findGripByVisual(gripVisual: EventTarget): ResizeGrip | undefined {
     for (const grip of this.grips.values()) {
       if (grip.ownsTarget(gripVisual)) {
         return grip;
@@ -37,6 +35,11 @@ export class RectangularBoxMarkerGrips {
     return undefined;
   }
 
+  /**
+   * Returns a grip by its location.
+   * @param location
+   * @returns
+   */
   public getGrip(location: GripLocation): ResizeGrip {
     return this.grips.get(location)!;
   }

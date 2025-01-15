@@ -5,6 +5,9 @@ import { MarkerEditorProperties } from './MarkerEditorProperties';
 import { RectangularBoxMarkerGrips } from './RectangularBoxMarkerGrips';
 import { RotateGrip } from './RotateGrip';
 
+/**
+ * Base editor for markers that can be represented by a rectangular area.
+ */
 export class RectangularBoxMarkerBaseEditor<
   TMarkerType extends RectangularBoxMarkerBase = RectangularBoxMarkerBase,
 > extends MarkerBaseEditor<TMarkerType> {
@@ -47,6 +50,9 @@ export class RectangularBoxMarkerBaseEditor<
    * Container for the marker's editing controls.
    */
   protected controlBox = SvgHelper.createGroup();
+  /**
+   * Container for the marker's manipulation grips.
+   */
   protected manipulationBox = SvgHelper.createGroup();
   private readonly CB_DISTANCE: number = 0;
   private controlRect?: SVGRectElement;
@@ -54,8 +60,16 @@ export class RectangularBoxMarkerBaseEditor<
 
   private controlGrips: RectangularBoxMarkerGrips =
     new RectangularBoxMarkerGrips();
+  /**
+   * Array of disabled resize grips.
+   *
+   * Use this in derived classes to disable specific resize grips.
+   */
   protected disabledResizeGrips: GripLocation[] = [];
   private rotatorGrip?: RotateGrip;
+  /**
+   * Active grip during manipulation
+   */
   protected activeGrip?: Grip;
   private disableRotation = false;
 
@@ -65,11 +79,6 @@ export class RectangularBoxMarkerBaseEditor<
     this.setupControlBox();
   }
 
-  /**
-   * Returns true if passed SVG element belongs to the marker. False otherwise.
-   *
-   * @param el - target element.
-   */
   public ownsTarget(el: EventTarget): boolean {
     if (super.ownsTarget(el) || this._marker.ownsTarget(el)) {
       return true;
@@ -83,12 +92,6 @@ export class RectangularBoxMarkerBaseEditor<
     }
   }
 
-  /**
-   * Handles pointer (mouse, touch, stylus, etc.) down event.
-   *
-   * @param point - event coordinates.
-   * @param target - direct event target element.
-   */
   public pointerDown(point: IPoint, target?: EventTarget): void {
     super.pointerDown(point, target);
 
@@ -148,13 +151,11 @@ export class RectangularBoxMarkerBaseEditor<
     }
   }
 
-  protected _suppressMarkerCreateEvent = false;
   /**
-   * Handles pointer (mouse, touch, stylus, etc.) up event.
-   *
-   * @param point - event coordinates.
-   * @param target - direct event target element.
+   * When set to true marker created event will not be triggered.
    */
+  protected _suppressMarkerCreateEvent = false;
+
   public pointerUp(point: IPoint): void {
     const inState = this.state;
     super.pointerUp(point);
@@ -179,11 +180,6 @@ export class RectangularBoxMarkerBaseEditor<
     this.stateChanged();
   }
 
-  /**
-   * Handles marker manipulation (move, resize, rotate, etc.).
-   *
-   * @param point - event coordinates.
-   */
   public manipulate(point: IPoint): void {
     const rotatedPoint = this.marker.unrotatePoint(point);
 
@@ -207,10 +203,6 @@ export class RectangularBoxMarkerBaseEditor<
     }
   }
 
-  /**
-   * Resizes the marker based on pointer coordinates and context.
-   * @param point - pointer coordinates.
-   */
   protected resize(point: IPoint): void {
     let newX = this.manipulationStartLeft;
     let newWidth = this.manipulationStartWidth;
@@ -277,9 +269,6 @@ export class RectangularBoxMarkerBaseEditor<
     this.adjustControlBox();
   }
 
-  /**
-   * Displays marker's controls.
-   */
   public select(multi = false): void {
     super.select(multi);
     this.adjustControlBox();
@@ -287,15 +276,15 @@ export class RectangularBoxMarkerBaseEditor<
     this.controlBox.style.display = '';
   }
 
-  /**
-   * Hides marker's controls.
-   */
   public deselect(): void {
     super.deselect();
     this.controlBox.style.display = 'none';
   }
 
-  private setupControlBox() {
+  /**
+   * Creates control box for manipulation controls.
+   */
+  protected setupControlBox() {
     this.controlBox = SvgHelper.createGroup();
     const translate = SvgHelper.createTransform();
     translate.setTranslate(-this.CB_DISTANCE / 2, -this.CB_DISTANCE / 2);
@@ -346,6 +335,9 @@ export class RectangularBoxMarkerBaseEditor<
     this.controlBox.style.display = 'none';
   }
 
+  /**
+   * Adjusts control box size and location.
+   */
   protected adjustControlBox() {
     const translate = this.controlBox.transform.baseVal.getItem(0);
     translate.setTranslate(
@@ -384,6 +376,9 @@ export class RectangularBoxMarkerBaseEditor<
     this.positionGrips();
   }
 
+  /**
+   * Adds control grips to control box.
+   */
   protected addControlGrips() {
     for (const grip of this.controlGrips.grips.values()) {
       grip.visual.transform.baseVal.appendItem(SvgHelper.createTransform());
@@ -415,6 +410,9 @@ export class RectangularBoxMarkerBaseEditor<
     return grip;
   }
 
+  /**
+   * Updates manipulation grip layout.
+   */
   protected positionGrips() {
     if (this.controlGrips !== undefined) {
       const gripSize = this.controlGrips.getGrip('topleft').gripSize ?? 0;
@@ -475,6 +473,12 @@ export class RectangularBoxMarkerBaseEditor<
     this.adjustGripVisibility();
   }
 
+  /**
+   * Positions specific grip.
+   * @param grip
+   * @param x
+   * @param y
+   */
   protected positionGrip(
     grip: SVGGraphicsElement | undefined,
     x: number,
@@ -500,6 +504,9 @@ export class RectangularBoxMarkerBaseEditor<
     this.controlBox.style.display = '';
   }
 
+  /**
+   * Adjusts visibility of resize grips.
+   */
   protected adjustGripVisibility() {
     for (const location of this.disabledResizeGrips) {
       const grip = this.controlGrips.getGrip(location);
@@ -509,12 +516,6 @@ export class RectangularBoxMarkerBaseEditor<
     }
   }
 
-  /**
-   * Scales marker. Used after the image resize.
-   *
-   * @param scaleX - horizontal scale
-   * @param scaleY - vertical scale
-   */
   public scale(scaleX: number, scaleY: number): void {
     super.scale(scaleX, scaleY);
 

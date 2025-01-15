@@ -3,33 +3,60 @@ import { MarkerEditorProperties } from './MarkerEditorProperties';
 import { RectangularBoxMarkerBaseEditor } from './RectangularBoxMarkerBaseEditor';
 import { TextBlockEditor } from './TextBlockEditor';
 
+/**
+ * Editor for text markers.
+ */
 export class TextMarkerEditor<
   TMarkerType extends TextMarker = TextMarker,
 > extends RectangularBoxMarkerBaseEditor<TMarkerType> {
+  /**
+   * Container for text block editor.
+   */
   protected textBlockEditorContainer: SVGForeignObjectElement =
     SvgHelper.createForeignObject();
+  /**
+   * Text block editor.
+   */
   protected textBlockEditor: TextBlockEditor;
 
+  /**
+   * Text color.
+   */
   public set color(color: string) {
     this.marker.color = color;
     this.stateChanged();
   }
+  /**
+   * Text color.
+   */
   public get color(): string {
     return this.marker.color;
   }
 
+  /**
+   * Sets text's font family.
+   */
   public set fontFamily(font: string) {
     this.marker.fontFamily = font;
     this.stateChanged();
   }
+  /**
+   * Returns text's font family.
+   */
   public get fontFamily(): string {
     return this.marker.fontFamily;
   }
 
+  /**
+   * Sets text's font size.
+   */
   public set fontSize(size: FontSize) {
     this.marker.fontSize = size;
     this.stateChanged();
   }
+  /**
+   * Returns text's font size.
+   */
   public get fontSize(): FontSize {
     return this.marker.fontSize;
   }
@@ -63,12 +90,7 @@ export class TextMarkerEditor<
 
   private _pointerDownTime: number = Number.MAX_VALUE;
   private _pointerDownPoint: IPoint = { x: 0, y: 0 };
-  /**
-   * Handles pointer (mouse, touch, stylus, etc.) down event.
-   *
-   * @param point - event coordinates.
-   * @param target - direct event target element.
-   */
+
   public pointerDown(point: IPoint, target?: EventTarget): void {
     super.pointerDown(point, target);
 
@@ -100,21 +122,11 @@ export class TextMarkerEditor<
     this.textBlockEditor.height = this.marker.height;
   }
 
-  /**
-   * Resizes the marker based on the pointer coordinates.
-   * @param point - current pointer coordinates.
-   */
   protected resize(point: IPoint): void {
     super.resize(point);
     this.setSize();
   }
 
-  /**
-   * Handles pointer (mouse, touch, stylus, etc.) up event.
-   *
-   * @param point - event coordinates.
-   * @param target - direct event target element.
-   */
   public pointerUp(point: IPoint): void {
     const inState = this.state;
     super.pointerUp(point);

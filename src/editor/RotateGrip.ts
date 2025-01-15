@@ -1,7 +1,9 @@
 import { Grip } from './Grip';
 
+/**
+ * Represents a rotation grip.
+ */
 export class RotateGrip extends Grip {
-
   constructor() {
     super();
     // swap fill and stroke colors

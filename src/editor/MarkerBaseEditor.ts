@@ -13,18 +13,43 @@ export type MarkerEditorState =
   | 'rotate'
   | 'edit';
 
+/**
+ * Marker creation style defines whether markers are created by drawing them or just dropping them on the canvas.
+ */
 export type MarkerCreationStyle = 'draw' | 'drop';
 
+/**
+ * Base class for all marker editors.
+ *
+ * @typeParam TMarkerType - marker type the instance of the editor is for.
+ */
 export class MarkerBaseEditor<TMarkerType extends MarkerBase = MarkerBase> {
+  /**
+   * Marker type constructor.
+   */
   protected _markerType: new (container: SVGGElement) => TMarkerType;
 
+  /**
+   * Marker creation style.
+   *
+   * Markers can either be created by drawing them or just dropping them on the canvas.
+   */
   protected _creationStyle: MarkerCreationStyle = 'draw';
+  /**
+   * Marker creation style.
+   *
+   * Markers can either be created by drawing them or just dropping them on the canvas.
+   */
   public get creationStyle(): MarkerCreationStyle {
     return this._creationStyle;
   }
 
   /**
    * Type guard for specific marker editor types.
+   *
+   * This allows to check if the editor is of a specific type which is useful for displaying type-specific UI.
+   *
+   * @typeParam T - specific marker editor type.
    * @param cls
    * @returns
    */
@@ -35,12 +60,21 @@ export class MarkerBaseEditor<TMarkerType extends MarkerBase = MarkerBase> {
     return this instanceof cls;
   }
 
+  /**
+   * Marker instance.
+   */
   protected _marker: TMarkerType;
 
+  /**
+   * Returns the marker instance.
+   */
   public get marker(): TMarkerType {
     return this._marker;
   }
 
+  /**
+   * SVG container for the marker's and editor's visual elements.
+   */
   protected _container: SVGGElement;
   /**
    * Returns the SVG container for the marker's and editor's visual elements.
@@ -113,25 +147,34 @@ export class MarkerBaseEditor<TMarkerType extends MarkerBase = MarkerBase> {
     return this._isSelected;
   }
 
+  /**
+   * When set to true, a new marker of the same type is created immediately after the current one is finished.
+   */
   protected _continuousCreation = false;
+  /**
+   * When set to true, a new marker of the same type is created immediately after the current one is finished.
+   */
   public get continuousCreation() {
     return this._continuousCreation;
   }
 
   /**
-   * Sets rectangle's border stroke color.
+   * Sets marker's stroke (outline) color.
    * @param color - color as string
    */
   public set strokeColor(color: string) {
     this.marker.strokeColor = color;
   }
 
+  /**
+   * Gets marker's stroke (outline) color.
+   */
   public get strokeColor(): string {
     return this.marker.strokeColor;
   }
 
   /**
-   * Sets rectangle's border stroke (line) width.
+   * Sets marker's stroke (outline) width.
    * @param color - color as string
    */
   public set strokeWidth(width: number) {
@@ -140,39 +183,62 @@ export class MarkerBaseEditor<TMarkerType extends MarkerBase = MarkerBase> {
     this.stateChanged();
   }
 
+  /**
+   * Gets marker's stroke (outline) width.
+   */
   public get strokeWidth(): number {
     return this.marker.strokeWidth;
   }
 
   /**
-   * Sets rectangle's border stroke dash array.
-   * @param color - color as string
+   * Sets marker's stroke (outline) dash array.
+   * @param dashes - dash array as string
    */
   public set strokeDasharray(dashes: string) {
     this.marker.strokeDasharray = dashes;
     this.stateChanged();
   }
 
+  /**
+   * Gets marker's stroke (outline) dash array.
+   */
   public get strokeDasharray(): string {
     return this.marker.strokeDasharray;
   }
 
+  /**
+   * Sets marker's fill color.
+   */
   public set fillColor(color: string) {
     this.marker.fillColor = color;
   }
 
+  /**
+   * Gets marker's fill color.
+   */
   public get fillColor(): string {
     return this.marker.fillColor;
   }
 
+  /**
+   * Sets marker's opacity.
+   */
   public set opacity(value: number) {
     this.marker.opacity = value;
   }
 
+  /**
+   * Gets marker's opacity.
+   */
   public get opacity(): number {
     return this.marker.opacity;
   }
 
+  /**
+   * Creates a new instance of marker editor.
+   *
+   * @param properties - marker editor properties.
+   */
   constructor(properties: MarkerEditorProperties<TMarkerType>) {
     this._container = properties.container;
     this._overlayContainer = properties.overlayContainer;
@@ -193,6 +259,12 @@ export class MarkerBaseEditor<TMarkerType extends MarkerBase = MarkerBase> {
     this.dblClick = this.dblClick.bind(this);
   }
 
+  /**
+   * Returns true if the marker or the editor owns supplied target element.
+   *
+   * @param el target element
+   * @returns
+   */
   public ownsTarget(el: EventTarget | null): boolean {
     let found = false;
     if (el !== null) {
@@ -203,6 +275,9 @@ export class MarkerBaseEditor<TMarkerType extends MarkerBase = MarkerBase> {
     return found;
   }
 
+  /**
+   * Is this marker selected in a multi-selection?
+   */
   protected isMultiSelected = false;
   /**
    * Selects this marker and displays appropriate selected marker UI.
@@ -264,8 +339,17 @@ export class MarkerBaseEditor<TMarkerType extends MarkerBase = MarkerBase> {
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   public dispose(): void {}
 
+  /**
+   * Adjusts marker's control box.
+   */
   protected adjustControlBox() {}
 
+  /**
+   * Scales the marker and the editor.
+   *
+   * @param scaleX
+   * @param scaleY
+   */
   public scale(scaleX: number, scaleY: number): void {
     this._marker.scale(scaleX, scaleY);
 
@@ -297,6 +381,11 @@ export class MarkerBaseEditor<TMarkerType extends MarkerBase = MarkerBase> {
     }
   }
 
+  /**
+   * Returns marker's state that can be restored in the future.
+   *
+   * @returns
+   */
   public getState(): MarkerBaseState {
     return this.marker.getState();
   }

@@ -31,7 +31,7 @@ export class UndoRedoManager<T> {
   /**
    * Returns the number of items in the redo stack
    */
-   public get redoStepCount(): number {
+  public get redoStepCount(): number {
     return this.redoStack.length;
   }
 
@@ -45,11 +45,11 @@ export class UndoRedoManager<T> {
       JSON.stringify(this.undoStack[this.undoStack.length - 1]) !==
         JSON.stringify(stepData)
     ) {
-        this.undoStack.push(JSON.parse(JSON.stringify(stepData)));
-        if (JSON.stringify(this.lastRedoStep) !== JSON.stringify(stepData)) {
-          this.redoStack.splice(0, this.redoStack.length);
-        }
-        return true;
+      this.undoStack.push(JSON.parse(JSON.stringify(stepData)));
+      if (JSON.stringify(this.lastRedoStep) !== JSON.stringify(stepData)) {
+        this.redoStack.splice(0, this.redoStack.length);
+      }
+      return true;
     }
     return false;
   }
@@ -60,7 +60,9 @@ export class UndoRedoManager<T> {
    */
   public replaceLastUndoStep(stepData: T): void {
     if (this.undoStack.length > 0) {
-        this.undoStack[this.undoStack.length - 1] = JSON.parse(JSON.stringify(stepData));
+      this.undoStack[this.undoStack.length - 1] = JSON.parse(
+        JSON.stringify(stepData),
+      );
     }
   }
 
@@ -69,7 +71,7 @@ export class UndoRedoManager<T> {
    */
   public getLastUndoStep(): T | undefined {
     if (this.undoStack.length > 0) {
-        return this.undoStack[this.undoStack.length - 1];
+      return this.undoStack[this.undoStack.length - 1];
     } else {
       return undefined;
     }
@@ -77,7 +79,7 @@ export class UndoRedoManager<T> {
 
   /**
    * Returns data for the previous step in the undo stack and adds last step to the redo stack.
-   * @returns 
+   * @returns
    */
   public undo(): T | undefined {
     if (this.undoStack.length > 1) {
@@ -85,13 +87,15 @@ export class UndoRedoManager<T> {
       if (lastStep !== undefined) {
         this.redoStack.push(lastStep);
       }
-      return this.undoStack.length > 0 ? this.undoStack[this.undoStack.length - 1] : undefined;
+      return this.undoStack.length > 0
+        ? this.undoStack[this.undoStack.length - 1]
+        : undefined;
     }
   }
 
   /**
    * Returns most recent item in the redo stack.
-   * @returns 
+   * @returns
    */
   public redo(): T | undefined {
     this.lastRedoStep = this.redoStack.pop();

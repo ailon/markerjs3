@@ -2,13 +2,19 @@ import { FreehandMarker, IPoint, SvgHelper } from '../core';
 import { MarkerBaseEditor } from './MarkerBaseEditor';
 import { MarkerEditorProperties } from './MarkerEditorProperties';
 
+/**
+ * Editor for freehand markers.
+ */
 export class FreehandMarkerEditor<
   TMarkerType extends FreehandMarker = FreehandMarker,
 > extends MarkerBaseEditor<TMarkerType> {
   /**
-   * Pointer coordinates at the start of move or resize.
+   * Pointer X coordinate at the start of move or resize.
    */
   protected manipulationStartX = 0;
+  /**
+   * Pointer Y coordinate at the start of move or resize.
+   */
   protected manipulationStartY = 0;
 
   /**
@@ -34,11 +40,6 @@ export class FreehandMarkerEditor<
     this.setupControlBox();
   }
 
-  /**
-   * Returns true if passed SVG element belongs to the marker. False otherwise.
-   *
-   * @param el - target element.
-   */
   public ownsTarget(el: EventTarget): boolean {
     if (
       super.ownsTarget(el) ||
@@ -51,12 +52,6 @@ export class FreehandMarkerEditor<
     }
   }
 
-  /**
-   * Handles pointer (mouse, touch, stylus, etc.) down event.
-   *
-   * @param point - event coordinates.
-   * @param target - direct event target element.
-   */
   public pointerDown(point: IPoint, target?: EventTarget): void {
     super.pointerDown(point, target);
 
@@ -93,12 +88,6 @@ export class FreehandMarkerEditor<
     }
   }
 
-  /**
-   * Handles pointer (mouse, touch, stylus, etc.) up event.
-   *
-   * @param point - event coordinates.
-   * @param target - direct event target element.
-   */
   public pointerUp(point: IPoint): void {
     super.pointerUp(point);
     this.manipulate(point);
@@ -109,11 +98,6 @@ export class FreehandMarkerEditor<
     this.stateChanged();
   }
 
-  /**
-   * Handles marker manipulation (move, resize, rotate, etc.).
-   *
-   * @param point - event coordinates.
-   */
   public manipulate(point: IPoint): void {
     if (this.state === 'creating') {
       this.addNewPointWhileCreating(point);
@@ -158,25 +142,19 @@ export class FreehandMarkerEditor<
     if (this.controlRect) {
       SvgHelper.setAttributes(this.controlRect, [
         ['x', (left - this.strokeWidth).toString()],
-        ['y', (top  - this.strokeWidth).toString()],
+        ['y', (top - this.strokeWidth).toString()],
         ['width', (right - left + this.strokeWidth * 2).toString()],
         ['height', (bottom - top + this.strokeWidth * 2).toString()],
       ]);
     }
   }
 
-  /**
-   * Displays marker's controls.
-   */
   public select(): void {
     super.select();
     this.adjustControlBox();
     this.controlBox.style.display = '';
   }
 
-  /**
-   * Hides marker's controls.
-   */
   public deselect(): void {
     super.deselect();
     this.controlBox.style.display = 'none';

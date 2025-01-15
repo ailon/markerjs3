@@ -1,5 +1,8 @@
 import { SvgHelper } from '../core/SvgHelper';
 
+/**
+ * Represents location of the manipulation grips.
+ */
 export type GripLocation =
   | 'topleft'
   | 'topcenter'
@@ -18,6 +21,9 @@ export class Grip {
    * Grip's visual element.
    */
   protected _visual?: SVGGraphicsElement;
+  /**
+   * Grip's visual element.
+   */
   public get visual(): SVGGraphicsElement {
     if (!this._visual) {
       this.createVisual();
@@ -30,7 +36,13 @@ export class Grip {
    */
   public gripSize = 5;
 
+  /**
+   * Grip's fill color.
+   */
   public fillColor = 'rgba(255,255,255,0.9)';
+  /**
+   * Grip's stroke color.
+   */
   public strokeColor = '#0ea5e9';
 
   /**
@@ -40,6 +52,9 @@ export class Grip {
     this.createVisual = this.createVisual.bind(this);
   }
 
+  /**
+   * Creates grip's visual.
+   */
   protected createVisual() {
     this._visual = SvgHelper.createGroup();
     this._visual.appendChild(

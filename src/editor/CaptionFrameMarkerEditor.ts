@@ -2,6 +2,9 @@ import { CaptionFrameMarker } from '../core';
 import { MarkerEditorProperties } from './MarkerEditorProperties';
 import { TextMarkerEditor } from './TextMarkerEditor';
 
+/**
+ * Editor for caption frame markers.
+ */
 export class CaptionFrameMarkerEditor<
   TMarkerType extends CaptionFrameMarker = CaptionFrameMarker,
 > extends TextMarkerEditor<TMarkerType> {

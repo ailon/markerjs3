@@ -3,6 +3,9 @@ import { MarkerBaseEditor } from './MarkerBaseEditor';
 import { MarkerEditorProperties } from './MarkerEditorProperties';
 import { ResizeGrip } from './ResizeGrip';
 
+/**
+ * Editor for linear markers.
+ */
 export class LinearMarkerEditor<
   TMarkerType extends LinearMarkerBase = LinearMarkerBase,
 > extends MarkerBaseEditor<TMarkerType> {
@@ -12,9 +15,12 @@ export class LinearMarkerEditor<
   protected defaultLength = 50;
 
   /**
-   * Pointer coordinates at the start of move or resize.
+   * Pointer X coordinate at the start of move or resize.
    */
   protected manipulationStartX = 0;
+  /**
+   * Pointer Y coordinate at the start of move or resize.
+   */
   protected manipulationStartY = 0;
 
   private manipulationStartX1 = 0;
@@ -26,6 +32,9 @@ export class LinearMarkerEditor<
    * Container for control elements.
    */
   protected controlBox: SVGGElement = SvgHelper.createGroup();
+  /**
+   * Container for manipulation grips.
+   */
   protected manipulationBox: SVGGElement = SvgHelper.createGroup();
 
   /**
@@ -63,11 +72,6 @@ export class LinearMarkerEditor<
     this.setupControlBox();
   }
 
-  /**
-   * Returns true if passed SVG element belongs to the marker. False otherwise.
-   *
-   * @param el - target element.
-   */
   public ownsTarget(el: EventTarget): boolean {
     if (super.ownsTarget(el) || this.marker.ownsTarget(el)) {
       return true;
@@ -78,12 +82,6 @@ export class LinearMarkerEditor<
     }
   }
 
-  /**
-   * Handles pointer (mouse, touch, stylus, etc.) down event.
-   *
-   * @param point - event coordinates.
-   * @param target - direct event target element.
-   */
   public pointerDown(point: IPoint, target?: EventTarget): void {
     super.pointerDown(point, target);
 
@@ -125,12 +123,6 @@ export class LinearMarkerEditor<
     }
   }
 
-  /**
-   * Handles pointer (mouse, touch, stylus, etc.) up event.
-   *
-   * @param point - event coordinates.
-   * @param target - direct event target element.
-   */
   public pointerUp(point: IPoint): void {
     const inState = this.state;
     super.pointerUp(point);
@@ -151,11 +143,6 @@ export class LinearMarkerEditor<
     }
   }
 
-  /**
-   * Handles marker manipulation (move, resize, rotate, etc.).
-   *
-   * @param point - event coordinates.
-   */
   public manipulate(point: IPoint): void {
     if (this.state === 'creating') {
       this.resize(point);
@@ -175,10 +162,6 @@ export class LinearMarkerEditor<
     }
   }
 
-  /**
-   * Resizes the line marker.
-   * @param point - current manipulation coordinates.
-   */
   protected resize(point: IPoint): void {
     switch (this.activeGrip) {
       case this.grip1:
@@ -267,9 +250,6 @@ export class LinearMarkerEditor<
     grip.transform.baseVal.replaceItem(translate, 0);
   }
 
-  /**
-   * Displays marker's controls.
-   */
   public select(multi = false): void {
     super.select(multi);
     this.adjustControlBox();
@@ -277,9 +257,6 @@ export class LinearMarkerEditor<
     this.controlBox.style.display = '';
   }
 
-  /**
-   * Hides marker's controls.
-   */
   public deselect(): void {
     super.deselect();
     this.controlBox.style.display = 'none';

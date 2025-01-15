@@ -3,6 +3,9 @@
  */
 export type TextChangedHandler = (text: string) => void;
 
+/**
+ * Blur event handler type.
+ */
 export type BlurHandler = () => void;
 
 /**
@@ -132,9 +135,15 @@ export class TextBlockEditor {
   }
 
   private _bgColor = 'transparent';
+  /**
+   * Returns text block's background color.
+   */
   public get bgColor() {
     return this._bgColor;
   }
+  /**
+   * Sets text block's background color.
+   */
   public set bgColor(value) {
     this._bgColor = value;
     this.textEditor.style.backgroundColor = this.bgColor;
@@ -145,6 +154,9 @@ export class TextBlockEditor {
    */
   public onTextChanged?: TextChangedHandler;
 
+  /**
+   * Blur event handler.
+   */
   public onBlur?: BlurHandler;
 
   /**

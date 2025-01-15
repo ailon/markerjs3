@@ -3,6 +3,9 @@ import { MarkerBaseEditor } from './MarkerBaseEditor';
 import { MarkerEditorProperties } from './MarkerEditorProperties';
 import { ResizeGrip } from './ResizeGrip';
 
+/**
+ * Editor for polygon markers.
+ */
 export class PolygonMarkerEditor<
   TMarkerType extends PolygonMarker = PolygonMarker,
 > extends MarkerBaseEditor<TMarkerType> {
@@ -12,17 +15,26 @@ export class PolygonMarkerEditor<
   protected defaultLength = 50;
 
   /**
-   * Pointer coordinates at the start of move or resize.
+   * Pointer X coordinate at the start of move or resize.
    */
   protected manipulationStartX = 0;
+  /**
+   * Pointer Y coordinate at the start of move or resize.
+   */
   protected manipulationStartY = 0;
 
   /**
    * Container for control elements.
    */
   protected controlBox: SVGGElement = SvgHelper.createGroup();
+  /**
+   * Container for manipulation grips.
+   */
   protected manipulationBox: SVGGElement = SvgHelper.createGroup();
 
+  /**
+   * Array of manipulation grips.
+   */
   protected grips: ResizeGrip[] = [];
   /**
    * Active manipulation grip.
@@ -51,11 +63,6 @@ export class PolygonMarkerEditor<
     this.setupControlBox();
   }
 
-  /**
-   * Returns true if passed SVG element belongs to the marker. False otherwise.
-   *
-   * @param el - target element.
-   */
   public ownsTarget(el: EventTarget): boolean {
     if (super.ownsTarget(el) || this.marker.ownsTarget(el)) {
       return true;
@@ -66,12 +73,6 @@ export class PolygonMarkerEditor<
     }
   }
 
-  /**
-   * Handles pointer (mouse, touch, stylus, etc.) down event.
-   *
-   * @param point - event coordinates.
-   * @param target - direct event target element.
-   */
   public pointerDown(point: IPoint, target?: EventTarget): void {
     super.pointerDown(point, target);
 
@@ -142,12 +143,6 @@ export class PolygonMarkerEditor<
     }
   }
 
-  /**
-   * Handles pointer (mouse, touch, stylus, etc.) up event.
-   *
-   * @param point - event coordinates.
-   * @param target - direct event target element.
-   */
   public pointerUp(point: IPoint): void {
     super.pointerUp(point);
     this.manipulate(point);
@@ -157,11 +152,6 @@ export class PolygonMarkerEditor<
     this.stateChanged();
   }
 
-  /**
-   * Handles marker manipulation (move, resize, rotate, etc.).
-   *
-   * @param point - event coordinates.
-   */
   public manipulate(point: IPoint): void {
     if (this.state === 'creating') {
       this.resize(point);
@@ -179,10 +169,6 @@ export class PolygonMarkerEditor<
     }
   }
 
-  /**
-   * Resizes the line marker.
-   * @param point - current manipulation coordinates.
-   */
   protected resize(point: IPoint): void {
     const activeGripIndex = this.activeGrip
       ? this.grips.indexOf(this.activeGrip)
@@ -292,9 +278,6 @@ export class PolygonMarkerEditor<
     grip.transform.baseVal.replaceItem(translate, 0);
   }
 
-  /**
-   * Displays marker's controls.
-   */
   public select(multi = false): void {
     super.select(multi);
     this.adjustControlBox();
@@ -302,9 +285,6 @@ export class PolygonMarkerEditor<
     this.controlBox.style.display = '';
   }
 
-  /**
-   * Hides marker's controls.
-   */
   public deselect(): void {
     super.deselect();
     this.controlBox.style.display = 'none';
