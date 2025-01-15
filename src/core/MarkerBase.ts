@@ -16,13 +16,30 @@ export type MarkerStage = 'creating' | 'normal';
  * However, if you cannot find a suitable base class, you can and you should extend this class.
  */
 export class MarkerBase {
+  /**
+   * Marker type name.
+   *
+   * It's important to set this in each derived class. This value is used to identify marker types
+   * when restoring marker state and other scenarios.
+   */
   public static typeName = 'MarkerBase';
 
+  /**
+   * Returns marker type name for the object instance.
+   */
   public get typeName(): string {
     return Object.getPrototypeOf(this).constructor.typeName;
   }
 
+  /**
+   * SVG container object holding the marker's visual.
+   *
+   * It is created and passed to the constructor by marker editor or viewer when creating the marker.
+   */
   protected _container: SVGGElement;
+  /**
+   * SVG container object holding the marker's visual.
+   */
   /**
    * SVG container object holding the marker's visual.
    */
@@ -31,7 +48,10 @@ export class MarkerBase {
   }
 
   /**
-   * Additional information about the marker
+   * Additional information about the marker.
+   *
+   * Generally, this isn't used for anything functional.
+   * However, in a derived type it could be used for storing arbitrary data with no need to create extra properties and state types.
    */
   public notes?: string;
 
@@ -45,9 +65,23 @@ export class MarkerBase {
    */
   public static title: string;
 
+  /**
+   * Marker lifecycle stage.
+   *
+   * Most markers are created immediately after the user clicks on the canvas (`normal`).
+   * However, some markers are only finished creating after additional interactions (`creating`).
+   */
   public stage: MarkerStage = 'normal';
 
+  /**
+   * Stroke (outline) color of the marker.
+   */
   protected _strokeColor = 'transparent';
+  /**
+   * Stroke (outline) color of the marker.
+   *
+   * In a derived class override {@link applyStrokeColor} to apply the color to the marker's visual.
+   */
   public get strokeColor() {
     return this._strokeColor;
   }
@@ -55,9 +89,22 @@ export class MarkerBase {
     this._strokeColor = color;
     this.applyStrokeColor();
   }
+  /**
+   * Applies the stroke color to the marker's visual.
+   *
+   * Override this method in a derived class to apply the color to the marker's visual.
+   */
   protected applyStrokeColor() {}
 
+  /**
+   * Fill color of the marker.
+   */
   protected _fillColor = 'transparent';
+  /**
+   * Fill color of the marker.
+   *
+   * In a derived class override {@link applyFillColor} to apply the color to the marker's visual.
+   */
   public get fillColor() {
     return this._fillColor;
   }
@@ -65,9 +112,22 @@ export class MarkerBase {
     this._fillColor = color;
     this.applyFillColor();
   }
+  /**
+   * Applies the fill color to the marker's visual.
+   *
+   * Override this method in a derived class to apply the color to the marker's visual.
+   */
   protected applyFillColor() {}
 
+  /**
+   * Stroke (outline) width of the marker.
+   */
   protected _strokeWidth = 0;
+  /**
+   * Stroke (outline) width of the marker.
+   *
+   * In a derived class override {@link applyStrokeWidth} to apply the width to the marker's visual.
+   */
   public get strokeWidth() {
     return this._strokeWidth;
   }
@@ -75,9 +135,22 @@ export class MarkerBase {
     this._strokeWidth = value;
     this.applyStrokeWidth();
   }
+  /**
+   * Applies the stroke width to the marker's visual.
+   *
+   * Override this method in a derived class to apply the width to the marker's visual.
+   */
   protected applyStrokeWidth() {}
 
+  /**
+   * Stroke (outline) dash array of the marker.
+   */
   protected _strokeDasharray = '';
+  /**
+   * Stroke (outline) dash array of the marker.
+   *
+   * In a derived class override {@link applyStrokeDasharray} to apply the dash array to the marker's visual.
+   */
   public get strokeDasharray() {
     return this._strokeDasharray;
   }
@@ -85,9 +158,22 @@ export class MarkerBase {
     this._strokeDasharray = value;
     this.applyStrokeDasharray();
   }
+  /**
+   * Applies the stroke dash array to the marker's visual.
+   *
+   * Override this method in a derived class to apply the dash array to the marker's visual.
+   */
   protected applyStrokeDasharray() {}
 
+  /**
+   * Opacity of the marker.
+   */
   protected _opacity = 1;
+  /**
+   * Opacity of the marker.
+   *
+   * In a derived class override {@link applyOpacity} to apply the opacity to the marker's visual.
+   */
   public get opacity() {
     return this._opacity;
   }
@@ -95,8 +181,18 @@ export class MarkerBase {
     this._opacity = value;
     this.applyOpacity();
   }
+  /**
+   * Applies the opacity to the marker's visual.
+   *
+   * Override this method in a derived class to apply the opacity to the marker's visual
+   */
   protected applyOpacity() {}
 
+  /**
+   * Creates a new marker object.
+   *
+   * @param container - SVG container object holding the marker's visual.
+   */
   constructor(container: SVGGElement) {
     this._container = container;
 
@@ -112,6 +208,7 @@ export class MarkerBase {
    * Returns true if passed SVG element belongs to the marker. False otherwise.
    *
    * @param el - target element.
+   * @returns true if the element belongs to the marker.
    */
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   public ownsTarget(el: EventTarget): boolean {
@@ -119,7 +216,7 @@ export class MarkerBase {
   }
 
   /**
-   * Disposes the marker and clean's up.
+   * Disposes the marker and cleans up.
    */
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   public dispose(): void {}
@@ -132,6 +229,10 @@ export class MarkerBase {
     }
   }
 
+  /**
+   * When overridden in a derived class, represents a preliminary outline for markers that can be displayed before the marker is actually created.
+   * @returns SVG path string.
+   */
   public getOutline(): string {
     return '';
   }
@@ -164,7 +265,7 @@ export class MarkerBase {
   }
 
   /**
-   * Scales marker. Used after the image resize.
+   * Scales marker. Used after resize.
    *
    * @param scaleX - horizontal scale
    * @param scaleY - vertical scale

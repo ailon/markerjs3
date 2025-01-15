@@ -2,7 +2,7 @@ import { FontSize } from './FontSize';
 import { SvgHelper } from './SvgHelper';
 
 /**
- * TextBlock represents a block of text used across all text-based stencils and connector labels.
+ * TextBlock represents a block of text used across all text-based markers.
  */
 export class TextBlock {
   /**
@@ -14,7 +14,7 @@ export class TextBlock {
 
   private _text = '';
   /**
-   * Returns the text block's text
+   * Returns the text block's text.
    */
   public get text() {
     return this._text;

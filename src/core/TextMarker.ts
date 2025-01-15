@@ -5,26 +5,37 @@ import { SvgHelper } from './SvgHelper';
 import { TextBlock } from './TextBlock';
 import { TextMarkerState } from './TextMarkerState';
 
+/**
+ * Text marker.
+ *
+ * Used to represent a text block as well a base class for other text-based markers.
+ */
 export class TextMarker extends RectangularBoxMarkerBase {
   public static typeName = 'TextMarker';
 
   public static title = 'Text marker';
 
+  /**
+   * Default text for the marker type.
+   */
   protected static DEFAULT_TEXT = 'Text';
   // protected static DEFAULT_TEXT =
   //   'Longer text to see what happens when it is too long to fit the bounding box.';
 
+  /**
+   * Callback to be called when the text size changes.
+   */
   public onSizeChanged?: (textMarker: TextMarker) => void;
 
   private _color = 'black';
   /**
-   * Returns stencil's text color.
+   * Returns markers's text color.
    */
   public get color() {
     return this._color;
   }
   /**
-   * Sets the stencil's text color.
+   * Sets the markers's text color.
    */
   public set color(value) {
     this._color = value;
@@ -33,13 +44,13 @@ export class TextMarker extends RectangularBoxMarkerBase {
 
   private _fontFamily = 'Helvetica, Arial, sans-serif';
   /**
-   * Returns the stencil's font family.
+   * Returns the markers's font family.
    */
   public get fontFamily() {
     return this._fontFamily;
   }
   /**
-   * Sets the stencil's font family.
+   * Sets the markers's font family.
    */
   public set fontFamily(value) {
     this._fontFamily = value;
@@ -52,13 +63,13 @@ export class TextMarker extends RectangularBoxMarkerBase {
     step: 0.1,
   };
   /**
-   * Returns the stencil's font size.
+   * Returns the marker's font size.
    */
   public get fontSize(): FontSize {
     return this._fontSize;
   }
   /**
-   * Sets the stencil's font size.
+   * Sets the marker's font size.
    */
   public set fontSize(value: FontSize) {
     this._fontSize = value;
@@ -66,21 +77,21 @@ export class TextMarker extends RectangularBoxMarkerBase {
   }
 
   /**
-   * Returns the default text for the stencil type.
-   * @returns stencil type's default text.
+   * Returns the default text for the marker type.
+   * @returns marker type's default text.
    */
   protected getDefaultText(): string {
     return Object.getPrototypeOf(this).constructor.DEFAULT_TEXT;
   }
   private _text: string = this.getDefaultText();
   /**
-   * Returns the stencil's text.
+   * Returns the marker's text.
    */
   public get text(): string {
     return this.textBlock.text;
   }
   /**
-   * Sets the stencil's text.
+   * Sets the marker's text.
    */
   public set text(value: string) {
     this._text = value;
@@ -118,6 +129,9 @@ export class TextMarker extends RectangularBoxMarkerBase {
     this.textBoundingBox = new DOMRect();
   }
 
+  /**
+   * Creates marker's visual.
+   */
   public createVisual(): void {
     this.textBlock.fontFamily = this.fontFamily;
     this.textBlock.fontSize = this.fontSize;
@@ -134,6 +148,9 @@ export class TextMarker extends RectangularBoxMarkerBase {
     this.textBlock.text = this._text;
   }
 
+  /**
+   * Adjusts marker's visual according to the current state.
+   */
   public adjustVisual(): void {
     this.setSize();
   }
@@ -150,6 +167,9 @@ export class TextMarker extends RectangularBoxMarkerBase {
     }
   }
 
+  /**
+   * Sets the text bounding box.
+   */
   protected setTextBoundingBox() {
     this.textBoundingBox.x = this.padding;
     this.textBoundingBox.y = this.padding;
@@ -159,7 +179,7 @@ export class TextMarker extends RectangularBoxMarkerBase {
   }
 
   /**
-   * Sets (adjusts) the stencil's size.
+   * Sets (adjusts) the marker's size.
    */
   public setSize(): void {
     const [prevWidth, prevHeight] = [this.width, this.height];
@@ -177,6 +197,9 @@ export class TextMarker extends RectangularBoxMarkerBase {
     this.setTextBoundingBox();
   }
 
+  /**
+   * Sets the marker's size based on the text size.
+   */
   protected setSizeFromTextSize(): void {
     if (this.textBlock.textSize) {
       this.width = this.textBlock.textSize.width + this.padding * 2;
@@ -215,11 +238,21 @@ export class TextMarker extends RectangularBoxMarkerBase {
     this.fontSize = fontSize;
   }
 
+  /**
+   * Hides the marker's visual.
+   *
+   * Used when editing the text.
+   */
   public hideVisual(): void {
     if (this.visual) {
       this.visual.style.visibility = 'hidden';
     }
   }
+  /**
+   * Shows the marker's visual.
+   *
+   * Eg. when done editing the text.
+   */
   public showVisual() {
     if (this.visual) {
       this.visual.style.visibility = 'visible';
@@ -240,11 +273,6 @@ export class TextMarker extends RectangularBoxMarkerBase {
     return result;
   }
 
-  /**
-   * Restores previously saved marker state.
-   *
-   * @param state - previously saved state.
-   */
   public restoreState(state: MarkerBaseState): void {
     const textState = state as TextMarkerState;
     this.color = textState.color;

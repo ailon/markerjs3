@@ -1,8 +1,11 @@
 import { ShapeOutlineMarkerBaseState } from './ShapeOutlineMarkerBaseState';
 
 /**
- * Represents shape's state.
+ * Represents filled shape's state.
  */
 export interface ShapeMarkerBaseState extends ShapeOutlineMarkerBaseState {
+  /**
+   * Marker's fill color.
+   */
   fillColor: string;
 }

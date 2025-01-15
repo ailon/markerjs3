@@ -1,6 +1,11 @@
 import { IPoint } from './IPoint';
 import { LineMarker } from './LineMarker';
 
+/**
+ * Represents a measurement marker.
+ *
+ * Measurement marker is a line with two vertical bars at the ends.
+ */
 export class MeasurementMarker extends LineMarker {
   public static typeName = 'MeasurementMarker';
   public static title = 'Measurement marker';

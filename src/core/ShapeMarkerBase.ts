@@ -3,10 +3,21 @@ import { ShapeOutlineMarkerBase } from './ShapeOutlineMarkerBase';
 import { ShapeMarkerBaseState } from './ShapeMarkerBaseState';
 import { SvgHelper } from './SvgHelper';
 
+/**
+ * Base class for filled shape markers.
+ */
 export abstract class ShapeMarkerBase extends ShapeOutlineMarkerBase {
   public static title = 'Shape marker';
 
+  /**
+   * Marker's fill color.
+   */
   protected _fillColor = 'transparent';
+  /**
+   * Applies the fill color to the marker's visual.
+   *
+   * If needed, override this method in a derived class to apply the color to the marker's visual.
+   */
   protected applyFillColor() {
     if (this.visual) {
       SvgHelper.setAttributes(this.visual, [['fill', this._fillColor]]);
@@ -26,9 +37,6 @@ export abstract class ShapeMarkerBase extends ShapeOutlineMarkerBase {
     }
   }
 
-  /**
-   * Returns current marker state that can be restored in the future.
-   */
   public getState(): ShapeMarkerBaseState {
     const result: ShapeMarkerBaseState = Object.assign(
       {
@@ -40,11 +48,6 @@ export abstract class ShapeMarkerBase extends ShapeOutlineMarkerBase {
     return result;
   }
 
-  /**
-   * Restores previously saved marker state.
-   *
-   * @param state - previously saved state.
-   */
   public restoreState(state: MarkerBaseState): void {
     const rectState = state as ShapeMarkerBaseState;
     super.restoreState(state);

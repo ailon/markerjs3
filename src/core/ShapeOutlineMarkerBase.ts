@@ -2,6 +2,9 @@ import { MarkerBaseState } from './MarkerBaseState';
 import { RectangularBoxMarkerBase } from './RectangularBoxMarkerBase';
 import { SvgHelper } from './SvgHelper';
 
+/**
+ * Shape outline marker is a base class for all markers that represent a shape outline.
+ */
 export class ShapeOutlineMarkerBase extends RectangularBoxMarkerBase {
   public static title = 'Shape outline marker';
 
@@ -62,6 +65,9 @@ export class ShapeOutlineMarkerBase extends RectangularBoxMarkerBase {
     return this.getPath(this.defaultSize.width, this.defaultSize.height);
   }
 
+  /**
+   * Creates marker's visual.
+   */
   public createVisual(): void {
     this.visual = SvgHelper.createPath(this.getPath(), [
       ['fill', 'transparent'],
@@ -73,6 +79,10 @@ export class ShapeOutlineMarkerBase extends RectangularBoxMarkerBase {
     this.addMarkerVisualToContainer(this.visual);
   }
 
+  /**
+   * Adjusts marker's visual according to the current state
+   * (color, width, etc.).
+   */
   public adjustVisual(): void {
     if (this.visual) {
       SvgHelper.setAttributes(this.visual, [
@@ -93,23 +103,12 @@ export class ShapeOutlineMarkerBase extends RectangularBoxMarkerBase {
     }
   }
 
-  /**
-   * Restores previously saved marker state.
-   *
-   * @param state - previously saved state.
-   */
   public restoreState(state: MarkerBaseState): void {
     this.createVisual();
     super.restoreState(state);
     this.adjustVisual();
   }
 
-  /**
-   * Scales marker. Used after the image resize.
-   *
-   * @param scaleX - horizontal scale
-   * @param scaleY - vertical scale
-   */
   public scale(scaleX: number, scaleY: number): void {
     super.scale(scaleX, scaleY);
 

@@ -26,7 +26,16 @@ export interface RectangularBoxMarkerBaseState extends MarkerBaseState {
    */
   rotationAngle: number;
 
+  /**
+   * Visual transform matrix.
+   *
+   * Used to correctly position and rotate marker.
+   */
   visualTransformMatrix?: ITransformMatrix;
+  /**
+   * Container transform matrix.
+   *
+   * Used to correctly position and rotate marker.
+   */
   containerTransformMatrix?: ITransformMatrix;
-
 }

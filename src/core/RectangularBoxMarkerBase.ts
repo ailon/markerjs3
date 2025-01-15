@@ -78,10 +78,17 @@ export class RectangularBoxMarkerBase extends MarkerBase {
     }
   }
 
+  /**
+   * Adjusts marker's size.
+   */
   public setSize(): void {
     this.moveVisual({ x: this.left, y: this.top });
   }
 
+  /**
+   * Rotates marker around the center.
+   * @param point - coordinates of the rotation point.
+   */
   public rotate(point: IPoint) {
     // avoid glitch when crossing the 0 rotation point
     if (Math.abs(point.x - this.centerX) > 0.1) {
@@ -143,10 +150,6 @@ export class RectangularBoxMarkerBase extends MarkerBase {
     return result;
   }
 
-  /**
-   * Returns marker's outline path for use while creating, etc.
-   * @returns SVG path `d` attribute.
-   */
   public getOutline(): string {
     const result = `M 0 0 
     H ${this.defaultSize} 
@@ -157,9 +160,6 @@ export class RectangularBoxMarkerBase extends MarkerBase {
     return result;
   }
 
-  /**
-   * Returns marker's state.
-   */
   public getState(): RectangularBoxMarkerBaseState {
     const result: RectangularBoxMarkerBaseState = Object.assign(
       {
@@ -181,10 +181,6 @@ export class RectangularBoxMarkerBase extends MarkerBase {
     return result;
   }
 
-  /**
-   * Restores marker's state to the previously saved one.
-   * @param state - previously saved state.
-   */
   public restoreState(state: MarkerBaseState): void {
     super.restoreState(state);
     const rbmState = state as RectangularBoxMarkerBaseState;
@@ -216,12 +212,6 @@ export class RectangularBoxMarkerBase extends MarkerBase {
     }
   }
 
-  /**
-   * Scales marker. Used after the image resize.
-   *
-   * @param scaleX - horizontal scale
-   * @param scaleY - vertical scale
-   */
   public scale(scaleX: number, scaleY: number): void {
     super.scale(scaleX, scaleY);
 

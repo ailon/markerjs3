@@ -4,10 +4,16 @@ import { MarkerBaseState } from './MarkerBaseState';
 import { PolygonMarkerState } from './PolygonMarkerState';
 import { SvgHelper } from './SvgHelper';
 
+/**
+ * Polygon marker is a multi-point marker that represents a polygon.
+ */
 export class PolygonMarker extends MarkerBase {
   public static typeName = 'PolygonMarker';
   public static title = 'Polygon marker';
 
+  /**
+   * Marker's points.
+   */
   public points: IPoint[] = [];
 
   /**
@@ -69,11 +75,6 @@ export class PolygonMarker extends MarkerBase {
     this.scale = this.scale.bind(this);
   }
 
-  /**
-   * Returns true if passed SVG element belongs to the marker. False otherwise.
-   *
-   * @param el - target element.
-   */
   public ownsTarget(el: EventTarget): boolean {
     if (
       super.ownsTarget(el) ||
@@ -88,6 +89,11 @@ export class PolygonMarker extends MarkerBase {
     }
   }
 
+  /**
+   * Returns SVG path string for the polygon.
+   *
+   * @returns Path string for the polygon.
+   */
   protected getPath(): string {
     if (this.points.length > 1) {
       return (
@@ -99,6 +105,9 @@ export class PolygonMarker extends MarkerBase {
     return 'M0,0';
   }
 
+  /**
+   * Creates marker's main visual.
+   */
   public createVisual(): void {
     this.visual = SvgHelper.createGroup();
     this.visibleVisual = SvgHelper.createPath(this.getPath(), [
@@ -113,6 +122,11 @@ export class PolygonMarker extends MarkerBase {
     this.addMarkerVisualToContainer(this.visual);
   }
 
+  /**
+   * Creates selector visual.
+   *
+   * Selector visual is a transparent wider visual that allows easier selection of the marker.
+   */
   private createSelectorVisual() {
     if (this.visual) {
       this.selectorVisual = SvgHelper.createGroup();
@@ -125,7 +139,7 @@ export class PolygonMarker extends MarkerBase {
   }
 
   /**
-   * When implemented adjusts marker visual after manipulation when needed.
+   * Adjusts marker visual after manipulation when needed.
    */
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   public adjustVisual(): void {
@@ -181,9 +195,6 @@ export class PolygonMarker extends MarkerBase {
     this.selectorVisualLines.push(line);
   }
 
-  /**
-   * Returns marker's state.
-   */
   public getState(): PolygonMarkerState {
     const result: PolygonMarkerState = Object.assign(
       {
@@ -196,10 +207,6 @@ export class PolygonMarker extends MarkerBase {
     return result;
   }
 
-  /**
-   * Restores marker's state to the previously saved one.
-   * @param state - previously saved state.
-   */
   public restoreState(state: MarkerBaseState): void {
     super.restoreState(state);
 
@@ -210,12 +217,6 @@ export class PolygonMarker extends MarkerBase {
     this.adjustVisual();
   }
 
-  /**
-   * Scales marker. Used after the image resize.
-   *
-   * @param scaleX - horizontal scale
-   * @param scaleY - vertical scale
-   */
   public scale(scaleX: number, scaleY: number): void {
     super.scale(scaleX, scaleY);
 

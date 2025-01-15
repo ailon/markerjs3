@@ -1,17 +1,10 @@
 import { ImageMarkerBase } from './ImageMarkerBase';
 
 /**
- * X mark marker.
+ * X mark image marker.
  */
 export class XImageMarker extends ImageMarkerBase {
-  /**
-   * String type name of the marker type.
-   */
   public static typeName = 'XImageMarker';
-
-  /**
-   * Marker type title (display name) used for accessibility and other attributes.
-   */
   public static title = 'X image marker';
 
   constructor(container: SVGGElement) {
