@@ -17,11 +17,11 @@ import {
   CheckImageMarker,
   XImageMarker,
   CaptionFrameMarker,
+  CalloutMarker,
 } from './core';
 import { Activator } from './core/Activator';
 
 import Logo from './assets/markerjs-logo-m.svg';
-import { CalloutMarker } from './core/CalloutMarker';
 
 export interface MarkerViewEventMap {
   /**
