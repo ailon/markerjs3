@@ -23,17 +23,29 @@ import { Activator } from './core/Activator';
 
 import Logo from './assets/markerjs-logo-m.svg';
 
+/**
+ * Event map for {@link MarkerView}.
+ */
 export interface MarkerViewEventMap {
   /**
    * Viewer initialized.
    */
   viewinit: CustomEvent<MarkerViewEventData>;
 
+  /**
+   * Viewer shown.
+   */
   viewshow: CustomEvent<MarkerViewEventData>;
 
+  /**
+   * Viewer state restored.
+   */
   viewrestorestate: CustomEvent<MarkerViewEventData>;
 }
 
+/**
+ * Event data for {@link MarkerView}.
+ */
 export interface MarkerViewEventData {
   /**
    * {@link MarkerView} instance.
@@ -41,6 +53,21 @@ export interface MarkerViewEventData {
   markerView: MarkerView;
 }
 
+/**
+ * MarkerView is the main annotation viewer web component.
+ *
+ * @example
+ * To show dynamic annotation overlays on top of the original image you use `MarkerView`.
+ * ```js
+ * import { MarkerView } from '@markerjs/markerjs3';
+ *
+ * const markerView = new MarkerView();
+ * markerView.targetImage = targetImg;
+ * viewerContainer.appendChild(markerView);
+ *
+ * markerView.show(savedState);
+ * ```
+ */
 export class MarkerView extends HTMLElement {
   private _contentContainer?: HTMLDivElement;
   private _canvasContainer?: HTMLDivElement;
@@ -54,26 +81,44 @@ export class MarkerView extends HTMLElement {
   private height = 0;
 
   private _targetWidth = -1;
+  /**
+   * Returns the target image width.
+   */
   public get targetWidth() {
     return this._targetWidth;
   }
+  /**
+   * Sets the target image width.
+   */
   public set targetWidth(value) {
     this._targetWidth = value;
     this.setMainCanvasSize();
   }
   private _targetHeight = -1;
+  /**
+   * Returns the target image height.
+   */
   public get targetHeight() {
     return this._targetHeight;
   }
+  /**
+   * Sets the target image height.
+   */
   public set targetHeight(value) {
     this._targetHeight = value;
     this.setMainCanvasSize();
   }
 
   private _targetImage: HTMLImageElement | undefined;
+  /**
+   * Returns the target image.
+   */
   public get targetImage(): HTMLImageElement | undefined {
     return this._targetImage;
   }
+  /**
+   * Sets the target image.
+   */
   public set targetImage(value: HTMLImageElement | undefined) {
     this._targetImage = value;
     if (value !== undefined) {
@@ -81,8 +126,14 @@ export class MarkerView extends HTMLElement {
     }
   }
 
+  /**
+   * Marker types available for the viewer.
+   */
   public markerTypes: Array<typeof MarkerBase> = [];
 
+  /**
+   * Collection of markers currently displayed on the viewer.
+   */
   public markers: MarkerBase[] = [];
 
   private _logoUI?: HTMLElement;
@@ -394,12 +445,20 @@ export class MarkerView extends HTMLElement {
     return result;
   }
 
+  /**
+   * Adds a new marker type to be available in the viewer.
+   * @param markerType
+   */
   public registerMarkerType(markerType: typeof MarkerBase): void {
     if (this.markerTypes.indexOf(markerType) < 0) {
       this.markerTypes.push(markerType);
     }
   }
 
+  /**
+   * Loads and shows previously saved annotation state.
+   * @param state
+   */
   public show(state: AnnotationState): void {
     const stateCopy: AnnotationState = JSON.parse(JSON.stringify(state));
     this.markers.splice(0);
