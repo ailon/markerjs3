@@ -36,26 +36,68 @@ import { CalloutMarkerEditor } from './editor/CalloutMarkerEditor';
 import { ImageMarkerEditor } from './editor/ImageMarkerEditor';
 import { CaptionFrameMarkerEditor } from './editor/CaptionFrameMarkerEditor';
 
+/**
+ * Marker area custom event types.
+ */
 export interface MarkerAreaEventMap {
   /**
    * Marker area initialized.
    */
   areainit: CustomEvent<MarkerAreaEventData>;
+  /**
+   * Marker area shown.
+   */
   areashow: CustomEvent<MarkerAreaEventData>;
+  /**
+   * Marker area state restored.
+   */
   arearestorestate: CustomEvent<MarkerAreaEventData>;
+  /**
+   * Marker area focused.
+   */
   areafocus: CustomEvent<MarkerAreaEventData>;
+  /**
+   * Marker area lost focus.
+   */
   areablur: CustomEvent<MarkerAreaEventData>;
+  /**
+   * Marker area state changed.
+   */
   areastatechange: CustomEvent<MarkerAreaEventData>;
 
+  /**
+   * Marker selected.
+   */
   markerselect: CustomEvent<MarkerEditorEventData>;
+  /**
+   * Marker deselected.
+   */
   markerdeselect: CustomEvent<MarkerEditorEventData>;
+  /**
+   * Marker creating.
+   */
   markercreating: CustomEvent<MarkerEditorEventData>;
+  /**
+   * Marker created.
+   */
   markercreate: CustomEvent<MarkerEditorEventData>;
+  /**
+   * Marker about to be deleted.
+   */
   markerbeforedelete: CustomEvent<MarkerEditorEventData>;
+  /**
+   * Marker deleted.
+   */
   markerdelete: CustomEvent<MarkerEditorEventData>;
+  /**
+   * Marker changed.
+   */
   markerchange: CustomEvent<MarkerEditorEventData>;
 }
 
+/**
+ * Marker area custom event data.
+ */
 export interface MarkerAreaEventData {
   /**
    * {@link MarkerArea} instance.
@@ -63,6 +105,9 @@ export interface MarkerAreaEventData {
   markerArea: MarkerArea;
 }
 
+/**
+ * Marker editor custom event data.
+ */
 export interface MarkerEditorEventData extends MarkerAreaEventData {
   markerEditor: MarkerBaseEditor;
 }
@@ -72,6 +117,48 @@ export interface MarkerEditorEventData extends MarkerAreaEventData {
  */
 export type MarkerAreaMode = 'select' | 'create' | 'delete';
 
+/**
+ * Marker area web component is the main annotation editor component.
+ *
+ * @example
+ *
+ * Import `MarkerArea` from `@markerjs/markerjs3`:
+ *
+ * ```js
+ * import { MarkerArea } from '@markerjs/markerjs3';
+ * ```
+ *
+ * In the code below we assume that you have an `HTMLImageElement` as `targetImage`. It can be a reference to an image you already have on the page or you can simply create it with something like this:
+ *
+ * ```js
+ * const targetImg = document.createElement('img');
+ * targetImg.src = './sample.jpg';
+ * ```
+ *
+ * Now you just need to create an instance of `MarkerArea`, set its `targetImage` property and add it to the page:
+ *
+ * ```js
+ * const markerArea = new MarkerArea();
+ * markerArea.targetImage = targetImg;
+ * editorContainerDiv.appendChild(markerArea);
+ * ```
+ *
+ * To initiate creation of a marker you just call `createMarker()` and pass it the name (or type) of the marker you want to create. So, if you have a button with id `addFrameButton` you can make it create a new `FrameMarker` with something like this:
+ *
+ * ```js
+ * document.querySelector("#addButton")!.addEventListener("click", () => {
+ *   markerArea.createMarker("FrameMarker");
+ * });
+ * ```
+ *
+ * And whenever you want to save state (current annotation) you just call `getState()`:
+ *
+ * ```js
+ * document.querySelector("#saveStateButton")!.addEventListener("click", () => {
+ *   const state = markerArea.getState();
+ *   console.log(state);
+ * });
+ */
 export class MarkerArea extends HTMLElement {
   private _contentContainer?: HTMLDivElement;
   private _canvasContainer?: HTMLDivElement;
@@ -88,17 +175,29 @@ export class MarkerArea extends HTMLElement {
   private height = 0;
 
   private _targetWidth = -1;
+  /**
+   * Returns the target image width.
+   */
   public get targetWidth() {
     return this._targetWidth;
   }
+  /**
+   * Sets the target image width.
+   */
   public set targetWidth(value) {
     this._targetWidth = value;
     this.setMainCanvasSize();
   }
   private _targetHeight = -1;
+  /**
+   * Returns the target image height.
+   */
   public get targetHeight() {
     return this._targetHeight;
   }
+  /**
+   * Sets the target image height.
+   */
   public set targetHeight(value) {
     this._targetHeight = value;
     this.setMainCanvasSize();
@@ -111,6 +210,9 @@ export class MarkerArea extends HTMLElement {
   private _isInitialized = false;
 
   private _currentMarkerEditor?: MarkerBaseEditor;
+  /**
+   * Returns the currently active marker editor.
+   */
   public get currentMarkerEditor(): MarkerBaseEditor | undefined {
     return this._currentMarkerEditor;
   }
@@ -125,9 +227,15 @@ export class MarkerArea extends HTMLElement {
   ]);
 
   private _targetImage: HTMLImageElement | undefined;
+  /**
+   * Returns the target image.
+   */
   public get targetImage(): HTMLImageElement | undefined {
     return this._targetImage;
   }
+  /**
+   * Sets the target image.
+   */
   public set targetImage(value: HTMLImageElement | undefined) {
     this._targetImage = value;
     if (value !== undefined) {
@@ -135,11 +243,17 @@ export class MarkerArea extends HTMLElement {
     }
   }
 
+  /**
+   * The collection of available marker editor types.
+   */
   public markerEditors: Map<
     typeof MarkerBase,
     typeof MarkerBaseEditor<MarkerBase>
   > = new Map();
 
+  /**
+   * The collection of marker editors in the annotation.
+   */
   public editors: MarkerBaseEditor[] = [];
 
   private _zoomLevel = 1;
@@ -469,6 +583,11 @@ export class MarkerArea extends HTMLElement {
     }
   }
 
+  /**
+   * Registers a marker type and its editor to be available in the marker area.
+   * @param markerType
+   * @param editorType
+   */
   public registerMarkerType(
     markerType: typeof MarkerBase,
     editorType: typeof MarkerBaseEditor<MarkerBase>,
@@ -476,6 +595,11 @@ export class MarkerArea extends HTMLElement {
     this.markerEditors.set(markerType, editorType);
   }
 
+  /**
+   * Creates a new marker of the specified type.
+   * @param markerType
+   * @returns
+   */
   public createMarker(markerType: typeof MarkerBase | string) {
     let mType: typeof MarkerBase = FrameMarker;
     if (typeof markerType === 'string') {
@@ -559,6 +683,10 @@ export class MarkerArea extends HTMLElement {
     );
   }
 
+  /**
+   * Deletes a marker represented by the specified editor.
+   * @param markerEditor
+   */
   public deleteMarker(markerEditor: MarkerBaseEditor): void {
     if (this.editors.indexOf(markerEditor) >= 0) {
       this.addUndoStep();
@@ -578,11 +706,21 @@ export class MarkerArea extends HTMLElement {
     }
   }
 
+  /**
+   * Deselects all markers.
+   */
   public deleteSelectedMarkers() {
     this._selectedMarkerEditors.forEach((m) => this.deleteMarker(m));
     this._selectedMarkerEditors.splice(0);
   }
 
+  /**
+   * Sets the current editor and selects it.
+   *
+   * If `editor` is not supplied the current editor is unselected.
+   *
+   * @param editor
+   */
   public setCurrentEditor(editor?: MarkerBaseEditor): void {
     if (this._currentMarkerEditor !== editor) {
       // no need to deselect if not changed
@@ -623,6 +761,10 @@ export class MarkerArea extends HTMLElement {
     }
   }
 
+  /**
+   * Selects the specified editor without setting it as the current editor.
+   * @param editor
+   */
   public selectEditor(editor: MarkerBaseEditor): void {
     if (this._selectedMarkerEditors.indexOf(editor) < 0) {
       if (this._selectedMarkerEditors.length > 0) {
@@ -633,6 +775,10 @@ export class MarkerArea extends HTMLElement {
     }
   }
 
+  /**
+   * Deselects the specified editor (or all editors if not specified).
+   * @param editor
+   */
   public deselectEditor(editor?: MarkerBaseEditor): void {
     if (editor === undefined) {
       this._selectedMarkerEditors.forEach((m) => m.deselect());
@@ -1075,6 +1221,9 @@ export class MarkerArea extends HTMLElement {
     return result;
   }
 
+  /**
+   * Switches the marker area to select mode and deselects all the selected markers.
+   */
   public switchToSelectMode() {
     this.setCurrentEditor();
     if (this._mainCanvas) {
@@ -1082,6 +1231,10 @@ export class MarkerArea extends HTMLElement {
     }
   }
 
+  /**
+   * Returns the annotation state.
+   * @returns
+   */
   public getState(): AnnotationState {
     const result: AnnotationState = {
       version: 3,
@@ -1096,6 +1249,10 @@ export class MarkerArea extends HTMLElement {
     return JSON.parse(JSON.stringify(result));
   }
 
+  /**
+   * Restores the annotation from the previously saved state.
+   * @param state
+   */
   public restoreState(state: AnnotationState): void {
     const stateCopy: AnnotationState = JSON.parse(JSON.stringify(state));
     this.editors.splice(0);
