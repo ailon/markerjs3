@@ -45,7 +45,6 @@ export {
   MarkerArea,
   MarkerAreaEventData,
   MarkerAreaEventMap,
-  ColorType,
   FreehandMarkerEditor,
   Grip,
   LinearMarkerEditor,
