@@ -14,6 +14,7 @@
     "includeCategories": true
   },
   "categoryOrder": ["Guides", "API Reference"],
+  "groupOrder": ["Components", "Markers", "Editors", "*"],
 
   "out": "./docs"
 }

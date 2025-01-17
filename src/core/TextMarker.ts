@@ -9,6 +9,9 @@ import { TextMarkerState } from './TextMarkerState';
  * Text marker.
  *
  * Used to represent a text block as well a base class for other text-based markers.
+ *
+ * @summary Text marker.
+ * @group Markers
  */
 export class TextMarker extends RectangularBoxMarkerBase {
   public static typeName = 'TextMarker';

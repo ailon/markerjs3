@@ -6,6 +6,9 @@ import { SvgHelper } from './SvgHelper';
 
 /**
  * Polygon marker is a multi-point marker that represents a polygon.
+ *
+ * @summary Polygon marker.
+ * @group Markers
  */
 export class PolygonMarker extends MarkerBase {
   public static typeName = 'PolygonMarker';

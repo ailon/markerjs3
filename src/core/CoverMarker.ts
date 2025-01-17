@@ -4,6 +4,9 @@ import { ShapeMarkerBase } from './ShapeMarkerBase';
  * Cover marker is a filled rectangle marker.
  *
  * A typical use case is to cover some area of the image with a colored rectangle as a "redaction".
+ *
+ * @summary Filled rectangle marker.
+ * @group Markers
  */
 export class CoverMarker extends ShapeMarkerBase {
   public static typeName = 'CoverMarker';

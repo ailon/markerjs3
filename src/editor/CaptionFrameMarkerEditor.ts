@@ -4,6 +4,9 @@ import { TextMarkerEditor } from './TextMarkerEditor';
 
 /**
  * Editor for caption frame markers.
+ *
+ * @summary Caption frame marker editor.
+ * @group Editors
  */
 export class CaptionFrameMarkerEditor<
   TMarkerType extends CaptionFrameMarker = CaptionFrameMarker,

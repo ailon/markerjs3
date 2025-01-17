@@ -8,6 +8,9 @@ import { TransformMatrix } from './TransformMatrix';
 /**
  * RectangularBoxMarkerBase is a base class for all marker's that conceptually fit into a rectangle
  * such as all rectangle markers, ellipse, text and callout markers.
+ *
+ * @summary Base class for all markers that conceptually fit into a rectangle.
+ * @group Markers
  */
 export class RectangularBoxMarkerBase extends MarkerBase {
   /**

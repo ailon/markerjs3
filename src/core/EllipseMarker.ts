@@ -2,6 +2,9 @@ import { ShapeMarkerBase } from './ShapeMarkerBase';
 
 /**
  * Ellipse marker is a filled ellipse marker.
+ *
+ * @summary Filled ellipse marker.
+ * @group Markers
  */
 export class EllipseMarker extends ShapeMarkerBase {
   public static typeName = 'EllipseMarker';

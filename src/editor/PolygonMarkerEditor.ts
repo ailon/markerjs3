@@ -5,6 +5,9 @@ import { ResizeGrip } from './ResizeGrip';
 
 /**
  * Editor for polygon markers.
+ *
+ * @summary Polygon marker editor.
+ * @group Editors
  */
 export class PolygonMarkerEditor<
   TMarkerType extends PolygonMarker = PolygonMarker,

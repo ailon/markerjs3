@@ -5,6 +5,9 @@ import { ImageMarkerBase } from './ImageMarkerBase';
  *
  * Represents a check mark image marker. Can be used to quickly mark something as correct, or
  * similar use cases.
+ *
+ * @summary Check mark image marker.
+ * @group Markers
  */
 export class CheckImageMarker extends ImageMarkerBase {
   public static typeName = 'CheckImageMarker';

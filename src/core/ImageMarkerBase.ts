@@ -6,6 +6,9 @@ import { SvgHelper } from './SvgHelper';
  * Base class for image markers.
  *
  * This class isn't meant to be used directly. Use one of the derived classes instead.
+ *
+ * @summary Image marker base class.
+ * @group Markers
  */
 export class ImageMarkerBase extends RectangularBoxMarkerBase {
   public static title = 'Image marker';

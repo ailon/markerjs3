@@ -5,6 +5,9 @@ import { LineMarker } from './LineMarker';
  * Represents a measurement marker.
  *
  * Measurement marker is a line with two vertical bars at the ends.
+ *
+ * @summary A line with two vertical bars at the ends.
+ * @group Markers
  */
 export class MeasurementMarker extends LineMarker {
   public static typeName = 'MeasurementMarker';

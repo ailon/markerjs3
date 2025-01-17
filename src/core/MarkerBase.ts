@@ -14,6 +14,9 @@ export type MarkerStage = 'creating' | 'normal';
  *
  * When creating custom marker types usually you will want to extend one of the derived classes.
  * However, if you cannot find a suitable base class, you can and you should extend this class.
+ *
+ * @summary Base class for all markers.
+ * @group Markers
  */
 export class MarkerBase {
   /**

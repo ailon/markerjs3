@@ -4,6 +4,9 @@ import { RectangularBoxMarkerBaseEditor } from './RectangularBoxMarkerBaseEditor
 
 /**
  * Editor for shape outline markers.
+ *
+ * @summary Shape outline (unfilled shape) marker editor.
+ * @group Editors
  */
 export class ShapeOutlineMarkerEditor<
   TMarkerType extends ShapeOutlineMarkerBase = ShapeOutlineMarkerBase,

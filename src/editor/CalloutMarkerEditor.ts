@@ -5,6 +5,9 @@ import { TextMarkerEditor } from './TextMarkerEditor';
 
 /**
  * Editor for callout markers.
+ *
+ * @summary Callout marker editor.
+ * @group Editors
  */
 export class CalloutMarkerEditor<
   TMarkerType extends CalloutMarker = CalloutMarker,

@@ -5,6 +5,9 @@ import { SvgHelper } from './SvgHelper';
 
 /**
  * Base class for filled shape markers.
+ *
+ * @summary Base class for filled shape markers.
+ * @group Markers
  */
 export abstract class ShapeMarkerBase extends ShapeOutlineMarkerBase {
   public static title = 'Shape marker';

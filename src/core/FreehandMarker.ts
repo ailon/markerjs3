@@ -10,6 +10,9 @@ import { SvgHelper } from './SvgHelper';
  * Unlike v2 in v3 freehand marker is represented by an SVG path element.
  * This means that the line properties like stroke color, width, dasharray, etc.
  * can be modified after drawing.
+ *
+ * @summary Freehand drawing marker.
+ * @group Markers
  */
 export class FreehandMarker extends MarkerBase {
   public static typeName = 'FreehandMarker';

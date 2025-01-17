@@ -5,6 +5,10 @@ import { MarkerBaseState } from './MarkerBaseState';
 
 /**
  * Arrow marker represents a line with arrow heads at the ends.
+ *
+ * @summary A line with arrow heads at the ends.
+ *
+ * @group Markers
  */
 export class ArrowMarker extends LineMarker {
   public static typeName = 'ArrowMarker';

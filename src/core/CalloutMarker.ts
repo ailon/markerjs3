@@ -7,6 +7,11 @@ import { TextMarker } from './TextMarker';
 /**
  * Callout marker is a text-based marker with a callout outline with a tip that can point to specific place
  * on the underlying image or annotation.
+ *
+ * @summary Text-based marker with a callout outline with a tip that can point to specific place
+ * on the underlying image or annotation.
+ *
+ * @group Markers
  */
 export class CalloutMarker extends TextMarker {
   public static typeName = 'CalloutMarker';

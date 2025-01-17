@@ -4,6 +4,9 @@ import { SvgHelper } from './SvgHelper';
 
 /**
  * Shape outline marker is a base class for all markers that represent a shape outline.
+ *
+ * @summary Base class for shape outline (unfilled shape) markers.
+ * @group Markers
  */
 export class ShapeOutlineMarkerBase extends RectangularBoxMarkerBase {
   public static title = 'Shape outline marker';

@@ -22,6 +22,9 @@ export type MarkerCreationStyle = 'draw' | 'drop';
  * Base class for all marker editors.
  *
  * @typeParam TMarkerType - marker type the instance of the editor is for.
+ *
+ * @summary Base class for all marker editors.
+ * @group Editors
  */
 export class MarkerBaseEditor<TMarkerType extends MarkerBase = MarkerBase> {
   /**

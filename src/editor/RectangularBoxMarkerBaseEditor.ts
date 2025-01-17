@@ -7,6 +7,9 @@ import { RotateGrip } from './RotateGrip';
 
 /**
  * Base editor for markers that can be represented by a rectangular area.
+ *
+ * @summary Base editor for markers that can be represented by a rectangular area.
+ * @group Editors
  */
 export class RectangularBoxMarkerBaseEditor<
   TMarkerType extends RectangularBoxMarkerBase = RectangularBoxMarkerBase,

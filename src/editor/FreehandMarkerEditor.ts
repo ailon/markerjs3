@@ -4,6 +4,9 @@ import { MarkerEditorProperties } from './MarkerEditorProperties';
 
 /**
  * Editor for freehand markers.
+ *
+ * @summary Freehand marker editor.
+ * @group Editors
  */
 export class FreehandMarkerEditor<
   TMarkerType extends FreehandMarker = FreehandMarker,

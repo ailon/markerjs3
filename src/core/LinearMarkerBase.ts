@@ -7,6 +7,9 @@ import { SvgHelper } from './SvgHelper';
  * Base class for line-like markers.
  *
  * Use one of the derived classes.
+ *
+ * @summary Base class for line-like markers.
+ * @group Markers
  */
 export class LinearMarkerBase extends MarkerBase {
   /**

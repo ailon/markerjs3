@@ -5,6 +5,10 @@ import { TextMarker } from './TextMarker';
 
 /**
  * Caption frame marker is a combination of a frame (rectangle) and a text caption that goes with it.
+ *
+ * @summary A combination of a frame (rectangle) and a text caption that goes with it.
+ *
+ * @group Markers
  */
 export class CaptionFrameMarker extends TextMarker {
   public static typeName = 'CaptionFrameMarker';

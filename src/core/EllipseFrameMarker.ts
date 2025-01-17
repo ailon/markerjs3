@@ -2,6 +2,9 @@ import { ShapeOutlineMarkerBase } from './ShapeOutlineMarkerBase';
 
 /**
  * Ellipse frame marker represents unfilled circle/ellipse shape.
+ *
+ * @summary Unfilled ellipse marker.
+ * @group Markers
  */
 export class EllipseFrameMarker extends ShapeOutlineMarkerBase {
   public static typeName = 'EllipseFrameMarker';

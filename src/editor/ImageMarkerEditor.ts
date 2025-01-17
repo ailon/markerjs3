@@ -4,6 +4,9 @@ import { RectangularBoxMarkerBaseEditor } from './RectangularBoxMarkerBaseEditor
 
 /**
  * Editor for image markers.
+ *
+ * @summary Image marker editor.
+ * @group Editors
  */
 export class ImageMarkerEditor<
   TMarkerType extends ImageMarkerBase = ImageMarkerBase,

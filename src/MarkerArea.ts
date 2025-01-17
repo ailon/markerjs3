@@ -120,6 +120,11 @@ export type MarkerAreaMode = 'select' | 'create' | 'delete';
 /**
  * Marker area web component is the main annotation editor component.
  *
+ * @summary
+ * The main annotation editor component.
+ *
+ * @group Components
+ *
  * @example
  *
  * Import `MarkerArea` from `@markerjs/markerjs3`:

@@ -56,6 +56,11 @@ export interface MarkerViewEventData {
 /**
  * MarkerView is the main annotation viewer web component.
  *
+ * @summary
+ * The main annotation viewer web component.
+ *
+ * @group Components
+ *
  * @example
  * To show dynamic annotation overlays on top of the original image you use `MarkerView`.
  * ```js

@@ -5,6 +5,9 @@ import { ResizeGrip } from './ResizeGrip';
 
 /**
  * Editor for linear markers.
+ *
+ * @summary Editor for line-like markers.
+ * @group Editors
  */
 export class LinearMarkerEditor<
   TMarkerType extends LinearMarkerBase = LinearMarkerBase,

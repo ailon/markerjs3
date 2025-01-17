@@ -3,6 +3,9 @@ import { LinearMarkerEditor } from './LinearMarkerEditor';
 
 /**
  * Editor for arrow markers.
+ *
+ * @summary Arrow marker editor.
+ * @group Editors
  */
 export class ArrowMarkerEditor<
   TMarkerType extends ArrowMarker = ArrowMarker,

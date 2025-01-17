@@ -2,6 +2,9 @@ import { ShapeMarkerBase } from './ShapeMarkerBase';
 
 /**
  * Highlight marker is a semi-transparent rectangular marker.
+ *
+ * @summary Semi-transparent rectangular marker.
+ * @group Markers
  */
 export class HighlightMarker extends ShapeMarkerBase {
   public static typeName = 'HighlightMarker';

@@ -2,6 +2,9 @@ import { LinearMarkerBase } from './LinearMarkerBase';
 
 /**
  * Line marker represents a simple straight line.
+ *
+ * @summary Line marker.
+ * @group Markers
  */
 export class LineMarker extends LinearMarkerBase {
   public static typeName = 'LineMarker';

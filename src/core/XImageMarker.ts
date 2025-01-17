@@ -2,6 +2,9 @@ import { ImageMarkerBase } from './ImageMarkerBase';
 
 /**
  * X mark image marker.
+ *
+ * @summary X (crossed) image marker.
+ * @group Markers
  */
 export class XImageMarker extends ImageMarkerBase {
   public static typeName = 'XImageMarker';

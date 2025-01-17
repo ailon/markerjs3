@@ -5,6 +5,9 @@ import { TextBlockEditor } from './TextBlockEditor';
 
 /**
  * Editor for text markers.
+ *
+ * @summary Text marker editor.
+ * @group Editors
  */
 export class TextMarkerEditor<
   TMarkerType extends TextMarker = TextMarker,

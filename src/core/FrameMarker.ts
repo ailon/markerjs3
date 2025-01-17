@@ -2,6 +2,9 @@ import { ShapeOutlineMarkerBase } from './ShapeOutlineMarkerBase';
 
 /**
  * Frame marker represents unfilled rectangle shape.
+ *
+ * @summary Unfilled rectangle marker.
+ * @group Markers
  */
 export class FrameMarker extends ShapeOutlineMarkerBase {
   public static typeName = 'FrameMarker';
