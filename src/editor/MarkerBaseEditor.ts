@@ -175,7 +175,7 @@ export class MarkerBaseEditor<TMarkerType extends MarkerBase = MarkerBase> {
 
   /**
    * Sets marker's stroke (outline) width.
-   * @param color - color as string
+   * @param width - stroke width in pixels.
    */
   public set strokeWidth(width: number) {
     this.marker.strokeWidth = width;
