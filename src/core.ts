@@ -3,11 +3,13 @@
  * @category API Reference
  */
 export { IPoint } from './core/IPoint';
+export { ISize } from './core/ISize';
+export { ITransformMatrix } from './core/TransformMatrix';
 export { SvgHelper } from './core/SvgHelper';
 
 export { AnnotationState } from './core/AnnotationState';
 
-export { MarkerBase } from './core/MarkerBase';
+export { MarkerBase, MarkerStage } from './core/MarkerBase';
 export { MarkerBaseState } from './core/MarkerBaseState';
 
 export { ShapeOutlineMarkerBase } from './core/ShapeOutlineMarkerBase';
@@ -35,6 +37,7 @@ export { FreehandMarkerState } from './core/FreehandMarkerState';
 
 export { TextMarker } from './core/TextMarker';
 export { TextMarkerState } from './core/TextMarkerState';
+export { TextBlock } from './core/TextBlock';
 
 export { CoverMarker } from './core/CoverMarker';
 export { HighlightMarker } from './core/HighlightMarker';
