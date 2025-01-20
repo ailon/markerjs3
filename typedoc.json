@@ -1,7 +1,7 @@
 {
   "$schema": "https://typedoc.org/schema.json",
   "name": "marker.js 3 Documentation",
-  "projectDocuments": ["docs-src/guides/*.md"],
+  "projectDocuments": ["docs-src/guides.md"],
   "entryPoints": [
     "./src/core.ts",
     "./src/editor.ts",
@@ -13,8 +13,12 @@
   "navigation": {
     "includeCategories": true
   },
-  "categoryOrder": ["Guides", "API Reference"],
+  "navigationLinks": {
+    "marker.js website": "https://markerjs.com"
+  },
+  "categoryOrder": ["Documentation", "API Reference"],
   "groupOrder": ["Components", "Markers", "Editors", "*"],
+  "sort": ["alphabetical"],
 
   "out": "./docs"
 }
