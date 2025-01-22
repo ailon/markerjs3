@@ -367,4 +367,4 @@ rasterImage.style.display = 'none';
 
 And you can find this whole project on [GitHub](https://github.com/ailon/markerjs3/TODO)
 
-## TODO - add next steps section
+{@include ./next-steps.md}
