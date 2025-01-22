@@ -34,9 +34,9 @@ npm install @markerjs/markerjs3
 
 We will need a sample image to annotate. You can use any image you want, but if you don't have one handy, just use this one:
 
-![Sample image](../../media/sample-image.jpg)
+![Sample image](../../media/sample-image.png)
 
-Save it in the `public` folder of the project. The rest of this tutorial assumes that you have a `sample-image.jpg` in your `public` directory.
+Save it in the `public` folder of the project. The rest of this tutorial assumes that you have a `sample-image.png` in your `public` directory.
 
 ## Adding annotation editor
 
@@ -70,7 +70,7 @@ Let's start by creating a target image object. We will need to pass it to the ed
 Import the image file and create an image element:
 
 ```typescript
-import sampleImage from '/sample-image.jpg';
+import sampleImage from '/sample-image.png';
 
 const targetImg = document.createElement('img');
 targetImg.src = sampleImage;
@@ -142,7 +142,7 @@ The whole `main.ts` for this part should look something like this:
 
 ```typescript
 import './style.css';
-import sampleImage from '/sample-image.jpg';
+import sampleImage from '/sample-image.png';
 import { MarkerArea, ArrowMarker } from '@markerjs/markerjs3';
 
 // create the target image element
@@ -211,7 +211,7 @@ If you are going to create annotations, save them in some sort of storage or dat
 
 ```typescript
 import './style.css';
-import sampleImage from '/sample-image.jpg';
+import sampleImage from '/sample-image.png';
 import { MarkerArea, ArrowMarker, MarkerView } from '@markerjs/markerjs3';
 
 // create the target image element
@@ -306,7 +306,7 @@ Here's the complete content of our main.ts file:
 
 ```typescript
 import './style.css';
-import sampleImage from '/sample-image.jpg';
+import sampleImage from '/sample-image.png';
 import {
   MarkerArea,
   ArrowMarker,
