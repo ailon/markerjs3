@@ -59,7 +59,7 @@ The core element of our application is the `div` with `id="app"` and two buttons
 </div>
 ```
 
-We are also referring a CSS file that can be anything (or nothing for that matter) but if you want to include the same CSS used in this demo, you can grab one from GitHub for consistency.
+We are also referring a CSS file that can be anything (or nothing for that matter) but if you want to include the same CSS used in this demo, you can grab one from [GitHub](https://github.com/ailon/markerjs3-quick-starts/blob/main/mjs3-quickstart-js/style.css) for consistency.
 
 ## Adding annotation editor
 
@@ -254,6 +254,6 @@ app.appendChild(rasterImage);
 rasterImage.style.display = 'none';
 ```
 
-And you can find this whole project on [GitHub](https://github.com/ailon/markerjs3/TODO)
+And you can find this whole project on [GitHub](https://github.com/ailon/markerjs3-quick-starts/tree/main/mjs3-quickstart-js)
 
 {@include ./next-steps.md}

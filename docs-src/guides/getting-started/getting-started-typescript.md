@@ -365,6 +365,6 @@ app?.appendChild(rasterImage);
 rasterImage.style.display = 'none';
 ```
 
-And you can find this whole project on [GitHub](https://github.com/ailon/markerjs3/TODO)
+And you can find this whole project on [GitHub](https://github.com/ailon/markerjs3-quick-starts/tree/main/mjs3-quickstart-ts)
 
 {@include ./next-steps.md}
