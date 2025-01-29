@@ -20,7 +20,7 @@
     "lint": "eslint src",
     "build": "yarn lint && rollup --config rollup.config.prod.mjs",
     "dev": "rollup --config rollup.config.dev.mjs -w",
-    "docs": "typedoc"
+    "docs": "typedoc --options typedoc-html.json && typedoc --options typedoc-md.json"
   },
   "devDependencies": {
     "@rollup/plugin-node-resolve": "^15.2.3",
@@ -43,6 +43,7 @@
     "svgo": "^3.0.3",
     "tslib": "^2.6.2",
     "typedoc": "^0.27.6",
+    "typedoc-plugin-markdown": "^4.4.1",
     "typescript": "^5.2.2"
   }
 }

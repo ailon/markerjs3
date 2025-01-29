@@ -1,5 +1,6 @@
 ---
 title: Getting started with TypeScript
+category: Documentation
 ---
 
 # Getting started with marker.js 3 and TypeScript

@@ -1,5 +1,6 @@
 ---
 title: Getting started with React
+category: Documentation
 ---
 
 # Getting started with marker.js 3 and React (and TypeScript)

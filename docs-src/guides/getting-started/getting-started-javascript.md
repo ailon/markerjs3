@@ -1,5 +1,6 @@
 ---
 title: Getting started with vanilla JavaScript
+category: Documentation
 ---
 
 # Getting started with marker.js 3 and vanilla JavaScript

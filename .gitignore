@@ -28,4 +28,5 @@ yarn-error.log*
 .vscode/launch.json
 /dts
 /docs
+/docs-md
 debug.log
