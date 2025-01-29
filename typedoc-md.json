@@ -1,5 +1,5 @@
 {
-  "$schema": "https://typedoc.org/schema.json",
+  "$schema": "https://typedoc-plugin-markdown.org/schema.json",
   "name": "marker.js 3 Documentation",
   "plugin": ["typedoc-plugin-markdown"],
   "projectDocuments": ["docs-src/guides.md", "docs-src/guides/**/*.md"],
@@ -20,6 +20,7 @@
   "navigationLinks": {
     "marker.js website": "https://markerjs.com"
   },
+  "outputFileStrategy": "modules",
 
   "out": "./docs-md"
 }
