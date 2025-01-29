@@ -16,7 +16,7 @@ jobs:
       - name: Create Release
         run: gh release create ${GITHUB_REF#refs/*/} -t ${GITHUB_REF#refs/*/}
         env:
-          GH_TOKEN: ${{ github.token }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Get the version
         id: get_version
@@ -32,4 +32,4 @@ jobs:
         run: |
           gh release upload ${GITHUB_REF#refs/*/} ./markerjs3-${{ steps.get_version.outputs.VERSION }}.zip --clobber
         env:
-          GH_TOKEN: ${{ github.token }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
