@@ -231,6 +231,7 @@ export class MarkerArea extends HTMLElement {
     ['pointer-events', 'none'],
   ]);
 
+  private _targetImageLoaded = false;
   private _targetImage: HTMLImageElement | undefined;
   /**
    * Returns the target image.
@@ -243,6 +244,7 @@ export class MarkerArea extends HTMLElement {
    */
   public set targetImage(value: HTMLImageElement | undefined) {
     this._targetImage = value;
+    this._targetImageLoaded = false;
     if (value !== undefined) {
       this.addTargetImage();
     }
@@ -580,6 +582,11 @@ export class MarkerArea extends HTMLElement {
           this._editingTarget.style.gridRowStart = '1';
 
           this.setMainCanvasSize();
+
+          this._targetImageLoaded = true;
+          if (this._stateToRestore !== undefined) {
+            this.restoreState(this._stateToRestore);
+          }
         }
       });
       this._editingTarget.src = this.targetImage.src;
@@ -1254,11 +1261,19 @@ export class MarkerArea extends HTMLElement {
     return JSON.parse(JSON.stringify(result));
   }
 
+  private _stateToRestore: AnnotationState | undefined;
   /**
    * Restores the annotation from the previously saved state.
    * @param state
    */
   public restoreState(state: AnnotationState): void {
+    // can't restore if image is not loaded yet
+    if (!this._targetImageLoaded) {
+      this._stateToRestore = state;
+      return;
+    }
+    this._stateToRestore = undefined;
+
     const stateCopy: AnnotationState = JSON.parse(JSON.stringify(state));
     this.editors.splice(0);
 

@@ -26,11 +26,12 @@ export class Experiments {
   markerArea1?: MarkerArea;
   markerView1?: MarkerView;
   renderer?: Renderer;
+  targetImg?: HTMLImageElement;
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   public setup(): void {
     // const targetImg = document.getElementById('testImg') as HTMLImageElement;
-    const targetImg = document.createElement('img');
-    targetImg.src = './images/landscape.jpg';
+    this.targetImg = document.createElement('img');
+    this.targetImg.src = './images/landscape.jpg';
 
     this.markerArea1 = document.getElementById('markerArea1') as MarkerArea;
 
@@ -42,13 +43,13 @@ export class Experiments {
 
     this.markerArea1.targetWidth = 400;
     this.markerArea1.targetHeight = 300;
-    this.markerArea1.targetImage = targetImg;
+    this.markerArea1.targetImage = this.targetImg;
 
     this.markerView1 = document.getElementById('markerView1') as MarkerView;
     // register custom marker type
     this.markerView1.registerMarkerType(TriangleMarker);
 
-    this.markerView1.targetImage = targetImg;
+    this.markerView1.targetImage = this.targetImg;
 
     // doesn't fire when component is added in html (this call is already after init)
     this.markerArea1.addEventListener('areainit', (e) => {
@@ -245,6 +246,15 @@ export class Experiments {
 
     if (this.markerView1 && this.savedState) {
       this.markerView1.show(this.savedState);
+
+      // const extraMarkerArea = new MarkerArea();
+      // extraMarkerArea.targetImage = this.targetImg;
+      // document.body.appendChild(extraMarkerArea);
+      // extraMarkerArea.restoreState(this.savedState);
+      // const extraMarkerView = new MarkerView();
+      // extraMarkerView.targetImage = this.targetImg;
+      // document.body.appendChild(extraMarkerView);
+      // extraMarkerView.show(this.savedState);
     }
 
     if (this.savedState && this.markerArea1?.targetImage) {

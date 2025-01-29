@@ -114,6 +114,7 @@ export class MarkerView extends HTMLElement {
     this.setMainCanvasSize();
   }
 
+  private _targetImageLoaded = false;
   private _targetImage: HTMLImageElement | undefined;
   /**
    * Returns the target image.
@@ -126,6 +127,7 @@ export class MarkerView extends HTMLElement {
    */
   public set targetImage(value: HTMLImageElement | undefined) {
     this._targetImage = value;
+    this._targetImageLoaded = false;
     if (value !== undefined) {
       this.addTargetImage();
     }
@@ -378,6 +380,11 @@ export class MarkerView extends HTMLElement {
           this._editingTarget.style.gridRowStart = '1';
 
           this.setMainCanvasSize();
+
+          this._targetImageLoaded = true;
+          if (this._stateToRestore !== undefined) {
+            this.show(this._stateToRestore);
+          }
         }
       });
       this._editingTarget.src = this.targetImage.src;
@@ -460,11 +467,19 @@ export class MarkerView extends HTMLElement {
     }
   }
 
+  private _stateToRestore: AnnotationState | undefined;
   /**
    * Loads and shows previously saved annotation state.
    * @param state
    */
   public show(state: AnnotationState): void {
+    // can't restore if image is not loaded yet
+    if (!this._targetImageLoaded) {
+      this._stateToRestore = state;
+      return;
+    }
+    this._stateToRestore = undefined;
+
     const stateCopy: AnnotationState = JSON.parse(JSON.stringify(state));
     this.markers.splice(0);
 
