@@ -3,6 +3,7 @@ export {
   ISize,
   ITransformMatrix,
   SvgHelper,
+  Activator,
   AnnotationState,
   FrameMarker,
   FreehandMarker,

@@ -6,6 +6,7 @@ export { IPoint } from './core/IPoint';
 export { ISize } from './core/ISize';
 export { ITransformMatrix } from './core/TransformMatrix';
 export { SvgHelper } from './core/SvgHelper';
+export { Activator } from './core/Activator';
 
 export { AnnotationState } from './core/AnnotationState';
 
