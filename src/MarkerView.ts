@@ -163,10 +163,12 @@ export class MarkerView extends HTMLElement {
       this.setEditingTargetSize();
       this._canvasContainer.scrollTo({
         left:
-          (this._mainCanvas.clientWidth - this._canvasContainer.clientWidth) /
+          (this._mainCanvas.clientWidth * this._zoomLevel -
+            this._canvasContainer.clientWidth) /
           2,
         top:
-          (this._mainCanvas.clientHeight - this._canvasContainer.clientHeight) /
+          (this._mainCanvas.clientHeight * this._zoomLevel -
+            this._canvasContainer.clientHeight) /
           2,
       });
     }

@@ -281,15 +281,17 @@ export class MarkerArea extends HTMLElement {
       this._mainCanvas &&
       this._overlayContainer
     ) {
-      //this.setMainCanvasSize();
+      // this.setMainCanvasSize();
       this._mainCanvas.style.transform = `scale(${this._zoomLevel})`;
       this.setEditingTargetSize();
       this._canvasContainer.scrollTo({
         left:
-          (this._mainCanvas.clientWidth - this._canvasContainer.clientWidth) /
+          (this._mainCanvas.clientWidth * this._zoomLevel -
+            this._canvasContainer.clientWidth) /
           2,
         top:
-          (this._mainCanvas.clientHeight - this._canvasContainer.clientHeight) /
+          (this._mainCanvas.clientHeight * this._zoomLevel -
+            this._canvasContainer.clientHeight) /
           2,
       });
 
