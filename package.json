@@ -1,6 +1,6 @@
 {
   "name": "@markerjs/markerjs3",
-  "version": "3.0.0-rc.1",
+  "version": "3.0.0-rc.2",
   "description": "marker.js 3",
   "main": "umd/markerjs3.js",
   "module": "markerjs3.js",
