@@ -5,6 +5,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.0.0-rc.2] - 2025-02-03
+
+### Added
+
+- ability to set only the `targetWidth` or `targetHeight` and the other being calculated proportionally
+- scrolling to the center of image if the target is larger than component container on load
+
+### Changed
+
+- updated logo
+
+### Fixed
+
+- missing `fillColor` in `CalloutMarker` state and incomplete scaling
+- text wrongly positioned in renders when padding is scaled
+- scrolling to image center on zoom doesn't work
+
 ## [3.0.0-rc.1] - 2025-01-30
 
 ### Fixed
@@ -117,6 +134,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Initial public release.
 
+[3.0.0-rc.2]: https://github.com/ailon/markerjs3/releases/tag/v3.0.0-rc.2
 [3.0.0-rc.1]: https://github.com/ailon/markerjs3/releases/tag/v3.0.0-rc.1
 [3.0.0-rc.0]: https://github.com/ailon/markerjs3/releases/tag/v3.0.0-rc.0
 [3.0.0-beta.3]: https://github.com/ailon/markerjs3/releases/tag/v3.0.0-beta.3
