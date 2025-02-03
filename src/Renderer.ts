@@ -427,6 +427,10 @@ export class Renderer {
         ' ' +
         this._mainCanvas.viewBox.baseVal.height.toString(),
     );
+
+    // workaround for text positioning delay
+    await new Promise((r) => setTimeout(r, 200));
+
     markerImageCopy.innerHTML = this._mainCanvas.innerHTML;
 
     if (this.naturalSize === true) {
