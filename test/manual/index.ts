@@ -41,14 +41,15 @@ export class Experiments {
       ShapeOutlineMarkerEditor<TriangleMarker>,
     );
 
-    this.markerArea1.targetWidth = 400;
-    this.markerArea1.targetHeight = 300;
+    // this.markerArea1.targetWidth = 600;
+    this.markerArea1.targetHeight = 500;
     this.markerArea1.targetImage = this.targetImg;
 
     this.markerView1 = document.getElementById('markerView1') as MarkerView;
     // register custom marker type
     this.markerView1.registerMarkerType(TriangleMarker);
 
+    // this.markerView1.targetHeight = 600;
     this.markerView1.targetImage = this.targetImg;
 
     // doesn't fire when component is added in html (this call is already after init)
@@ -263,6 +264,7 @@ export class Experiments {
       renderer.registerMarkerType(TriangleMarker);
 
       renderer.naturalSize = true;
+      //renderer.targetWidth = 467;
       // renderer.markersOnly = true;
       renderer.targetImage = this.markerArea1.targetImage;
       const renderedSrc = await renderer.rasterize(this.savedState);

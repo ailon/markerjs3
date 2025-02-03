@@ -365,12 +365,29 @@ export class MarkerView extends HTMLElement {
 
       this._editingTarget.addEventListener('load', (ev) => {
         if (this._editingTarget !== undefined) {
-          if (this._targetHeight <= 0 && this._targetWidth <= 0) {
+          if (this._targetHeight <= 0 || this._targetWidth <= 0) {
             const img = <HTMLImageElement>ev.target;
-            this._targetWidth =
-              img.clientWidth > 0 ? img.clientWidth : img.naturalWidth;
-            this._targetHeight =
-              img.clientHeight > 0 ? img.clientHeight : img.naturalHeight;
+
+            const aspectRatio = img.naturalWidth / img.naturalHeight;
+            const calculatedWidth =
+              this._targetWidth > 0
+                ? this._targetWidth
+                : this._targetHeight > 0
+                ? this._targetHeight * aspectRatio
+                : img.clientWidth > 0
+                ? img.clientWidth
+                : img.naturalWidth;
+            const calculatedHeight =
+              this._targetHeight > 0
+                ? this._targetHeight
+                : this._targetWidth > 0
+                ? this._targetWidth / aspectRatio
+                : img.clientHeight > 0
+                ? img.clientHeight
+                : img.naturalHeight;
+
+            this._targetWidth = calculatedWidth;
+            this._targetHeight = calculatedHeight;
           }
           this._editingTarget.width = this._targetWidth;
           this._editingTarget.height = this._targetHeight;
