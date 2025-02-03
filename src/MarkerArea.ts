@@ -607,6 +607,9 @@ export class MarkerArea extends HTMLElement {
             this.restoreState(this._stateToRestore);
           }
         }
+
+        // reset zoom to scroll to center if needed
+        this.zoomLevel = this._zoomLevel;
       });
       this._editingTarget.src = this.targetImage.src;
 

@@ -405,6 +405,9 @@ export class MarkerView extends HTMLElement {
             this.show(this._stateToRestore);
           }
         }
+
+        // reset zoom to scroll to center if needed
+        this.zoomLevel = this._zoomLevel;
       });
       this._editingTarget.src = this.targetImage.src;
 
