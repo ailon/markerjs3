@@ -370,7 +370,7 @@ export class MarkerBaseEditor<TMarkerType extends MarkerBase = MarkerBase> {
       this.state !== 'new'
     ) {
       const currentState = JSON.stringify(this._marker.getState());
-      console.log('currentState', currentState);
+      // console.log('currentState', currentState);
       // @todo - check if this is needed
       // avoid reacting to state (mode) differences
       // if (this.manipulationStartState !== undefined) {
