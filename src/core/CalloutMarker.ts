@@ -251,6 +251,7 @@ export class CalloutMarker extends TextMarker {
   public getState(): CalloutMarkerState {
     const result: CalloutMarkerState = Object.assign(
       {
+        fillColor: this.fillColor,
         tipPosition: this.tipPosition,
       },
       super.getState(),
@@ -262,13 +263,20 @@ export class CalloutMarker extends TextMarker {
   public restoreState(state: MarkerBaseState): void {
     const calloutState = state as CalloutMarkerState;
     super.restoreState(state);
-    this._tipPosition = calloutState.tipPosition;
+    this.fillColor = calloutState.fillColor;
+    this.tipPosition = calloutState.tipPosition;
 
     this.adjustVisual();
   }
 
   public scale(scaleX: number, scaleY: number): void {
     super.scale(scaleX, scaleY);
+
+    this.width = this.width * scaleX;
+    this.height = this.height * scaleY;
+
+    this.strokeWidth *= (scaleX + scaleY) / 2;
+
     this._tipPosition = {
       x: this._tipPosition.x * scaleX,
       y: this._tipPosition.y * scaleY,
