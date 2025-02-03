@@ -1379,6 +1379,14 @@ export class MarkerArea extends HTMLElement {
     this._logoUI.style.margin = '0px';
     this._logoUI.style.padding = '0px';
     this._logoUI.style.fill = '#333333';
+    this._logoUI.style.opacity = '0.5';
+    const logoUI = this._logoUI;
+    this._logoUI.addEventListener('mouseenter', () => {
+      logoUI.style.opacity = '1';
+    });
+    this._logoUI.addEventListener('mouseleave', () => {
+      logoUI.style.opacity = '0.5';
+    });
 
     const link = document.createElement('a');
     link.href = 'https://markerjs.com/';
