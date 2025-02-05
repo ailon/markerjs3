@@ -120,7 +120,12 @@ export class TextMarkerEditor<
     super.setSize();
     this.textBlockEditorContainer.style.transform = `translate(${this.marker.left}px, ${this.marker.top}px)`;
     this.textBlockEditorContainer.style.width = `${this.marker.width}px`;
+    this.textBlockEditorContainer.setAttribute('width', `${this.marker.width}`);
     this.textBlockEditorContainer.style.height = `${this.marker.height}px`;
+    this.textBlockEditorContainer.setAttribute(
+      'height',
+      `${this.marker.height}`,
+    );
     this.textBlockEditor.width = this.marker.width;
     this.textBlockEditor.height = this.marker.height;
   }
