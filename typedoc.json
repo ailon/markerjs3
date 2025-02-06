@@ -19,6 +19,8 @@
   "navigationLinks": {
     "marker.js website": "https://markerjs.com"
   },
+  "plugin": ["@8hobbies/typedoc-plugin-plausible"],
+  "plausibleSiteDomain": "markerjs.com",
 
   "out": "./docs"
 }

@@ -2,6 +2,11 @@
 # yarn lockfile v1
 
 
+"@8hobbies/typedoc-plugin-plausible@^2.1.0":
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/@8hobbies/typedoc-plugin-plausible/-/typedoc-plugin-plausible-2.1.0.tgz#acc489946a7fd51c4b21705d62599efb8a577d72"
+  integrity sha512-fT9yjC/8g7NWbaNvIzYDZ1FR4IVDEnLqouHvGFWFee8t6ICndfiKTwSiimdiScQ0oNZBDmOaWKVpztx+DRRYsg==
+
 "@aashutoshrathi/word-wrap@^1.2.3":
   version "1.2.6"
   resolved "https://registry.yarnpkg.com/@aashutoshrathi/word-wrap/-/word-wrap-1.2.6.tgz#bd9154aec9983f77b3a034ecaa015c2e4201f6cf"
