@@ -11,7 +11,14 @@ children:
 
 # marker.js 3 Guides and Tutorials
 
-- [Getting started](./guides/getting-started.md)
-- [Tutorials](./guides/tutorials.md)
-- [Concepts](./guides/concepts.md)
-- [Migration](./guides/migration.md)
+- [Getting started](./guides/getting-started.md)  
+  Learn how to install marker.js 3, set up your first project, and create basic annotations.
+
+- [Tutorials](./guides/tutorials.md)  
+  Follow step-by-step guides for implementing marker.js 3 features.
+
+- [Concepts](./guides/concepts.md)  
+  Understand core concepts and built-in marker types.
+
+- [Migration](./guides/migration.md)  
+  Information about upgrading from marker.js 2.
