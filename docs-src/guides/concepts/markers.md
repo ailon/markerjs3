@@ -106,5 +106,6 @@ For mor information on creating custom markers please check [this tutorial](./..
 
 ## See also
 
+- [Concepts overview](./../concepts.md)
 - [Tutorial: Creating markers](./../tutorials/creating-markers.md)
 - [Tutorial: Custom marker types](./../tutorials/custom-marker-types.md)
