@@ -328,7 +328,7 @@ export class MarkerArea extends HTMLElement {
     this.markerEditors.set(TextMarker, TextMarkerEditor<TextMarker>);
     this.markerEditors.set(CoverMarker, ShapeMarkerEditor<CoverMarker>);
     this.markerEditors.set(HighlightMarker, ShapeMarkerEditor<HighlightMarker>);
-    this.markerEditors.set(EllipseMarker, ShapeMarkerEditor<HighlightMarker>);
+    this.markerEditors.set(EllipseMarker, ShapeMarkerEditor<EllipseMarker>);
     this.markerEditors.set(ArrowMarker, ArrowMarkerEditor<ArrowMarker>);
     this.markerEditors.set(
       MeasurementMarker,
