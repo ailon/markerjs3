@@ -19,7 +19,7 @@ If none of these fit the bill, you may need to start from something else or all 
 
 ## Creating a Triangle marker
 
-Let's create a simple triangle marker by extending {@link Core!ShapeOutlineMarkerBase}:
+Let's create a simple triangle marker by extending {@link Core!ShapeOutlineMarkerBase | ShapeOutlineMarkerBase}:
 
 ```ts
 import { ShapeOutlineMarkerBase } from 'markerjs3';
