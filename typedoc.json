@@ -17,7 +17,8 @@
     "includeCategories": true
   },
   "navigationLinks": {
-    "marker.js website": "https://markerjs.com"
+    "markerjs.com": "https://markerjs.com/",
+    "GitHub": "https://github.com/ailon/markerjs3"
   },
   "customCss": "docs-src/mjs-custom.css",
   "lightHighlightTheme": "github-light",
