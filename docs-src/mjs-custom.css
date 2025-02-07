@@ -1,0 +1,10 @@
+:root {
+  --light-color-background: white;
+  --light-color-background-secondary: white;
+  --light-color-text: oklch(0.372 0.044 257.287);
+  --light-code-background: oklch(0.984 0.003 247.858);
+}
+
+.tsd-nested-navigation {
+  margin-left: 2rem;
+}

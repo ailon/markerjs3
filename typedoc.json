@@ -19,6 +19,8 @@
   "navigationLinks": {
     "marker.js website": "https://markerjs.com"
   },
+  "customCss": "docs-src/mjs-custom.css",
+  "lightHighlightTheme": "github-light",
   "plugin": ["@8hobbies/typedoc-plugin-plausible"],
   "plausibleSiteDomain": "markerjs.com",
 
