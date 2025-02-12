@@ -222,6 +222,12 @@ export class MarkerArea extends HTMLElement {
     return this._currentMarkerEditor;
   }
   private _selectedMarkerEditors: MarkerBaseEditor[] = [];
+  /**
+   * Returns the currently selected marker editors.
+   */
+  public get selectedMarkerEditors(): MarkerBaseEditor[] {
+    return this._selectedMarkerEditors;
+  }
 
   private _newMarkerOutline: SVGPathElement = SvgHelper.createPath('', [
     ['stroke', '#333'],
