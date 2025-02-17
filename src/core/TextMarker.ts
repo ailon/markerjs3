@@ -132,6 +132,14 @@ export class TextMarker extends RectangularBoxMarkerBase {
     this.textBoundingBox = new DOMRect();
   }
 
+  protected applyOpacity() {
+    if (this.visual) {
+      SvgHelper.setAttributes(this.visual, [
+        ['opacity', this.opacity.toString()],
+      ]);
+    }
+  }
+
   /**
    * Creates marker's visual.
    */
@@ -145,6 +153,9 @@ export class TextMarker extends RectangularBoxMarkerBase {
     this.textBlock.onTextSizeChanged = this.textSizeChanged;
 
     this.visual = SvgHelper.createGroup();
+    SvgHelper.setAttributes(this.visual, [
+      ['opacity', this._opacity.toString()],
+    ]);
     this.visual.appendChild(this.textBlock.textElement);
     this.addMarkerVisualToContainer(this.visual);
 
@@ -155,6 +166,11 @@ export class TextMarker extends RectangularBoxMarkerBase {
    * Adjusts marker's visual according to the current state.
    */
   public adjustVisual(): void {
+    if (this.visual) {
+      SvgHelper.setAttributes(this.visual, [
+        ['opacity', this._opacity.toString()],
+      ]);
+    }
     this.setSize();
   }
 

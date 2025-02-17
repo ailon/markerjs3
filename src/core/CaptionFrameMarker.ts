@@ -64,12 +64,11 @@ export class CaptionFrameMarker extends TextMarker {
   }
 
   protected applyOpacity() {
-    SvgHelper.setAttributes(this._outerFrameVisual, [
-      ['opacity', this._opacity.toString()],
-    ]);
-    SvgHelper.setAttributes(this._captionFrameVisual, [
-      ['opacity', this._opacity.toString()],
-    ]);
+    if (this.visual) {
+      SvgHelper.setAttributes(this.visual, [
+        ['opacity', this._opacity.toString()],
+      ]);
+    }
   }
 
   protected applyFillColor() {
