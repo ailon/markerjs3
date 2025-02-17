@@ -167,6 +167,7 @@ export class TextMarkerEditor<
     if (this.textBlockEditor.onBlur === undefined) {
       this.textBlockEditor.onBlur = () => {
         this.hideEditor();
+        this.deselect();
       };
     }
     this.textBlockEditorContainer.appendChild(
