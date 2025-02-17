@@ -163,6 +163,7 @@ export type MarkerAreaMode = 'select' | 'create' | 'delete';
  *   const state = markerArea.getState();
  *   console.log(state);
  * });
+ * ```
  */
 export class MarkerArea extends HTMLElement {
   private _contentContainer?: HTMLDivElement;

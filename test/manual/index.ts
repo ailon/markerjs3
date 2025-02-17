@@ -7,7 +7,6 @@ import {
   CaptionFrameMarkerEditor,
   FreehandMarkerEditor,
   LinearMarkerEditor,
-  MarkerBaseEditor,
   PolygonMarkerEditor,
   ShapeMarkerEditor,
   ShapeOutlineMarkerEditor,
@@ -38,7 +37,7 @@ export class Experiments {
       ShapeOutlineMarkerEditor<TriangleMarker>,
     );
 
-    this.markerArea1.targetWidth = 600;
+    this.markerArea1.targetWidth = 1600;
     // this.markerArea1.targetHeight = 600;
     this.markerArea1.targetImage = this.targetImg;
 
