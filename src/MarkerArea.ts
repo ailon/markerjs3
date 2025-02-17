@@ -291,13 +291,15 @@ export class MarkerArea extends HTMLElement {
       // this.setMainCanvasSize();
       this._mainCanvas.style.transform = `scale(${this._zoomLevel})`;
       this.setEditingTargetSize();
+
+      const scrollMultiplier = Math.max(this._zoomLevel, 1);
       this._canvasContainer.scrollTo({
         left:
-          (this._mainCanvas.clientWidth * this._zoomLevel -
+          (this._mainCanvas.clientWidth * scrollMultiplier -
             this._canvasContainer.clientWidth) /
           2,
         top:
-          (this._mainCanvas.clientHeight * this._zoomLevel -
+          (this._mainCanvas.clientHeight * scrollMultiplier -
             this._canvasContainer.clientHeight) /
           2,
       });
