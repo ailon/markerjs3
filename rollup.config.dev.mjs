@@ -16,9 +16,6 @@ export default {
     format: 'umd',
     sourcemap: true,
     name: 'markerjs3',
-    // globals: {
-    //   'mjs-toolbar': 'mjstoolbar'
-    // }
   },
   plugins: [
     //del({ targets: 'build-dev/*' }),
