@@ -250,7 +250,7 @@ export class TextBlock {
   /**
    * Renders text within the text block according to its settings.
    */
-  public renderText() {
+  public async renderText() {
     const LINE_SIZE = '1em'; // `${this.fontSize.value}${this.fontSize.units}`;
 
     if (this._textElement) {
@@ -282,9 +282,9 @@ export class TextBlock {
       // hide to prevent jerky movements during layout
       this.textElement.style.opacity = '0';
 
-      setTimeout(() => {
-        this.positionText(this);
-      }, 100);
+      // Wait for next frame to ensure DOM is updated
+      await new Promise((resolve) => requestAnimationFrame(resolve));
+      this.positionText(this);
     }
   }
 
