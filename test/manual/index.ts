@@ -7,6 +7,7 @@ import {
   CaptionFrameMarkerEditor,
   FreehandMarkerEditor,
   LinearMarkerEditor,
+  MarkerBaseEditor,
   PolygonMarkerEditor,
   ShapeMarkerEditor,
   ShapeOutlineMarkerEditor,
@@ -69,9 +70,15 @@ export class Experiments {
         }
         setTextPropertyValues(e);
       }
-      const panel = document.getElementById('shapePropertyPanel');
-      if (panel) {
-        panel.style.display = '';
+
+      const opacityPanel = document.getElementById('opacityPropertyPanel');
+      if (opacityPanel) {
+        opacityPanel.style.display = '';
+      }
+
+      const shapePanel = document.getElementById('shapePropertyPanel');
+      if (shapePanel) {
+        shapePanel.style.display = '';
       }
 
       if (e.detail.markerEditor.is(ArrowMarkerEditor)) {
@@ -87,6 +94,10 @@ export class Experiments {
     });
 
     this.markerArea1.addEventListener('markerdeselect', (e) => {
+      const opacityPanel = document.getElementById('opacityPropertyPanel');
+      if (opacityPanel) {
+        opacityPanel.style.display = 'none';
+      }
       const shapePanel = document.getElementById('shapePropertyPanel');
       if (shapePanel) {
         shapePanel.style.display = 'none';
@@ -95,7 +106,16 @@ export class Experiments {
       if (textPanel) {
         textPanel.style.display = 'none';
       }
+      const arrowPanel = document.getElementById('arrowPropertyPanel');
+      if (arrowPanel) {
+        arrowPanel.style.display = 'none';
+      }
       console.log('markerdeselect', e);
+    });
+
+    const opacityInput = document.getElementById('opacity') as HTMLInputElement;
+    opacityInput.addEventListener('change', (ev) => {
+      this.setOpacity((ev.target as HTMLInputElement).value);
     });
 
     const strokeColorInput = document.getElementById(
@@ -165,6 +185,9 @@ export class Experiments {
     });
 
     function setPropertyValues(e: CustomEvent<MarkerEditorEventData>) {
+      (document.getElementById('opacity') as HTMLInputElement).value =
+        e.detail.markerEditor.opacity.toFixed(2);
+
       if (
         e.detail.markerEditor.is(ShapeOutlineMarkerEditor) ||
         e.detail.markerEditor.is(LinearMarkerEditor) ||
@@ -284,6 +307,14 @@ export class Experiments {
   }
   public redo() {
     this.markerArea1?.redo();
+  }
+
+  public setOpacity(opacity: string) {
+    const editor = this.markerArea1?.currentMarkerEditor;
+    if (editor) {
+      editor.opacity = Number.parseFloat(opacity);
+    }
+    console.log('opacity', opacity);
   }
 
   public setStrokeColor(color: string) {
