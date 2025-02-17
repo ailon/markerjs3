@@ -522,20 +522,6 @@ export class RectangularBoxMarkerBaseEditor<
   public scale(scaleX: number, scaleY: number): void {
     super.scale(scaleX, scaleY);
 
-    const rPoint = this.marker.rotatePoint({
-      x: this.marker.left,
-      y: this.marker.top,
-    });
-    const point = this.marker.unrotatePoint({
-      x: rPoint.x * scaleX,
-      y: rPoint.y * scaleY,
-    });
-
-    this.marker.left = point.x;
-    this.marker.top = point.y;
-    this.marker.width = this.marker.width * scaleX;
-    this.marker.height = this.marker.height * scaleY;
-
     this.adjustControlBox();
   }
 }

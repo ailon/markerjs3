@@ -4,6 +4,109 @@
   "height": 854.4066620402498,
   "markers": [
     {
+      "fillColor": "#ff0000",
+      "color": "#ffffff",
+      "fontFamily": "Helvetica, Arial, sans-serif",
+      "fontSize": {
+        "value": 1,
+        "units": "rem",
+        "step": 0.1
+      },
+      "text": "Main board",
+      "left": 161,
+      "top": 54.541664123535156,
+      "width": 550.6666870117188,
+      "height": 320.66668701171875,
+      "rotationAngle": 0,
+      "visualTransformMatrix": {
+        "a": 1,
+        "b": 0,
+        "c": 0,
+        "d": 1,
+        "e": 0,
+        "f": 0
+      },
+      "containerTransformMatrix": {
+        "a": 1,
+        "b": 0,
+        "c": 0,
+        "d": 1,
+        "e": 0,
+        "f": 0
+      },
+      "typeName": "CaptionFrameMarker",
+      "strokeColor": "#ff0000",
+      "strokeWidth": 3,
+      "strokeDasharray": "",
+      "opacity": 1
+    },
+    {
+      "imageType": "svg",
+      "svgString": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"32\" height=\"32\" viewBox=\"0 0 32 32\"><g fill=\"none\"><path fill=\"url(#f2332id0)\" d=\"M15.999 29.998c9.334 0 13.999-6.268 13.999-14c0-7.73-4.665-13.998-14-13.998C6.665 2 2 8.268 2 15.999s4.664 13.999 13.999 13.999\"/><path fill=\"url(#f2332id1)\" d=\"M15.999 29.998c9.334 0 13.999-6.268 13.999-14c0-7.73-4.665-13.998-14-13.998C6.665 2 2 8.268 2 15.999s4.664 13.999 13.999 13.999\"/><path fill=\"url(#f2332id2)\" d=\"M15.999 29.998c9.334 0 13.999-6.268 13.999-14c0-7.73-4.665-13.998-14-13.998C6.665 2 2 8.268 2 15.999s4.664 13.999 13.999 13.999\"/><path fill=\"url(#f2332id3)\" fill-opacity=\"0.6\" d=\"M15.999 29.998c9.334 0 13.999-6.268 13.999-14c0-7.73-4.665-13.998-14-13.998C6.665 2 2 8.268 2 15.999s4.664 13.999 13.999 13.999\"/><path fill=\"url(#f2332id4)\" d=\"M15.999 29.998c9.334 0 13.999-6.268 13.999-14c0-7.73-4.665-13.998-14-13.998C6.665 2 2 8.268 2 15.999s4.664 13.999 13.999 13.999\"/><path fill=\"url(#f2332id5)\" d=\"M15.999 29.998c9.334 0 13.999-6.268 13.999-14c0-7.73-4.665-13.998-14-13.998C6.665 2 2 8.268 2 15.999s4.664 13.999 13.999 13.999\"/><path fill=\"url(#f2332id6)\" d=\"M15.999 29.998c9.334 0 13.999-6.268 13.999-14c0-7.73-4.665-13.998-14-13.998C6.665 2 2 8.268 2 15.999s4.664 13.999 13.999 13.999\"/><path fill=\"url(#f2332id7)\" d=\"M15.999 29.998c9.334 0 13.999-6.268 13.999-14c0-7.73-4.665-13.998-14-13.998C6.665 2 2 8.268 2 15.999s4.664 13.999 13.999 13.999\"/><circle cx=\"9.017\" cy=\"13.421\" r=\"4.673\" fill=\"url(#f2332id8)\"/><circle cx=\"19.244\" cy=\"13.943\" r=\"4.244\" fill=\"url(#f2332id9)\"/><path fill=\"#fff\" d=\"M10.42 16.224a4.206 4.206 0 1 0 0-8.411a4.206 4.206 0 0 0 0 8.411m11.148.077a4.244 4.244 0 1 0 0-8.489a4.244 4.244 0 0 0 0 8.49\"/><path fill=\"url(#f2332idb)\" d=\"M11 15a3 3 0 1 0 0-6a3 3 0 0 0 0 6\"/><path fill=\"url(#f2332idc)\" d=\"M21 15a3 3 0 1 0 0-6a3 3 0 0 0 0 6\"/><path fill=\"url(#f2332ida)\" fill-rule=\"evenodd\" d=\"M10.4 18.2a1 1 0 0 1 1.4.2c.31.413 1.712 1.6 4.2 1.6s3.89-1.187 4.2-1.6a1 1 0 1 1 1.6 1.2c-.69.92-2.688 2.4-5.8 2.4s-5.11-1.48-5.8-2.4a1 1 0 0 1 .2-1.4\" clip-rule=\"evenodd\"/><defs><radialGradient id=\"f2332id0\" cx=\"0\" cy=\"0\" r=\"1\" gradientTransform=\"rotate(132.839 10.786 10.065)scale(37.5033)\" gradientUnits=\"userSpaceOnUse\"><stop stop-color=\"#fff478\"/><stop offset=\".475\" stop-color=\"#ffb02e\"/><stop offset=\"1\" stop-color=\"#f70a8d\"/></radialGradient><radialGradient id=\"f2332id1\" cx=\"0\" cy=\"0\" r=\"1\" gradientTransform=\"rotate(131.878 10.74 10.193)scale(38.9487)\" gradientUnits=\"userSpaceOnUse\"><stop stop-color=\"#fff478\"/><stop offset=\".475\" stop-color=\"#ffb02e\"/><stop offset=\"1\" stop-color=\"#f70a8d\"/></radialGradient><radialGradient id=\"f2332id2\" cx=\"0\" cy=\"0\" r=\"1\" gradientTransform=\"rotate(101.31 2.876 12.808)scale(17.8466 22.8581)\" gradientUnits=\"userSpaceOnUse\"><stop offset=\".788\" stop-color=\"#f59639\" stop-opacity=\"0\"/><stop offset=\".973\" stop-color=\"#ff7dce\"/></radialGradient><radialGradient id=\"f2332id3\" cx=\"0\" cy=\"0\" r=\"1\" gradientTransform=\"matrix(-29 29 -29 -29 18 14)\" gradientUnits=\"userSpaceOnUse\"><stop offset=\".315\" stop-opacity=\"0\"/><stop offset=\"1\"/></radialGradient><radialGradient id=\"f2332id4\" cx=\"0\" cy=\"0\" r=\"1\" gradientTransform=\"rotate(77.692 -2.555 18.434)scale(28.1469)\" gradientUnits=\"userSpaceOnUse\"><stop offset=\".508\" stop-color=\"#7d6133\" stop-opacity=\"0\"/><stop offset=\"1\" stop-color=\"#715b32\"/></radialGradient><radialGradient id=\"f2332id5\" cx=\"0\" cy=\"0\" r=\"1\" gradientTransform=\"matrix(7.5 10.99996 -7.97335 5.4364 16.5 16.5)\" gradientUnits=\"userSpaceOnUse\"><stop stop-color=\"#ffb849\"/><stop offset=\"1\" stop-color=\"#ffb847\" stop-opacity=\"0\"/></radialGradient><radialGradient id=\"f2332id6\" cx=\"0\" cy=\"0\" r=\"1\" gradientTransform=\"matrix(11.49998 2 -2 11.49998 20.5 18)\" gradientUnits=\"userSpaceOnUse\"><stop stop-color=\"#ffa64b\"/><stop offset=\".9\" stop-color=\"#ffae46\" stop-opacity=\"0\"/></radialGradient><radialGradient id=\"f2332id7\" cx=\"0\" cy=\"0\" r=\"1\" gradientTransform=\"rotate(43.971 -9.827 29.173)scale(59.0529)\" gradientUnits=\"userSpaceOnUse\"><stop offset=\".185\" stop-opacity=\"0\"/><stop offset=\"1\" stop-opacity=\"0.4\"/></radialGradient><radialGradient id=\"f2332id8\" cx=\"0\" cy=\"0\" r=\"1\" gradientTransform=\"rotate(135 4.3 7.513)scale(9.10579 4.71285)\" gradientUnits=\"userSpaceOnUse\"><stop stop-color=\"#392108\"/><stop offset=\"1\" stop-color=\"#c87928\" stop-opacity=\"0\"/></radialGradient><radialGradient id=\"f2332id9\" cx=\"0\" cy=\"0\" r=\"1\" gradientTransform=\"rotate(135 9.069 9.99)scale(7.66968 4.32966)\" gradientUnits=\"userSpaceOnUse\"><stop stop-color=\"#392108\"/><stop offset=\"1\" stop-color=\"#c87928\" stop-opacity=\"0\"/></radialGradient><radialGradient id=\"f2332ida\" cx=\"0\" cy=\"0\" r=\"1\" gradientTransform=\"matrix(0 5.5 -8.41855 0 16 17)\" gradientUnits=\"userSpaceOnUse\"><stop offset=\".348\" stop-color=\"#241a1a\"/><stop offset=\".628\" stop-color=\"#57444a\"/><stop offset=\"1\" stop-color=\"#4e2553\"/><stop offset=\"1\" stop-color=\"#502a56\"/></radialGradient><linearGradient id=\"f2332idb\" x1=\"16.5\" x2=\"15.5\" y1=\"8\" y2=\"15\" gradientUnits=\"userSpaceOnUse\"><stop stop-color=\"#553b3e\"/><stop offset=\"1\" stop-color=\"#3d2432\"/></linearGradient><linearGradient id=\"f2332idc\" x1=\"16.5\" x2=\"15.5\" y1=\"8\" y2=\"15\" gradientUnits=\"userSpaceOnUse\"><stop stop-color=\"#553b3e\"/><stop offset=\"1\" stop-color=\"#3d2432\"/></linearGradient></defs></g></svg>",
+      "left": 39.66667175292969,
+      "top": 725.2083511352539,
+      "width": 54,
+      "height": 50.66668701171875,
+      "rotationAngle": 0,
+      "visualTransformMatrix": {
+        "a": 1,
+        "b": 0,
+        "c": 0,
+        "d": 1,
+        "e": 0,
+        "f": 0
+      },
+      "containerTransformMatrix": {
+        "a": 1,
+        "b": 0,
+        "c": 0,
+        "d": 1,
+        "e": 0,
+        "f": 0
+      },
+      "typeName": "CustomImageMarker",
+      "strokeColor": "transparent",
+      "strokeWidth": 0,
+      "strokeDasharray": "",
+      "opacity": 1
+    },
+    {
+      "arrowType": "end",
+      "x1": 62.33332824707031,
+      "y1": 718.5416641235352,
+      "x2": 113,
+      "y2": 289.2083511352539,
+      "typeName": "ArrowMarker",
+      "strokeColor": "#22c55e",
+      "strokeWidth": 3,
+      "strokeDasharray": "",
+      "opacity": 1
+    },
+    {
+      "arrowType": "end",
+      "x1": 78.33334350585938,
+      "y1": 721.2083511352539,
+      "x2": 123,
+      "y2": 527.8750381469727,
+      "typeName": "ArrowMarker",
+      "strokeColor": "#8b5cf6",
+      "strokeWidth": 3,
+      "strokeDasharray": "",
+      "opacity": 1
+    },
+    {
+      "arrowType": "end",
+      "x1": 97.66667175292969,
+      "y1": 735.8750381469727,
+      "x2": 529,
+      "y2": 470.54166412353516,
+      "typeName": "ArrowMarker",
+      "strokeColor": "#db2777",
+      "strokeWidth": 5,
+      "strokeDasharray": "",
+      "opacity": 1
+    },
+    {
       "color": "#ec4899",
       "fontFamily": "Helvetica, Arial, sans-serif",
       "fontSize": {
@@ -34,6 +137,36 @@
         "f": 0
       },
       "typeName": "TextMarker",
+      "strokeColor": "transparent",
+      "strokeWidth": 0,
+      "strokeDasharray": "",
+      "opacity": 1
+    },
+    {
+      "imageType": "svg",
+      "svgString": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"32\" height=\"32\" viewBox=\"0 0 32 32\"><g fill=\"none\"><circle cx=\"15.688\" cy=\"27.447\" r=\"2.5\" fill=\"url(#f2184id0)\"/><circle cx=\"15.688\" cy=\"27.447\" r=\"2.5\" fill=\"url(#f2184id4)\"/><circle cx=\"15.688\" cy=\"27.447\" r=\"2.5\" fill=\"url(#f2184id5)\"/><g filter=\"url(#f2184id6)\"><path fill=\"url(#f2184id1)\" fill-rule=\"evenodd\" d=\"M15.413 7.126c-.946.225-1.45.655-1.736 1.05c-.32.44-.458.965-.458 1.407a2.5 2.5 0 1 1-5 0c0-2.793 1.716-6.34 6.134-7.344l.098-.02c2.888-.535 5.41.255 7.18 1.984c1.703 1.661 2.51 3.989 2.51 6.255c0 2.253-.647 4.093-2.117 5.654c-1.012 1.074-2.355 1.942-3.852 2.762v1.99a2.5 2.5 0 1 1-5 0v-3.5a2.5 2.5 0 0 1 1.362-2.225c2.088-1.068 3.207-1.773 3.85-2.455c.483-.513.757-1.072.757-2.226c0-1.14-.41-2.1-1.002-2.677c-.516-.504-1.347-.898-2.726-.655\" clip-rule=\"evenodd\"/></g><g stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" filter=\"url(#f2184id7)\"><path stroke=\"url(#f2184id2)\" d=\"M11.282 9.364c0-1.828 1.094-4.203 4.187-4.906c4.297-.797 6.735 2.375 6.735 5.781s-1.844 4.797-5.969 6.906v2.704\"/><path stroke=\"url(#f2184id3)\" d=\"M11.282 9.364c0-1.828 1.094-4.203 4.187-4.906c4.297-.797 6.735 2.375 6.735 5.781s-1.844 4.797-5.969 6.906v2.704\"/></g><defs><linearGradient id=\"f2184id0\" x1=\"15.688\" x2=\"15.688\" y1=\"26.161\" y2=\"29.947\" gradientUnits=\"userSpaceOnUse\"><stop stop-color=\"#ff0b38\"/><stop offset=\"1\" stop-color=\"#f62093\"/></linearGradient><linearGradient id=\"f2184id1\" x1=\"16.18\" x2=\"16.18\" y1=\"2.537\" y2=\"23.365\" gradientUnits=\"userSpaceOnUse\"><stop stop-color=\"#ed1f28\"/><stop offset=\"1\" stop-color=\"#f41585\"/></linearGradient><linearGradient id=\"f2184id2\" x1=\"22.547\" x2=\"17.86\" y1=\"7.224\" y2=\"11.099\" gradientUnits=\"userSpaceOnUse\"><stop offset=\".103\" stop-color=\"#ff5867\"/><stop offset=\"1\" stop-color=\"#ff5867\" stop-opacity=\"0\"/></linearGradient><linearGradient id=\"f2184id3\" x1=\"18.86\" x2=\"22.204\" y1=\"21.474\" y2=\"13.724\" gradientUnits=\"userSpaceOnUse\"><stop stop-color=\"#ff3c80\"/><stop offset=\"1\" stop-color=\"#ff3c80\" stop-opacity=\"0\"/></linearGradient><radialGradient id=\"f2184id4\" cx=\"0\" cy=\"0\" r=\"1\" gradientTransform=\"matrix(1.53125 -1.75 1.5386 1.34627 16.657 27.099)\" gradientUnits=\"userSpaceOnUse\"><stop offset=\".234\" stop-color=\"#ff5878\"/><stop offset=\"1\" stop-color=\"#ff5878\" stop-opacity=\"0\"/></radialGradient><radialGradient id=\"f2184id5\" cx=\"0\" cy=\"0\" r=\"1\" gradientTransform=\"matrix(2.5 1.21874 -3.2999 6.7691 13.188 25.536)\" gradientUnits=\"userSpaceOnUse\"><stop stop-color=\"#c8404b\"/><stop offset=\"1\" stop-color=\"#c8404b\" stop-opacity=\"0\"/></radialGradient><filter id=\"f2184id6\" width=\"16.672\" height=\"22.061\" x=\"8.219\" y=\"2.053\" color-interpolation-filters=\"sRGB\" filterUnits=\"userSpaceOnUse\"><feFlood flood-opacity=\"0\" result=\"BackgroundImageFix\"/><feBlend in=\"SourceGraphic\" in2=\"BackgroundImageFix\" result=\"shape\"/><feColorMatrix in=\"SourceAlpha\" result=\"hardAlpha\" values=\"0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0\"/><feOffset dx=\".75\" dy=\".75\"/><feGaussianBlur stdDeviation=\".75\"/><feComposite in2=\"hardAlpha\" k2=\"-1\" k3=\"1\" operator=\"arithmetic\"/><feColorMatrix values=\"0 0 0 0 0.8 0 0 0 0 0.180392 0 0 0 0 0.258824 0 0 0 1 0\"/><feBlend in2=\"shape\" result=\"effect1_innerShadow_18590_1806\"/></filter><filter id=\"f2184id7\" width=\"15.922\" height=\"20.515\" x=\"8.782\" y=\"1.834\" color-interpolation-filters=\"sRGB\" filterUnits=\"userSpaceOnUse\"><feFlood flood-opacity=\"0\" result=\"BackgroundImageFix\"/><feBlend in=\"SourceGraphic\" in2=\"BackgroundImageFix\" result=\"shape\"/><feGaussianBlur result=\"effect1_foregroundBlur_18590_1806\" stdDeviation=\".75\"/></filter></defs></g></svg>",
+      "left": 1067.2054443359375,
+      "top": 715.3558120727539,
+      "width": 92.0001220703125,
+      "height": 108.66668701171875,
+      "rotationAngle": 14.454880999970314,
+      "visualTransformMatrix": {
+        "a": 1,
+        "b": 0,
+        "c": 0,
+        "d": 1,
+        "e": 0,
+        "f": 0
+      },
+      "containerTransformMatrix": {
+        "a": 0.9683445094395415,
+        "b": 0.24961752950923466,
+        "c": -0.24961752950923466,
+        "d": 0.9683445094395415,
+        "e": 208.49495673481442,
+        "f": -242.3248538039843
+      },
+      "typeName": "CustomImageMarker",
       "strokeColor": "transparent",
       "strokeWidth": 0,
       "strokeDasharray": "",

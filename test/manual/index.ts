@@ -37,8 +37,8 @@ export class Experiments {
       ShapeOutlineMarkerEditor<TriangleMarker>,
     );
 
-    // this.markerArea1.targetWidth = 600;
-    this.markerArea1.targetHeight = 500;
+    this.markerArea1.targetWidth = 600;
+    // this.markerArea1.targetHeight = 600;
     this.markerArea1.targetImage = this.targetImg;
 
     this.markerView1 = document.getElementById('markerView1') as MarkerView;
@@ -47,6 +47,7 @@ export class Experiments {
 
     // this.markerView1.targetHeight = 600;
     this.markerView1.targetImage = this.targetImg;
+    // this.markerView1.show(sampleState);
 
     // doesn't fire when component is added in html (this call is already after init)
     this.markerArea1.addEventListener('areainit', (e) => {
