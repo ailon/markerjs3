@@ -58,8 +58,8 @@ export class PolygonMarker extends MarkerBase {
   }
 
   protected applyOpacity() {
-    if (this.visual) {
-      SvgHelper.setAttributes(this.visual, [
+    if (this.visibleVisual) {
+      SvgHelper.setAttributes(this.visibleVisual, [
         ['opacity', this._opacity.toString()],
       ]);
     }
@@ -117,6 +117,7 @@ export class PolygonMarker extends MarkerBase {
       ['stroke', this.strokeColor],
       ['fill', 'transparent'],
       ['stroke-width', this.strokeWidth.toString()],
+      ['opacity', this.opacity.toString()],
     ]);
     this.visual.appendChild(this.visibleVisual);
 
@@ -147,16 +148,12 @@ export class PolygonMarker extends MarkerBase {
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   public adjustVisual(): void {
     if (this.selectorVisual && this.visibleVisual) {
-      SvgHelper.setAttributes(this.visibleVisual, [['d', this.getPath()]]);
-
       SvgHelper.setAttributes(this.visibleVisual, [
+        ['d', this.getPath()],
         ['stroke', this.strokeColor],
-      ]);
-      SvgHelper.setAttributes(this.visibleVisual, [
         ['stroke-width', this.strokeWidth.toString()],
-      ]);
-      SvgHelper.setAttributes(this.visibleVisual, [
         ['stroke-dasharray', this.strokeDasharray.toString()],
+        ['opacity', this.opacity.toString()],
       ]);
 
       this.adjustSelectorVisual();
