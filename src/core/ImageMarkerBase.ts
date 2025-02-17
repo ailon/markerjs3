@@ -88,6 +88,16 @@ export class ImageMarkerBase extends RectangularBoxMarkerBase {
 
     this.createImage = this.createImage.bind(this);
     this.createVisual = this.createVisual.bind(this);
+    this.adjustVisual = this.adjustVisual.bind(this);
+    this.adjustImage = this.adjustImage.bind(this);
+  }
+
+  protected applyOpacity() {
+    if (this.visual) {
+      SvgHelper.setAttributes(this.visual, [
+        ['opacity', this.opacity.toString()],
+      ]);
+    }
   }
 
   /**
@@ -127,6 +137,7 @@ export class ImageMarkerBase extends RectangularBoxMarkerBase {
           ['color', this._strokeColor],
           ['stroke-width', this.strokeWidth.toString()],
           ['stroke-dasharray', this.strokeDasharray],
+          ['opacity', this.opacity.toString()],
           ['pointer-events', 'bounding-box'],
         ]);
         // } else if (this.imageType === 'bitmap') {
@@ -134,6 +145,18 @@ export class ImageMarkerBase extends RectangularBoxMarkerBase {
       this.adjustImage();
       this.visual.appendChild(this.SVGImage);
       this.addMarkerVisualToContainer(this.visual);
+    }
+  }
+
+  /**
+   * Adjusts marker's visual according to the current state
+   * (color, width, etc.).
+   */
+  public adjustVisual(): void {
+    if (this.visual) {
+      SvgHelper.setAttributes(this.visual, [
+        ['opacity', this._opacity.toString()],
+      ]);
     }
   }
 
@@ -213,6 +236,7 @@ export class ImageMarkerBase extends RectangularBoxMarkerBase {
     this.createVisual();
     super.restoreState(state);
     this.setSize();
+    this.adjustVisual();
   }
 
   public scale(scaleX: number, scaleY: number): void {
