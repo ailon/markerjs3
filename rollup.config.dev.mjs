@@ -6,6 +6,7 @@ import livereload from 'rollup-plugin-livereload';
 import copy from 'rollup-plugin-copy';
 import svgo from 'rollup-plugin-svgo';
 import resolve from '@rollup/plugin-node-resolve';
+import json from '@rollup/plugin-json';
 
 export default {
   preserveSymlinks: false,
@@ -22,6 +23,7 @@ export default {
   plugins: [
     //del({ targets: 'build-dev/*' }),
     resolve(),
+    json(),
     typescript(),
     svgo(),
     htmlTemplate({

@@ -5,7 +5,9 @@
     "target": "es6",
     "forceConsistentCasingInFileNames": true,
     "preserveSymlinks": true,
-    "moduleResolution": "node"
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "esModuleInterop": true
   },
-  "exclude": ["node_modules"],
+  "exclude": ["node_modules"]
 }

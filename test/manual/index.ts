@@ -1,11 +1,6 @@
 import { MarkerArea, MarkerEditorEventData } from '../../src/MarkerArea';
 import { Renderer } from '../../src/Renderer';
-import {
-  AnnotationState,
-  ArrowType,
-  CustomImageMarker,
-  ShapeOutlineMarkerBaseState,
-} from '../../src/core';
+import { AnnotationState, ArrowType, CustomImageMarker } from '../../src/core';
 import {
   ArrowMarkerEditor,
   CalloutMarkerEditor,
@@ -19,6 +14,7 @@ import {
 } from '../../src/editor';
 import { MarkerView } from '../../src/viewer';
 import { TriangleMarker } from './TriangleMarker';
+import sampleState from './sample-state.json';
 
 export * from './../../src/index';
 
@@ -221,25 +217,27 @@ export class Experiments {
     // }
   }
 
-  savedState?: AnnotationState = {
-    version: 3,
-    width: 867,
-    height: 654,
-    markers: [
-      {
-        strokeColor: 'blue',
-        strokeWidth: 3,
-        strokeDasharray: '',
-        opacity: 1,
-        left: 100,
-        top: 0,
-        width: 100,
-        height: 50,
-        rotationAngle: -45,
-        typeName: 'FrameMarker',
-      } as ShapeOutlineMarkerBaseState,
-    ],
-  };
+  savedState?: AnnotationState = sampleState;
+  // savedState?: AnnotationState = {
+  //   version: 3,
+  //   width: 867,
+  //   height: 654,
+  //   markers: [
+  //     {
+  //       strokeColor: 'blue',
+  //       strokeWidth: 3,
+  //       strokeDasharray: '',
+  //       opacity: 1,
+  //       left: 100,
+  //       top: 0,
+  //       width: 100,
+  //       height: 50,
+  //       rotationAngle: -45,
+  //       typeName: 'FrameMarker',
+  //     } as ShapeOutlineMarkerBaseState,
+  //   ],
+  // };
+
   public async saveState() {
     this.savedState = this.markerArea1?.getState();
     console.log('saved state:', this.savedState);
