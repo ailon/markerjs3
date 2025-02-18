@@ -1308,8 +1308,12 @@ export class MarkerArea extends HTMLElement {
     const stateCopy: AnnotationState = JSON.parse(JSON.stringify(state));
     this.editors.splice(0);
 
-    while (this._mainCanvas?.lastChild) {
-      this._mainCanvas.removeChild(this._mainCanvas.lastChild);
+    if (this._mainCanvas && this._groupLayer) {
+      while (this._mainCanvas.lastChild) {
+        this._mainCanvas.removeChild(this._mainCanvas.lastChild);
+      }
+      // re-add group layer
+      this._mainCanvas.appendChild(this._groupLayer);
     }
 
     stateCopy.markers.forEach((markerState) => {
