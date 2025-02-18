@@ -5,6 +5,27 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.0.0-rc.4] - 2025-02-18
+
+### Added
+
+- public `selectedMarkerEditors` property to access multi-selected editors
+- marker events to `MarkerView`
+
+### Changed
+
+- improved text rendering flow
+
+### Fixed
+
+- text markers scaled twice on restoring state
+- opacity not applied to image markers
+- text based markers incorrectly react to opacity changes
+- line based markers don't respond to opacity changes
+- polygon marker incorrectly responds to opacity changes
+- scrollbars not centered when zooming out below 100% (both `MarkerArea` and `MarkerView`)
+- after editing and clicking out text markers stay visually selected while internally unselected
+
 ## [3.0.0-rc.3] - 2025-02-10
 
 ### Fixed
@@ -141,6 +162,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Initial public release.
 
+[3.0.0-rc.4]: https://github.com/ailon/markerjs3/releases/tag/v3.0.0-rc.4
 [3.0.0-rc.3]: https://github.com/ailon/markerjs3/releases/tag/v3.0.0-rc.3
 [3.0.0-rc.2]: https://github.com/ailon/markerjs3/releases/tag/v3.0.0-rc.2
 [3.0.0-rc.1]: https://github.com/ailon/markerjs3/releases/tag/v3.0.0-rc.1
