@@ -49,6 +49,10 @@ export class Experiments {
     this.markerView1.targetImage = this.targetImg;
     // this.markerView1.show(sampleState);
 
+    this.markerView1.addEventListener('markerclick', (e) => {
+      console.log('markerclick', e);
+    });
+
     // doesn't fire when component is added in html (this call is already after init)
     this.markerArea1.addEventListener('areainit', (e) => {
       console.log('areainit', e);

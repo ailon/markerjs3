@@ -41,6 +41,35 @@ export interface MarkerViewEventMap {
    * Viewer state restored.
    */
   viewrestorestate: CustomEvent<MarkerViewEventData>;
+
+  /**
+   * Marker clicked.
+   */
+  markerclick: CustomEvent<MarkerEventData>;
+  /**
+   * Marker mouse over.
+   */
+  markerover: CustomEvent<MarkerEventData>;
+  /**
+   * Marker pointer down.
+   */
+  markerpointerdown: CustomEvent<MarkerEventData>;
+  /**
+   * Marker pointer move.
+   */
+  markerpointermove: CustomEvent<MarkerEventData>;
+  /**
+   * Marker pointer up.
+   */
+  markerpointerup: CustomEvent<MarkerEventData>;
+  /**
+   * Marker pointer enter.
+   */
+  markerpointerenter: CustomEvent<MarkerEventData>;
+  /**
+   * Marker pointer leave.
+   */
+  markerpointerleave: CustomEvent<MarkerEventData>;
 }
 
 /**
@@ -51,6 +80,16 @@ export interface MarkerViewEventData {
    * {@link MarkerView} instance.
    */
   markerView: MarkerView;
+}
+
+/**
+ * Marker custom event data.
+ */
+export interface MarkerEventData extends MarkerViewEventData {
+  /**
+   * Marker instance.
+   */
+  marker: MarkerBase;
 }
 
 /**
@@ -208,6 +247,7 @@ export class MarkerView extends HTMLElement {
     this.setEditingTargetSize = this.setEditingTargetSize.bind(this);
     this.addTargetImage = this.addTargetImage.bind(this);
 
+    this.attachMarkerEvents = this.attachMarkerEvents.bind(this);
     this.attachEvents = this.attachEvents.bind(this);
     this.attachWindowEvents = this.attachWindowEvents.bind(this);
     this.detachEvents = this.detachEvents.bind(this);
@@ -424,7 +464,63 @@ export class MarkerView extends HTMLElement {
     const g = SvgHelper.createGroup();
     this._mainCanvas.appendChild(g);
 
-    return new markerType(g);
+    const newMarker = new markerType(g);
+
+    this.attachMarkerEvents(newMarker);
+
+    return newMarker;
+  }
+
+  private attachMarkerEvents(marker: MarkerBase) {
+    marker.container.addEventListener('click', () => {
+      this.dispatchEvent(
+        new CustomEvent<MarkerEventData>('markerclick', {
+          detail: { marker: marker, markerView: this },
+        }),
+      );
+    });
+    marker.container.addEventListener('pointerover', () => {
+      this.dispatchEvent(
+        new CustomEvent<MarkerEventData>('markerover', {
+          detail: { marker: marker, markerView: this },
+        }),
+      );
+    });
+    marker.container.addEventListener('pointerdown', () => {
+      this.dispatchEvent(
+        new CustomEvent<MarkerEventData>('markerpointerdown', {
+          detail: { marker: marker, markerView: this },
+        }),
+      );
+    });
+    marker.container.addEventListener('pointermove', () => {
+      this.dispatchEvent(
+        new CustomEvent<MarkerEventData>('markerpointermove', {
+          detail: { marker: marker, markerView: this },
+        }),
+      );
+    });
+    marker.container.addEventListener('pointerup', () => {
+      this.dispatchEvent(
+        new CustomEvent<MarkerEventData>('markerpointerup', {
+          detail: { marker: marker, markerView: this },
+        }),
+      );
+    });
+    marker.container.addEventListener('pointerenter', () => {
+      this.dispatchEvent(
+        new CustomEvent<MarkerEventData>('markerpointerenter', {
+          detail: { marker: marker, markerView: this },
+        }),
+      );
+    });
+    marker.container.addEventListener('pointerleave', () => {
+      this.dispatchEvent(
+        new CustomEvent<MarkerEventData>('markerpointerleave', {
+          detail: { marker: marker, markerView: this },
+        }),
+      );
+    });
   }
 
   private attachEvents() {
