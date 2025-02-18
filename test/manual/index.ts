@@ -421,6 +421,23 @@ export class Experiments {
     }
   }
 
+  public viewerZoomOut() {
+    if (this.markerView1) {
+      this.markerView1.zoomLevel -= 0.1;
+    }
+  }
+  public viewerZoomIn() {
+    if (this.markerView1) {
+      this.markerView1.zoomLevel += 0.1;
+    }
+  }
+
+  public viewerZoomReset() {
+    if (this.markerView1) {
+      this.markerView1.zoomLevel = 1;
+    }
+  }
+
   public switchToSelectMode() {
     if (this.markerArea1) {
       this.markerArea1.switchToSelectMode();

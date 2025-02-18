@@ -195,6 +195,14 @@
       <mjs-marker-view id="markerView1"></mjs-marker-view>
     </div>
 
+    <div class="toolbar" style="width:auto;">
+      <div style="display: flex; gap: 0.2rem">
+        <button onclick="experiments.viewerZoomOut();">-</button>
+        <button onclick="experiments.viewerZoomReset();">[=]</button>
+        <button onclick="experiments.viewerZoomIn();">+</button>
+      </div>
+    </div>
+
     <img id="rasterResult" title="result" />
   </body>
 </html>
