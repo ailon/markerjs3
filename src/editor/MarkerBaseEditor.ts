@@ -238,6 +238,20 @@ export class MarkerBaseEditor<TMarkerType extends MarkerBase = MarkerBase> {
   }
 
   /**
+   * Sets marker's notes.
+   */
+  public set notes(value: string | undefined) {
+    this.marker.notes = value;
+  }
+
+  /**
+   * Gets marker's notes.
+   */
+  public get notes(): string | undefined {
+    return this.marker.notes;
+  }
+
+  /**
    * Creates a new instance of marker editor.
    *
    * @param properties - marker editor properties.
