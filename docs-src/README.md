@@ -18,19 +18,19 @@ marker.js suite consists of three core parts:
 marker.js 3 is a suite of "headless" web components for image annotation and markup.
 The core marker.js 3 library provides the tools to enable interactive drawing and editing of various markers but doesn't include any toolbars, property panels, or other UI elements. This way you get the best of both worlds &mdash; advanced annotation features and complete adaptability to your app's UI style and design system.
 
-A separate marker.js UI package containing a pre-made editor and viewer UIs is coming soon. In the meantime, if you need a quick drop-in way to add a feature-complete editor to your check [marker.js 2](https://v2.markerjs.com).
+A separate marker.js UI package containing a pre-made editor and viewer UIs is coming soon. In the meantime, if you need a quick drop-in way to add a feature-complete editor to your app check [marker.js 2](https://v2.markerjs.com).
 
-## Quick start
-
-### Installation
+## Installation
 
 ```
 npm install @markerjs/markerjs3
 ```
 
-### Usage
+The library includes TypeScript type definitions out of the box.
 
-#### MarkerArea (The Editor)
+## Usage
+
+### MarkerArea (The Editor)
 
 Import {@link Editor!MarkerArea | MarkerArea} from `@markerjs/markerjs3`:
 
@@ -56,21 +56,21 @@ editorContainerDiv.appendChild(markerArea);
 To initiate creation of a marker you just call `createMarker()` and pass it the name (or type) of the marker you want to create. So, if you have a button with id `addFrameButton` you can make it create a new `FrameMarker` with something like this:
 
 ```js
-document.querySelector("#addButton")!.addEventListener("click", () => {
-  markerArea.createMarker("FrameMarker");
+document.querySelector('#addButton')?.addEventListener('click', () => {
+  markerArea.createMarker('FrameMarker');
 });
 ```
 
 And whenever you want to save state (current annotation) you just call `getState()`:
 
 ```js
-document.querySelector("#saveStateButton")!.addEventListener("click", () => {
+document.querySelector('#saveStateButton')?.addEventListener('click', () => {
   const state = markerArea.getState();
   console.log(state);
 });
 ```
 
-#### Rendering static images
+### Rendering static images
 
 To render the annotation as a static image you use {@link Renderer!Renderer | Renderer}.
 
@@ -91,7 +91,9 @@ img.src = dataUrl;
 someDiv.appendChild(img);
 ```
 
-#### MarkerView (The Viewer)
+Note that the `rasterize()` method is asynchronous and requires using async/await or Promise handling.
+
+### MarkerView (The Viewer)
 
 To show dynamic annotation overlays on top of the original image you use {@link Viewer!MarkerView | MarkerView}.
 
@@ -107,6 +109,6 @@ markerView.show(savedState);
 
 ## Demos
 
-Check out the "work-in-progress" demo [here](https://github.com/ailon/markerjs3-wip-demo). It covers most of the available features with no extra bells or whistles.
+Check out the "work-in-progress" demo [here](https://github.com/ailon/markerjs3-wip-demo). It covers most of the available features with no extra bells or whistles. While it's made with React it is purposefully light on React-specific stuff and "best practices" to just focus on marker.js 3 related things.
 
-While it's made with React it is purposefully light on React-specific stuff and "best practices" to just focus on marker.js 3 related things.
+Find [more demos on markerjs.com](https://markerjs.com/demos).
