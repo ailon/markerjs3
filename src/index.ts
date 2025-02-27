@@ -75,6 +75,11 @@ export {
   CaptionFrameMarkerEditor,
 } from './editor';
 
-export { MarkerView, MarkerViewEventData, MarkerViewEventMap } from './viewer';
+export {
+  MarkerView,
+  MarkerViewEventData,
+  MarkerEventData,
+  MarkerViewEventMap,
+} from './viewer';
 
 export { Renderer } from './Renderer';

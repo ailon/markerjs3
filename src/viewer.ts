@@ -7,6 +7,7 @@ import { MarkerView } from './MarkerView';
 export {
   MarkerView,
   MarkerViewEventData,
+  MarkerEventData,
   MarkerViewEventMap,
 } from './MarkerView';
 
