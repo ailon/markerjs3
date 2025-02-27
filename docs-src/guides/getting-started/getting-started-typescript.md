@@ -9,6 +9,10 @@ In this quick start guide we will create a very simple application that enables 
 
 > Note: this quick start aims to demonstrate the core concepts in marker.js 3 and purposely ignores best practices and other considerations that would add to the bulk of code without contributing to helping you understand the main parts and principles.
 
+## Video walkthrough
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/sjhN2rY66BQ?si=Sfc09c-obA6G_ez6" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
 ## Setup
 
 ### Vite

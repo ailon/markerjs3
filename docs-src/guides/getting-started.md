@@ -11,6 +11,8 @@ children:
 
 # Getting started with marker.js 3
 
+<iframe width="560" height="315" src="https://www.youtube.com/embed/sjhN2rY66BQ?si=Sfc09c-obA6G_ez6" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
 This section contains elaborate walkthroughs for getting started with marker.js 3 with various front-end frameworks and approaches.
 
 - [JavaScript walkthrough](./getting-started/getting-started-javascript.md) covers adding marker.js 3 to a simple HTML/CSS/JavaScript application that doesn't use any frameworks or bundlers.
