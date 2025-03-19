@@ -16,6 +16,13 @@ export class ImageMarkerEditor<
 
     this._creationStyle = 'drop';
 
+    this.disabledResizeGrips = [
+      'topcenter',
+      'bottomcenter',
+      'leftcenter',
+      'rightcenter',
+    ];
+
     this.pointerDown = this.pointerDown.bind(this);
     this.pointerUp = this.pointerUp.bind(this);
     this.resize = this.resize.bind(this);
