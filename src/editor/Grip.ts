@@ -58,7 +58,7 @@ export class Grip {
   protected createVisual() {
     this._visual = SvgHelper.createGroup();
     this._visual.appendChild(
-      SvgHelper.createCircle(this.gripSize * 4, [
+      SvgHelper.createCircle(this.gripSize * 2, [
         ['fill', 'transparent'],
         ['cx', (this.gripSize / 2).toString()],
         ['cy', (this.gripSize / 2).toString()],
