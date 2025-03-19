@@ -36,7 +36,7 @@ export default {
       ],
       copyOnce: true,
     }),
-    dev({ host: '127.0.0.1', dirs: ['build-dev'], port: 8088 }),
+    dev({ host: '0.0.0.0', dirs: ['build-dev'], port: 8088 }),
     livereload('build-dev'),
   ],
 };
