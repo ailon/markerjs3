@@ -17,12 +17,8 @@ export class MeasurementMarker extends LineMarker {
     super(container);
   }
 
-  protected getPath(): string {
-    const tipLength = 5 + this.strokeWidth * 3;
-
-    const dx = this.x2 - this.x1;
-    const dy = this.y2 - this.y1;
-    const angle = Math.atan2(dy, dx);
+  protected getStartTerminatorPath(): string {
+    const { tipLength, angle } = this.getTerminatorProperties();
 
     const startArrowSide1: IPoint = {
       x: this.x1 + tipLength * Math.sin(angle),
@@ -33,6 +29,15 @@ export class MeasurementMarker extends LineMarker {
       x: this.x1 - tipLength * Math.sin(angle),
       y: this.y1 + tipLength * Math.cos(angle),
     };
+
+    const result = `M ${startArrowSide1.x} ${startArrowSide1.y}
+      L ${startArrowSide2.x} ${startArrowSide2.y}`;
+
+    return result;
+  }
+
+  protected getEndTerminatorPath(): string {
+    const { tipLength, angle } = this.getTerminatorProperties();
 
     const endArrowSide1: IPoint = {
       x: this.x2 + tipLength * Math.sin(angle),
@@ -45,15 +50,18 @@ export class MeasurementMarker extends LineMarker {
     };
 
     // svg path for the arrow
-    const result = `M ${startArrowSide1.x} ${startArrowSide1.y}
-      L ${startArrowSide2.x} ${startArrowSide2.y}
-      M ${this.x1} ${this.y1}
-      L ${this.x2} ${this.y2}
-      M ${endArrowSide1.x} ${endArrowSide1.y}
-      L ${endArrowSide2.x} ${endArrowSide2.y}
-      `;
+    const result = `M ${endArrowSide1.x} ${endArrowSide1.y} L ${endArrowSide2.x} ${endArrowSide2.y}`;
 
     return result;
+  }
+
+  private getTerminatorProperties() {
+    const tipLength = 5 + this.strokeWidth * 3;
+
+    const dx = this.x2 - this.x1;
+    const dy = this.y2 - this.y1;
+    const angle = Math.atan2(dy, dx);
+    return { tipLength, angle };
   }
 
   protected applyStrokeWidth() {

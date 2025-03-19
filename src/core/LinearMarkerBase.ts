@@ -42,6 +42,18 @@ export class LinearMarkerBase extends MarkerBase {
    * Visible visual of the marker.
    */
   protected visibleVisual: SVGGraphicsElement | undefined;
+  /**
+   * Line visual of the marker.
+   */
+  protected lineVisual: SVGGraphicsElement | undefined;
+  /**
+   * Start terminator (ending) visual of the marker.
+   */
+  protected startTerminatorVisual: SVGGraphicsElement | undefined;
+  /**
+   * End terminator (ending) visual of the marker.
+   */
+  protected endTerminatorVisual: SVGGraphicsElement | undefined;
 
   protected applyStrokeColor() {
     if (this.visibleVisual) {
@@ -53,8 +65,8 @@ export class LinearMarkerBase extends MarkerBase {
   }
 
   protected applyStrokeWidth() {
-    if (this.visibleVisual) {
-      SvgHelper.setAttributes(this.visibleVisual, [
+    if (this.lineVisual) {
+      SvgHelper.setAttributes(this.lineVisual, [
         ['stroke-width', this._strokeWidth.toString()],
       ]);
     }
@@ -66,8 +78,8 @@ export class LinearMarkerBase extends MarkerBase {
   }
 
   protected applyStrokeDasharray() {
-    if (this.visibleVisual) {
-      SvgHelper.setAttributes(this.visibleVisual, [
+    if (this.lineVisual) {
+      SvgHelper.setAttributes(this.lineVisual, [
         ['stroke-dasharray', this._strokeDasharray],
       ]);
     }
@@ -95,7 +107,10 @@ export class LinearMarkerBase extends MarkerBase {
       super.ownsTarget(el) ||
       el === this.visual ||
       el === this.selectorVisual ||
-      el === this.visibleVisual
+      el === this.visibleVisual ||
+      el === this.lineVisual ||
+      el === this.startTerminatorVisual ||
+      el === this.endTerminatorVisual
     ) {
       return true;
     } else {
@@ -104,7 +119,7 @@ export class LinearMarkerBase extends MarkerBase {
   }
 
   /**
-   * The path representing the marker visual.
+   * The path representing the line part of the marker visual.
    *
    * When implemented in derived class should return SVG path for the marker.
    *
@@ -112,6 +127,22 @@ export class LinearMarkerBase extends MarkerBase {
    */
   protected getPath(): string {
     return 'M0,0';
+  }
+
+  /**
+   * The path representing the start terminator (ending) part of the marker visual.
+   * @returns SVG path
+   */
+  protected getStartTerminatorPath(): string {
+    return '';
+  }
+
+  /**
+   * The path representing the end terminator (ending) part of the marker visual.
+   * @returns SVG path
+   */
+  protected getEndTerminatorPath(): string {
+    return '';
   }
 
   /**
@@ -124,13 +155,41 @@ export class LinearMarkerBase extends MarkerBase {
       ['fill', 'transparent'],
       ['stroke-width', Math.max(this.strokeWidth, 8).toString()],
     ]);
-    this.visibleVisual = SvgHelper.createPath(this.getPath(), [
+
+    this.visibleVisual = SvgHelper.createGroup();
+    this.lineVisual = SvgHelper.createPath(this.getPath(), [
       ['stroke', this.strokeColor],
       ['fill', this.strokeColor],
       ['stroke-width', this.strokeWidth.toString()],
       ['stroke-linejoin', 'round'],
+      ['stroke-dasharray', this.strokeDasharray.toString()],
       ['opacity', this.opacity.toString()],
     ]);
+    this.startTerminatorVisual = SvgHelper.createPath(
+      this.getStartTerminatorPath(),
+      [
+        ['stroke', this.strokeColor],
+        ['fill', this.strokeColor],
+        ['stroke-width', this.strokeWidth.toString()],
+        ['stroke-linejoin', 'round'],
+        ['opacity', this.opacity.toString()],
+      ],
+    );
+    this.endTerminatorVisual = SvgHelper.createPath(
+      this.getEndTerminatorPath(),
+      [
+        ['stroke', this.strokeColor],
+        ['fill', this.strokeColor],
+        ['stroke-width', this.strokeWidth.toString()],
+        ['stroke-linejoin', 'round'],
+        ['opacity', this.opacity.toString()],
+      ],
+    );
+
+    this.visibleVisual.appendChild(this.lineVisual);
+    this.visibleVisual.appendChild(this.startTerminatorVisual);
+    this.visibleVisual.appendChild(this.endTerminatorVisual);
+
     this.visual.appendChild(this.selectorVisual);
     this.visual.appendChild(this.visibleVisual);
 
@@ -141,16 +200,33 @@ export class LinearMarkerBase extends MarkerBase {
    * Adjusts marker visual after manipulation when needed.
    */
   public adjustVisual(): void {
-    if (this.selectorVisual && this.visibleVisual) {
+    if (
+      this.selectorVisual &&
+      this.lineVisual &&
+      this.startTerminatorVisual &&
+      this.endTerminatorVisual
+    ) {
       SvgHelper.setAttributes(this.selectorVisual, [['d', this.getPath()]]);
-      SvgHelper.setAttributes(this.visibleVisual, [
+      SvgHelper.setAttributes(this.lineVisual, [
         ['d', this.getPath()],
         ['stroke', this.strokeColor],
         ['fill', this.strokeColor],
         ['stroke-width', this.strokeWidth.toString()],
-
         ['stroke-dasharray', this.strokeDasharray.toString()],
-        ['stroke-dasharray', this.strokeDasharray.toString()],
+        ['opacity', this.opacity.toString()],
+      ]);
+      SvgHelper.setAttributes(this.startTerminatorVisual, [
+        ['d', this.getStartTerminatorPath()],
+        ['stroke', this.strokeColor],
+        ['fill', this.strokeColor],
+        ['stroke-width', this.strokeWidth.toString()],
+        ['opacity', this.opacity.toString()],
+      ]);
+      SvgHelper.setAttributes(this.endTerminatorVisual, [
+        ['d', this.getEndTerminatorPath()],
+        ['stroke', this.strokeColor],
+        ['fill', this.strokeColor],
+        ['stroke-width', this.strokeWidth.toString()],
         ['opacity', this.opacity.toString()],
       ]);
     }

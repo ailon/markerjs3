@@ -30,9 +30,13 @@ export class ArrowMarker extends LineMarker {
 
   constructor(container: SVGGElement) {
     super(container);
+
+    this.getArrowProperties = this.getArrowProperties.bind(this);
+    this.getStartTerminatorPath = this.getStartTerminatorPath.bind(this);
+    this.getEndTerminatorPath = this.getEndTerminatorPath.bind(this);
   }
 
-  protected getPath(): string {
+  private getArrowProperties() {
     const arrowHeight = 10 + this.strokeWidth * 2;
     const arrowWidth = Math.min(
       Math.max(5, this.strokeWidth * 2),
@@ -43,6 +47,12 @@ export class ArrowMarker extends LineMarker {
     const dx = this.x2 - this.x1;
     const dy = this.y2 - this.y1;
     const angle = Math.atan2(dy, dx);
+    return { arrowHeight, arrowDipFactor, angle, arrowWidth };
+  }
+
+  protected getStartTerminatorPath(): string {
+    const { arrowHeight, arrowDipFactor, angle, arrowWidth } =
+      this.getArrowProperties();
 
     // Start arrow
     const startArrowBasePoint: IPoint = {
@@ -65,6 +75,20 @@ export class ArrowMarker extends LineMarker {
       y: startArrowTipBasePoint.y + arrowWidth * Math.cos(angle),
     };
 
+    const startSegment =
+      this.arrowType === 'start' || this.arrowType === 'both'
+        ? `M ${startArrowBasePoint.x} ${startArrowBasePoint.y}
+    L ${startArrowSide1.x} ${startArrowSide1.y} L ${this.x1} ${this.y1} L ${startArrowSide2.x} ${startArrowSide2.y} L ${startArrowBasePoint.x} ${startArrowBasePoint.y}
+    L ${startArrowBasePoint.x} ${startArrowBasePoint.y}`
+        : ``;
+
+    return startSegment;
+  }
+
+  protected getEndTerminatorPath(): string {
+    const { arrowHeight, arrowDipFactor, angle, arrowWidth } =
+      this.getArrowProperties();
+
     // End arrow
     const endArrowBasePoint: IPoint = {
       x: this.x2 - arrowHeight * arrowDipFactor * Math.cos(angle),
@@ -86,22 +110,13 @@ export class ArrowMarker extends LineMarker {
       y: endArrowTipBasePoint.y + arrowWidth * Math.cos(angle),
     };
 
-    const startSegment =
-      this.arrowType === 'start' || this.arrowType === 'both'
-        ? `M ${startArrowBasePoint.x} ${startArrowBasePoint.y}
-    L ${startArrowSide1.x} ${startArrowSide1.y} L ${this.x1} ${this.y1} L ${startArrowSide2.x} ${startArrowSide2.y} L ${startArrowBasePoint.x} ${startArrowBasePoint.y}
-    L ${startArrowBasePoint.x} ${startArrowBasePoint.y}`
-        : `M ${this.x1} ${this.y1}`;
-
     const endSegment =
       this.arrowType === 'end' || this.arrowType === 'both'
-        ? `L ${endArrowBasePoint.x} ${endArrowBasePoint.y} 
+        ? `M ${endArrowBasePoint.x} ${endArrowBasePoint.y} 
     L ${endArrowSide1.x} ${endArrowSide1.y} L ${this.x2} ${this.y2} L ${endArrowSide2.x} ${endArrowSide2.y} L ${endArrowBasePoint.x} ${endArrowBasePoint.y} Z`
-        : `L ${this.x2} ${this.y2}`;
-    // svg path for the arrow
-    const result = `${startSegment} ${endSegment}`;
+        : ``;
 
-    return result;
+    return endSegment;
   }
 
   protected applyStrokeWidth() {
