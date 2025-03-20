@@ -4,6 +4,7 @@ import {
   CaptionFrameMarker,
   CheckImageMarker,
   CoverMarker,
+  CurveMarker,
   CustomImageMarker,
   EllipseFrameMarker,
   EllipseMarker,
@@ -35,6 +36,7 @@ import { MeasurementMarker } from './core/MeasurementMarker';
 import { CalloutMarkerEditor } from './editor/CalloutMarkerEditor';
 import { ImageMarkerEditor } from './editor/ImageMarkerEditor';
 import { CaptionFrameMarkerEditor } from './editor/CaptionFrameMarkerEditor';
+import { CurveMarkerEditor } from './editor/CurveMarkerEditor';
 
 /**
  * Marker area custom event types.
@@ -357,6 +359,7 @@ export class MarkerArea extends HTMLElement {
       CaptionFrameMarker,
       CaptionFrameMarkerEditor<CaptionFrameMarker>,
     );
+    this.markerEditors.set(CurveMarker, CurveMarkerEditor<CurveMarker>);
 
     this.connectedCallback = this.connectedCallback.bind(this);
     this.disconnectedCallback = this.disconnectedCallback.bind(this);

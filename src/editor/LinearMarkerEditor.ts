@@ -32,10 +32,6 @@ export class LinearMarkerEditor<
   private manipulationStartY2 = 0;
 
   /**
-   * Container for control elements.
-   */
-  protected controlBox: SVGGElement = SvgHelper.createGroup();
-  /**
    * Container for manipulation grips.
    */
   protected manipulationBox: SVGGElement = SvgHelper.createGroup();
@@ -185,14 +181,13 @@ export class LinearMarkerEditor<
    * Creates control box for manipulation controls.
    */
   protected setupControlBox(): void {
-    this.controlBox = SvgHelper.createGroup();
-    this.container.appendChild(this.controlBox);
+    this.container.appendChild(this._controlBox);
     this.manipulationBox = SvgHelper.createGroup();
-    this.controlBox.appendChild(this.manipulationBox);
+    this._controlBox.appendChild(this.manipulationBox);
 
     this.addControlGrips();
 
-    this.controlBox.style.display = 'none';
+    this._controlBox.style.display = 'none';
   }
 
   protected adjustControlBox() {
@@ -257,11 +252,11 @@ export class LinearMarkerEditor<
     super.select(multi);
     this.adjustControlBox();
     this.manipulationBox.style.display = multi ? 'none' : '';
-    this.controlBox.style.display = '';
+    this._controlBox.style.display = '';
   }
 
   public deselect(): void {
     super.deselect();
-    this.controlBox.style.display = 'none';
+    this._controlBox.style.display = 'none';
   }
 }

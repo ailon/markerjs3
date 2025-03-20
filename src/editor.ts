@@ -35,6 +35,7 @@ export { ArrowMarkerEditor } from './editor/ArrowMarkerEditor';
 export { CalloutMarkerEditor } from './editor/CalloutMarkerEditor';
 export { ImageMarkerEditor } from './editor/ImageMarkerEditor';
 export { CaptionFrameMarkerEditor } from './editor/CaptionFrameMarkerEditor';
+export { CurveMarkerEditor } from './editor/CurveMarkerEditor';
 
 if (
   window &&

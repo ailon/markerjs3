@@ -44,6 +44,8 @@ export {
   XImageMarker,
   CaptionFrameMarker,
   CaptionFrameMarkerState,
+  CurveMarker,
+  CurveMarkerState,
 } from './core';
 
 export {
@@ -73,6 +75,7 @@ export {
   CalloutMarkerEditor,
   ImageMarkerEditor,
   CaptionFrameMarkerEditor,
+  CurveMarkerEditor,
 } from './editor';
 
 export {

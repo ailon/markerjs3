@@ -27,7 +27,7 @@ export class Experiments {
   public setup(): void {
     // const targetImg = document.getElementById('testImg') as HTMLImageElement;
     this.targetImg = document.createElement('img');
-    this.targetImg.src = './images/landscape.jpg';
+    this.targetImg.src = './images/landscape_sm.jpg';
 
     this.markerArea1 = document.getElementById('markerArea1') as MarkerArea;
 
@@ -37,7 +37,7 @@ export class Experiments {
       ShapeOutlineMarkerEditor<TriangleMarker>,
     );
 
-    this.markerArea1.targetWidth = 1600;
+    // this.markerArea1.targetWidth = 1600;
     // this.markerArea1.targetHeight = 600;
     this.markerArea1.targetImage = this.targetImg;
 

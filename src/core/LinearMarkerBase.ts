@@ -210,7 +210,7 @@ export class LinearMarkerBase extends MarkerBase {
       SvgHelper.setAttributes(this.lineVisual, [
         ['d', this.getPath()],
         ['stroke', this.strokeColor],
-        ['fill', this.strokeColor],
+        ['fill', this.fillColor],
         ['stroke-width', this.strokeWidth.toString()],
         ['stroke-dasharray', this.strokeDasharray.toString()],
         ['opacity', this.opacity.toString()],

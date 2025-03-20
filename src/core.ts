@@ -59,3 +59,6 @@ export { XImageMarker } from './core/XImageMarker';
 
 export { CaptionFrameMarker } from './core/CaptionFrameMarker';
 export { CaptionFrameMarkerState } from './core/CaptionFrameMarkerState';
+
+export { CurveMarker } from './core/CurveMarker';
+export { CurveMarkerState } from './core/CurveMarkerState';

@@ -22,6 +22,7 @@ import {
   CheckImageMarker,
   XImageMarker,
   CaptionFrameMarker,
+  CurveMarker,
 } from './core';
 
 /**
@@ -167,6 +168,7 @@ export class Renderer {
       CheckImageMarker,
       XImageMarker,
       CaptionFrameMarker,
+      CurveMarker,
     ];
 
     this.init = this.init.bind(this);
