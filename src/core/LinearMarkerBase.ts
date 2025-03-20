@@ -56,8 +56,15 @@ export class LinearMarkerBase extends MarkerBase {
   protected endTerminatorVisual: SVGGraphicsElement | undefined;
 
   protected applyStrokeColor() {
-    if (this.visibleVisual) {
-      SvgHelper.setAttributes(this.visibleVisual, [
+    if (this.lineVisual) {
+      SvgHelper.setAttributes(this.lineVisual, [['stroke', this._strokeColor]]);
+    }
+    if (this.startTerminatorVisual && this.endTerminatorVisual) {
+      SvgHelper.setAttributes(this.startTerminatorVisual, [
+        ['stroke', this._strokeColor],
+        ['fill', this._strokeColor],
+      ]);
+      SvgHelper.setAttributes(this.endTerminatorVisual, [
         ['stroke', this._strokeColor],
         ['fill', this._strokeColor],
       ]);
