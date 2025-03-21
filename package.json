@@ -19,12 +19,9 @@
   "scripts": {
     "lint": "eslint src",
     "build": "yarn lint && rollup --config rollup.config.prod.mjs",
-    "dev": "rollup --config rollup.config.dev.mjs -w",
-    "docs": "typedoc",
-    "docs-md": "typedoc --options typedoc-md.json"
+    "dev": "rollup --config rollup.config.dev.mjs -w"
   },
   "devDependencies": {
-    "@8hobbies/typedoc-plugin-plausible": "^2.1.0",
     "@rollup/plugin-json": "^6.1.0",
     "@rollup/plugin-node-resolve": "^15.2.3",
     "@rollup/plugin-terser": "^0.4.4",
@@ -45,8 +42,6 @@
     "rollup-plugin-svgo": "^2.0.0",
     "svgo": "^3.0.3",
     "tslib": "^2.6.2",
-    "typedoc": "^0.27.6",
-    "typedoc-plugin-markdown": "^4.4.1",
     "typescript": "^5.2.2"
   }
 }
