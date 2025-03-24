@@ -10,6 +10,7 @@ import {
   EllipseMarker,
   FrameMarker,
   FreehandMarker,
+  HighlighterMarker,
   HighlightMarker,
   IPoint,
   LineMarker,
@@ -360,6 +361,10 @@ export class MarkerArea extends HTMLElement {
       CaptionFrameMarkerEditor<CaptionFrameMarker>,
     );
     this.markerEditors.set(CurveMarker, CurveMarkerEditor<CurveMarker>);
+    this.markerEditors.set(
+      HighlighterMarker,
+      FreehandMarkerEditor<HighlighterMarker>,
+    );
 
     this.connectedCallback = this.connectedCallback.bind(this);
     this.disconnectedCallback = this.disconnectedCallback.bind(this);

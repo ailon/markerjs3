@@ -128,6 +128,7 @@ export class FreehandMarker extends MarkerBase {
       ['stroke', this.strokeColor],
       ['fill', 'transparent'],
       ['stroke-width', this.strokeWidth.toString()],
+      ['opacity', this.opacity.toString()],
     ]);
     this.visual.appendChild(this.selectorVisual);
     this.visual.appendChild(this.visibleVisual);
@@ -146,12 +147,10 @@ export class FreehandMarker extends MarkerBase {
 
       SvgHelper.setAttributes(this.visibleVisual, [
         ['stroke', this.strokeColor],
-      ]);
-      SvgHelper.setAttributes(this.visibleVisual, [
         ['stroke-width', this.strokeWidth.toString()],
-      ]);
-      SvgHelper.setAttributes(this.visibleVisual, [
         ['stroke-dasharray', this.strokeDasharray.toString()],
+        ['stroke-dasharray', this.strokeDasharray.toString()],
+        ['opacity', this.opacity.toString()],
       ]);
     }
   }

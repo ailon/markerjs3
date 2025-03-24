@@ -62,3 +62,5 @@ export { CaptionFrameMarkerState } from './core/CaptionFrameMarkerState';
 
 export { CurveMarker } from './core/CurveMarker';
 export { CurveMarkerState } from './core/CurveMarkerState';
+
+export { HighlighterMarker } from './core/HighlighterMarker';

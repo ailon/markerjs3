@@ -23,6 +23,7 @@ import {
   XImageMarker,
   CaptionFrameMarker,
   CurveMarker,
+  HighlighterMarker,
 } from './core';
 
 /**
@@ -169,6 +170,7 @@ export class Renderer {
       XImageMarker,
       CaptionFrameMarker,
       CurveMarker,
+      HighlighterMarker,
     ];
 
     this.init = this.init.bind(this);

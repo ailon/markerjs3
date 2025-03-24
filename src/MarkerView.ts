@@ -19,6 +19,7 @@ import {
   CaptionFrameMarker,
   CalloutMarker,
   CurveMarker,
+  HighlighterMarker,
 } from './core';
 import { Activator } from './core/Activator';
 
@@ -238,6 +239,7 @@ export class MarkerView extends HTMLElement {
       XImageMarker,
       CaptionFrameMarker,
       CurveMarker,
+      HighlighterMarker,
     ];
 
     this.connectedCallback = this.connectedCallback.bind(this);

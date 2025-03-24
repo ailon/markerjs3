@@ -46,6 +46,7 @@ export {
   CaptionFrameMarkerState,
   CurveMarker,
   CurveMarkerState,
+  HighlighterMarker,
 } from './core';
 
 export {
