@@ -36,6 +36,12 @@ export class PolygonMarker extends MarkerBase {
     }
   }
 
+  protected applyFillColor() {
+    if (this.visibleVisual) {
+      SvgHelper.setAttributes(this.visibleVisual, [['fill', this._fillColor]]);
+    }
+  }
+
   protected applyStrokeWidth() {
     if (this.visibleVisual) {
       SvgHelper.setAttributes(this.visibleVisual, [
@@ -115,7 +121,7 @@ export class PolygonMarker extends MarkerBase {
     this.visual = SvgHelper.createGroup();
     this.visibleVisual = SvgHelper.createPath(this.getPath(), [
       ['stroke', this.strokeColor],
-      ['fill', 'transparent'],
+      ['fill', this.fillColor],
       ['stroke-width', this.strokeWidth.toString()],
       ['opacity', this.opacity.toString()],
     ]);
@@ -153,6 +159,7 @@ export class PolygonMarker extends MarkerBase {
         ['stroke', this.strokeColor],
         ['stroke-width', this.strokeWidth.toString()],
         ['stroke-dasharray', this.strokeDasharray.toString()],
+        ['fill', this.fillColor],
         ['opacity', this.opacity.toString()],
       ]);
 
