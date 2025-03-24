@@ -5,6 +5,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.2.0] - 2025-03-24
+
+### Added
+
+- `HighlighterMarker` - a freeform highlighter pen
+- `defaultFilter` property across `MarkerArea`, `MarkerView`, and `Renderer`. marker types now have a `applyDefaultFilter` static property that specifies if this type wants the `defaultFilter` to be applied to markers. Defaults to `true` and set to `false` where it generally doesn't make sense (like Highlight, etc.)
+
+### Fixed
+
+- `fill` doesn't work for polygons
+
+### Chores
+
+- move docs to a separate repository
+
 ## [3.1.0] - 2025-03-20
 
 ### Added
@@ -191,6 +206,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Initial public release.
 
+[3.2.0]: https://github.com/ailon/markerjs3/releases/tag/v3.2.0
 [3.1.0]: https://github.com/ailon/markerjs3/releases/tag/v3.1.0
 [3.0.1]: https://github.com/ailon/markerjs3/releases/tag/v3.0.1
 [3.0.0]: https://github.com/ailon/markerjs3/releases/tag/v3.0.0
