@@ -151,6 +151,25 @@ export class Renderer {
    */
   public height?: number;
 
+  private _defaultFilter?: string;
+  /**
+   * Returns the default SVG filter for the created markers.
+   *
+   * @since 3.2.0
+   */
+  public get defaultFilter(): string | undefined {
+    return this._defaultFilter;
+  }
+  /**
+   * Sets the default SVG filter for the created markers
+   * (e.g. "drop-shadow(2px 2px 2px black)").
+   *
+   * @since 3.2.0
+   */
+  public set defaultFilter(value: string | undefined) {
+    this._defaultFilter = value;
+  }
+
   constructor() {
     this.markerTypes = [
       FrameMarker,
@@ -322,6 +341,9 @@ export class Renderer {
     }
 
     const g = SvgHelper.createGroup();
+    if (this.defaultFilter && markerType.applyDefaultFilter) {
+      g.setAttribute('filter', this.defaultFilter);
+    }
     this._mainCanvas.appendChild(g);
 
     return new markerType(g);
@@ -357,6 +379,10 @@ export class Renderer {
 
     while (this._mainCanvas?.lastChild) {
       this._mainCanvas.removeChild(this._mainCanvas.lastChild);
+    }
+
+    if (this.defaultFilter === undefined && stateCopy.defaultFilter) {
+      this.defaultFilter = stateCopy.defaultFilter;
     }
 
     stateCopy.markers.forEach((markerState) => {

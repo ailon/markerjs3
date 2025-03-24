@@ -11,6 +11,7 @@ import { ShapeMarkerBase } from './ShapeMarkerBase';
 export class CoverMarker extends ShapeMarkerBase {
   public static typeName = 'CoverMarker';
   public static title = 'Cover marker';
+  public static applyDefaultFilter = false;
 
   constructor(container: SVGGElement) {
     super(container);

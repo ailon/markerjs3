@@ -27,6 +27,14 @@ export interface AnnotationState {
   height: number;
 
   /**
+   * Default SVG filter to apply to markers in the annotation.
+   * (e.g. "drop-shadow(2px 2px 2px black)")
+   *
+   * @since 3.2.0
+   */
+  defaultFilter?: string;
+
+  /**
    * Array of marker states for markers in the annotation.
    */
   markers: MarkerBaseState[];

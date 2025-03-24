@@ -35,6 +35,18 @@ export class MarkerBase {
   }
 
   /**
+   * Marker type title (display name) used for accessibility and other attributes.
+   */
+  public static title: string;
+
+  /**
+   * When true, the default filter is applied to the marker's visual.
+   *
+   * @since 3.2.0
+   */
+  public static applyDefaultFilter: boolean = true;
+
+  /**
    * SVG container object holding the marker's visual.
    *
    * It is created and passed to the constructor by marker editor or viewer when creating the marker.
@@ -62,11 +74,6 @@ export class MarkerBase {
    * The default marker size when the marker is created with a click (without dragging).
    */
   public defaultSize: ISize = { width: 50, height: 20 };
-
-  /**
-   * Marker type title (display name) used for accessibility and other attributes.
-   */
-  public static title: string;
 
   /**
    * Marker lifecycle stage.

@@ -17,6 +17,7 @@ import { SvgHelper } from './SvgHelper';
 export class FreehandMarker extends MarkerBase {
   public static typeName = 'FreehandMarker';
   public static title = 'Freehand marker';
+  public static applyDefaultFilter = false;
 
   /**
    * Points of the freehand line.

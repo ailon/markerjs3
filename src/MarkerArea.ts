@@ -323,6 +323,25 @@ export class MarkerArea extends HTMLElement {
 
   private undoRedoManager = new UndoRedoManager<AnnotationState>();
 
+  private _defaultFilter?: string;
+  /**
+   * Returns the default SVG filter for the created markers.
+   *
+   * @since 3.2.0
+   */
+  public get defaultFilter(): string | undefined {
+    return this._defaultFilter;
+  }
+  /**
+   * Sets the default SVG filter for the created markers
+   * (e.g. "drop-shadow(2px 2px 2px black)").
+   *
+   * @since 3.2.0
+   */
+  public set defaultFilter(value: string | undefined) {
+    this._defaultFilter = value;
+  }
+
   constructor() {
     super();
 
@@ -690,6 +709,9 @@ export class MarkerArea extends HTMLElement {
     }
 
     const g = SvgHelper.createGroup();
+    if (this.defaultFilter && markerType.applyDefaultFilter) {
+      g.setAttribute('filter', this.defaultFilter);
+    }
     this._mainCanvas.appendChild(g);
 
     return new markerEditorType({
@@ -1291,6 +1313,7 @@ export class MarkerArea extends HTMLElement {
       version: 3,
       width: this.targetWidth,
       height: this.targetHeight,
+      defaultFilter: this.defaultFilter,
 
       markers: this.editors.map((editor) => {
         return editor.getState();
@@ -1322,6 +1345,10 @@ export class MarkerArea extends HTMLElement {
       }
       // re-add group layer
       this._mainCanvas.appendChild(this._groupLayer);
+    }
+
+    if (this.defaultFilter === undefined && stateCopy.defaultFilter) {
+      this.defaultFilter = stateCopy.defaultFilter;
     }
 
     stateCopy.markers.forEach((markerState) => {

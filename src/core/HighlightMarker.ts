@@ -9,6 +9,7 @@ import { ShapeMarkerBase } from './ShapeMarkerBase';
 export class HighlightMarker extends ShapeMarkerBase {
   public static typeName = 'HighlightMarker';
   public static title = 'Highlight marker';
+  public static applyDefaultFilter = false;
 
   constructor(container: SVGGElement) {
     super(container);

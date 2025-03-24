@@ -5,10 +5,12 @@ import { FreehandMarker } from './FreehandMarker';
  *
  * @summary Semi-transparent freeform marker.
  * @group Markers
+ * @since 3.2.0
  */
 export class HighlighterMarker extends FreehandMarker {
   public static typeName = 'HighlighterMarker';
   public static title = 'Highlighter marker';
+  public static applyDefaultFilter = false;
 
   constructor(container: SVGGElement) {
     super(container);
