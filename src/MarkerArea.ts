@@ -18,6 +18,7 @@ import {
   PolygonMarker,
   TextMarker,
   XImageMarker,
+  SvgFilters,
 } from './core';
 import { SvgHelper } from './core/SvgHelper';
 import { PolygonMarkerEditor } from './editor/PolygonMarkerEditor';
@@ -333,14 +334,27 @@ export class MarkerArea extends HTMLElement {
     return this._defaultFilter;
   }
   /**
-   * Sets the default SVG filter for the created markers
-   * (e.g. "drop-shadow(2px 2px 2px black)").
+   * Sets the default SVG filter for the created markers.
+   *
+   * @remarks
+   * The filter should be a valid SVG filter string.
+   *
+   * In Chromium-based browsers and Firefox, you can use CSS filter strings
+   *  e.g. "drop-shadow(2px 2px 2px black)". Unfortunately, at the time of
+   * the implementation this doesn't work in Safari (meaning any browser on iOS as well).
+   *
+   * For cross-browser compatibility, version 3.3 introduces a set of default filters.
+   * These are dropShadow, outline, and glow. You can use them by setting the defaultFilter
+   * to "url(#dropShadow)", "url(#outline)", or "url(#glow)" respectively.
    *
    * @since 3.2.0
    */
   public set defaultFilter(value: string | undefined) {
     this._defaultFilter = value;
   }
+
+  private _defsElement?: SVGDefsElement;
+  private _defs: (string | Node)[] = [];
 
   constructor() {
     super();
@@ -436,6 +450,9 @@ export class MarkerArea extends HTMLElement {
       this.adjustMarqueeSelectOutline.bind(this);
     this.hideMarqueeSelectOutline = this.hideMarqueeSelectOutline.bind(this);
 
+    this.addDefs = this.addDefs.bind(this);
+    this.addDefaultFilterDefs = this.addDefaultFilterDefs.bind(this);
+
     this.attachShadow({ mode: 'open' });
   }
 
@@ -455,6 +472,7 @@ export class MarkerArea extends HTMLElement {
       this.addTargetImage();
     }
     this.setMainCanvasSize();
+    this.addDefaultFilterDefs();
     this.toggleLogo();
     this.dispatchEvent(
       new CustomEvent<MarkerAreaEventData>('areashow', {
@@ -515,11 +533,19 @@ export class MarkerArea extends HTMLElement {
     this._mainCanvas.style.margin = '10px';
     this._mainCanvas.style.transform = `scale(${this._zoomLevel})`;
 
+    this.addDefsToMainCanvas();
+
     this._groupLayer = SvgHelper.createGroup();
 
     this._mainCanvas.appendChild(this._groupLayer);
 
     this._canvasContainer?.appendChild(this._mainCanvas);
+  }
+
+  private addDefsToMainCanvas() {
+    this._defsElement = SvgHelper.createDefs();
+    this._mainCanvas?.appendChild(this._defsElement);
+    this._defsElement.append(...this._defs);
   }
 
   private setMainCanvasSize() {
@@ -651,6 +677,10 @@ export class MarkerArea extends HTMLElement {
 
       this._canvasContainer.insertBefore(this._editingTarget, this._mainCanvas);
     }
+  }
+
+  private addDefaultFilterDefs() {
+    this.addDefs(...SvgFilters.getDefaultFilterSet());
   }
 
   /**
@@ -1343,6 +1373,8 @@ export class MarkerArea extends HTMLElement {
       while (this._mainCanvas.lastChild) {
         this._mainCanvas.removeChild(this._mainCanvas.lastChild);
       }
+      // re-add defs
+      this.addDefsToMainCanvas();
       // re-add group layer
       this._mainCanvas.appendChild(this._groupLayer);
     }
@@ -1566,6 +1598,21 @@ export class MarkerArea extends HTMLElement {
           detail: { markerArea: this },
         }),
       );
+    }
+  }
+
+  /**
+   * Adds "defs" to main canvas SVG.
+   * Useful for filters, custom fonts and potentially other scenarios.
+   *
+   * @param nodes
+   * @since 3.3.0
+   */
+  public addDefs(...nodes: (string | Node)[]): void {
+    this._defs.push(...nodes);
+
+    if (this._defsElement) {
+      this._defsElement.append(...nodes);
     }
   }
 

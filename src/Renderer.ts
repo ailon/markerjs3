@@ -24,6 +24,7 @@ import {
   CaptionFrameMarker,
   CurveMarker,
   HighlighterMarker,
+  SvgFilters,
 } from './core';
 
 /**
@@ -170,6 +171,9 @@ export class Renderer {
     this._defaultFilter = value;
   }
 
+  private _defsElement?: SVGDefsElement;
+  private _defs: (string | Node)[] = [];
+
   constructor() {
     this.markerTypes = [
       FrameMarker,
@@ -203,6 +207,9 @@ export class Renderer {
 
     this.restoreState = this.restoreState.bind(this);
     this.scaleMarkers = this.scaleMarkers.bind(this);
+
+    this.addDefs = this.addDefs.bind(this);
+    this.addDefaultFilterDefs = this.addDefaultFilterDefs.bind(this);
   }
 
   private init() {
@@ -212,6 +219,7 @@ export class Renderer {
       this.addTargetImage();
     }
     this.setMainCanvasSize();
+    this.addDefaultFilterDefs();
   }
 
   private addMainCanvas() {
@@ -228,6 +236,8 @@ export class Renderer {
     // text isn't sized correctly without adding to the DOM
     this._mainCanvas.style.visibility = 'hidden';
 
+    this.addDefsToMainCanvas();
+
     this._renderHelperContainer = document.createElement('div');
     this._renderHelperContainer.style.position = 'absolute';
     this._renderHelperContainer.style.top = '0px';
@@ -240,6 +250,12 @@ export class Renderer {
     this._renderHelperContainer.appendChild(this._mainCanvas);
 
     document.body.appendChild(this._renderHelperContainer);
+  }
+
+  private addDefsToMainCanvas() {
+    this._defsElement = SvgHelper.createDefs();
+    this._mainCanvas?.appendChild(this._defsElement);
+    this._defsElement.append(...this._defs);
   }
 
   private setMainCanvasSize() {
@@ -335,6 +351,10 @@ export class Renderer {
     }
   }
 
+  private addDefaultFilterDefs() {
+    this.addDefs(...SvgFilters.getDefaultFilterSet());
+  }
+
   private addNewMarker(markerType: typeof MarkerBase): MarkerBase {
     if (this._mainCanvas === undefined) {
       throw new Error('Main canvas is not initialized.');
@@ -380,6 +400,9 @@ export class Renderer {
     while (this._mainCanvas?.lastChild) {
       this._mainCanvas.removeChild(this._mainCanvas.lastChild);
     }
+
+    // re-add defs
+    this.addDefsToMainCanvas();
 
     if (this.defaultFilter === undefined && stateCopy.defaultFilter) {
       this.defaultFilter = stateCopy.defaultFilter;
@@ -536,5 +559,18 @@ export class Renderer {
     document.body.removeChild(this._renderHelperContainer!);
 
     return result;
+  }
+
+  /**
+   * Adds "defs" to main canvas SVG.
+   * Useful for filters, custom fonts and potentially other scenarios.
+   * @since 3.3.0
+   */
+  public addDefs(...nodes: (string | Node)[]): void {
+    this._defs.push(...nodes);
+
+    if (this._defsElement) {
+      this._defsElement.append(...nodes);
+    }
   }
 }

@@ -28,7 +28,7 @@ export interface AnnotationState {
 
   /**
    * Default SVG filter to apply to markers in the annotation.
-   * (e.g. "drop-shadow(2px 2px 2px black)")
+   * (e.g. drop shadow, outline, glow)
    *
    * @since 3.2.0
    */

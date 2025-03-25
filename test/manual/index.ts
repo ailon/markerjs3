@@ -31,7 +31,10 @@ export class Experiments {
 
     this.markerArea1 = document.getElementById('markerArea1') as MarkerArea;
 
-    this.markerArea1.defaultFilter = 'drop-shadow(2px 2px 2px black)';
+    // this.markerArea1.defaultFilter = 'drop-shadow(2px 2px 2px black)';
+    this.markerArea1.defaultFilter = 'url(#dropShadow)';
+    // this.markerArea1.defaultFilter = 'url(#outline)';
+    // this.markerArea1.defaultFilter = 'url(#glow)';
 
     // register custom marker type
     this.markerArea1.registerMarkerType(
@@ -45,15 +48,15 @@ export class Experiments {
 
     this.markerView1 = document.getElementById('markerView1') as MarkerView;
 
-    this.markerView1.defaultFilter = `
-drop-shadow(1px 0 0 white) 
-drop-shadow(-1px 0 0 white) 
-drop-shadow(0 1px 0 white) 
-drop-shadow(0 -1px 0 white)
-drop-shadow(1px 1px 0 white) 
-drop-shadow(-1px -1px 0 white) 
-drop-shadow(1px -1px 0 white) 
-drop-shadow(-1px 1px 0 white)`;
+    //     this.markerView1.defaultFilter = `
+    // drop-shadow(1px 0 0 white)
+    // drop-shadow(-1px 0 0 white)
+    // drop-shadow(0 1px 0 white)
+    // drop-shadow(0 -1px 0 white)
+    // drop-shadow(1px 1px 0 white)
+    // drop-shadow(-1px -1px 0 white)
+    // drop-shadow(1px -1px 0 white)
+    // drop-shadow(-1px 1px 0 white)`;
     // register custom marker type
     this.markerView1.registerMarkerType(TriangleMarker);
 

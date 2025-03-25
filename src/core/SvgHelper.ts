@@ -357,4 +357,30 @@ export class SvgHelper {
 
     return svg;
   }
+
+  /**
+   * Creates an SVG filter element.
+   * @param id filter id
+   * @param attributes other filter element attributes
+   * @param innerHTML filter definition as string
+   * @returns filter element
+   */
+  public static createFilter(
+    id: string,
+    attributes?: Array<[string, string]>,
+    innerHTML?: string,
+  ): SVGFilterElement {
+    const filter = document.createElementNS(
+      'http://www.w3.org/2000/svg',
+      'filter',
+    );
+    filter.id = id;
+    if (attributes) {
+      SvgHelper.setAttributes(filter, attributes);
+    }
+    if (innerHTML) {
+      filter.innerHTML = innerHTML;
+    }
+    return filter;
+  }
 }

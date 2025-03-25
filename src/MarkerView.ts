@@ -20,6 +20,7 @@ import {
   CalloutMarker,
   CurveMarker,
   HighlighterMarker,
+  SvgFilters,
 } from './core';
 import { Activator } from './core/Activator';
 
@@ -237,6 +238,9 @@ export class MarkerView extends HTMLElement {
 
   private _isInitialized = false;
 
+  private _defsElement?: SVGDefsElement;
+  private _defs: (string | Node)[] = [];
+
   constructor() {
     super();
 
@@ -285,6 +289,9 @@ export class MarkerView extends HTMLElement {
     this.addLogo = this.addLogo.bind(this);
     this.removeLogo = this.removeLogo.bind(this);
 
+    this.addDefs = this.addDefs.bind(this);
+    this.addDefaultFilterDefs = this.addDefaultFilterDefs.bind(this);
+
     this.attachShadow({ mode: 'open' });
   }
 
@@ -303,6 +310,7 @@ export class MarkerView extends HTMLElement {
       this.addTargetImage();
     }
     this.setMainCanvasSize();
+    this.addDefaultFilterDefs();
     this.toggleLogo();
     this.dispatchEvent(
       new CustomEvent<MarkerViewEventData>('viewshow', {
@@ -361,11 +369,19 @@ export class MarkerView extends HTMLElement {
     this._mainCanvas.style.margin = '10px';
     this._mainCanvas.style.transform = `scale(${this._zoomLevel})`;
 
+    this.addDefsToMainCanvas();
+
     this._groupLayer = SvgHelper.createGroup();
 
     this._mainCanvas.appendChild(this._groupLayer);
 
     this._canvasContainer?.appendChild(this._mainCanvas);
+  }
+
+  private addDefsToMainCanvas() {
+    this._defsElement = SvgHelper.createDefs();
+    this._mainCanvas?.appendChild(this._defsElement);
+    this._defsElement.append(...this._defs);
   }
 
   private setMainCanvasSize() {
@@ -477,6 +493,10 @@ export class MarkerView extends HTMLElement {
 
       this._canvasContainer.insertBefore(this._editingTarget, this._mainCanvas);
     }
+  }
+
+  private addDefaultFilterDefs() {
+    this.addDefs(...SvgFilters.getDefaultFilterSet());
   }
 
   private addNewMarker(markerType: typeof MarkerBase): MarkerBase {
@@ -632,6 +652,9 @@ export class MarkerView extends HTMLElement {
       this._mainCanvas.removeChild(this._mainCanvas.lastChild);
     }
 
+    // re-add defs
+    this.addDefsToMainCanvas();
+
     if (this.defaultFilter === undefined && stateCopy.defaultFilter) {
       this.defaultFilter = stateCopy.defaultFilter;
     }
@@ -745,6 +768,19 @@ export class MarkerView extends HTMLElement {
     if (this._logoUI && this._contentContainer) {
       this._logoUI.style.left = `20px`;
       this._logoUI.style.bottom = `20px`;
+    }
+  }
+
+  /**
+   * Adds "defs" to main canvas SVG.
+   * Useful for filters, custom fonts and potentially other scenarios.
+   * @since 3.3.0
+   */
+  public addDefs(...nodes: (string | Node)[]): void {
+    this._defs.push(...nodes);
+
+    if (this._defsElement) {
+      this._defsElement.append(...nodes);
     }
   }
 

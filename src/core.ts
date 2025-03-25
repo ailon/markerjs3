@@ -64,3 +64,5 @@ export { CurveMarker } from './core/CurveMarker';
 export { CurveMarkerState } from './core/CurveMarkerState';
 
 export { HighlighterMarker } from './core/HighlighterMarker';
+
+export { SvgFilters } from './core/SvgFilters';

@@ -47,6 +47,7 @@ export {
   CurveMarker,
   CurveMarkerState,
   HighlighterMarker,
+  SvgFilters,
 } from './core';
 
 export {
