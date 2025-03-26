@@ -68,8 +68,8 @@ export class FreehandMarker extends MarkerBase {
   }
 
   protected applyOpacity() {
-    if (this.visual) {
-      SvgHelper.setAttributes(this.visual, [
+    if (this.visibleVisual) {
+      SvgHelper.setAttributes(this.visibleVisual, [
         ['opacity', this._opacity.toString()],
       ]);
     }
