@@ -21,6 +21,7 @@ import {
   CurveMarker,
   HighlighterMarker,
   SvgFilters,
+  IPoint,
 } from './core';
 import { Activator } from './core/Activator';
 
@@ -241,6 +242,8 @@ export class MarkerView extends HTMLElement {
   private _defsElement?: SVGDefsElement;
   private _defs: (string | Node)[] = [];
 
+  private prevPanPoint: IPoint = { x: 0, y: 0 };
+
   constructor() {
     super();
 
@@ -279,6 +282,11 @@ export class MarkerView extends HTMLElement {
     this.attachWindowEvents = this.attachWindowEvents.bind(this);
     this.detachEvents = this.detachEvents.bind(this);
     this.detachWindowEvents = this.detachWindowEvents.bind(this);
+
+    this.onCanvasPointerDown = this.onCanvasPointerDown.bind(this);
+    this.onPointerMove = this.onPointerMove.bind(this);
+    this.onPointerUp = this.onPointerUp.bind(this);
+    this.onPointerOut = this.onPointerOut.bind(this);
 
     this.addNewMarker = this.addNewMarker.bind(this);
 
@@ -578,16 +586,22 @@ export class MarkerView extends HTMLElement {
     // @todo
     // this.setupResizeObserver();
 
+    this._mainCanvas?.addEventListener('pointerdown', this.onCanvasPointerDown);
+    // workaround to prevent a bug with Apple Pencil
+    // https://bugs.webkit.org/show_bug.cgi?id=217430
+    this._mainCanvas?.addEventListener('touchmove', (ev) =>
+      ev.preventDefault(),
+    );
+
     this.attachWindowEvents();
   }
 
   private attachWindowEvents() {
-    // @todo
-    // window.addEventListener('pointermove', this.onPointerMove);
-    // window.addEventListener('pointerup', this.onPointerUp);
-    // window.addEventListener('pointercancel', this.onPointerOut);
-    // window.addEventListener('pointerout', this.onPointerOut);
-    // window.addEventListener('pointerleave', this.onPointerUp);
+    window.addEventListener('pointermove', this.onPointerMove);
+    window.addEventListener('pointerup', this.onPointerUp);
+    window.addEventListener('pointerleave', this.onPointerUp);
+    window.addEventListener('pointercancel', this.onPointerOut);
+    window.addEventListener('pointerout', this.onPointerOut);
   }
 
   private detachEvents() {
@@ -610,6 +624,43 @@ export class MarkerView extends HTMLElement {
     // window.removeEventListener('pointercancel', this.onPointerOut);
     // window.removeEventListener('pointerout', this.onPointerOut);
     // window.removeEventListener('pointerleave', this.onPointerUp);
+  }
+
+  private touchPoints = 0;
+  private leadPointerId?: number;
+
+  private onCanvasPointerDown(ev: PointerEvent) {
+    // @todo ?
+    // if (!this._isFocused) {
+    //   this.focus();
+    // }
+
+    this.touchPoints++;
+    if (this.touchPoints === 1) {
+      this.leadPointerId = ev.pointerId;
+      this.prevPanPoint = { x: ev.clientX, y: ev.clientY };
+    }
+  }
+
+  private onPointerMove(ev: PointerEvent) {
+    if (this.touchPoints > 0 && this.leadPointerId === ev.pointerId) {
+      this.panTo({ x: ev.clientX, y: ev.clientY });
+    }
+  }
+
+  private onPointerUp() {
+    if (this.touchPoints > 0) {
+      this.touchPoints--;
+      if (this.touchPoints === 0) {
+        this.leadPointerId = undefined;
+      }
+    }
+  }
+
+  private onPointerOut(/*ev: PointerEvent*/) {
+    if (this.touchPoints > 0) {
+      this.touchPoints--;
+    }
   }
 
   private getMarkerTypeByName(typeName: string): typeof MarkerBase | undefined {
@@ -691,6 +742,14 @@ export class MarkerView extends HTMLElement {
     this.markers.forEach((marker) => {
       marker.scale(scaleX, scaleY);
     });
+  }
+
+  private panTo(point: IPoint) {
+    this._canvasContainer?.scrollBy({
+      left: this.prevPanPoint.x - point.x,
+      top: this.prevPanPoint.y - point.y,
+    });
+    this.prevPanPoint = point;
   }
 
   /**

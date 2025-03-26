@@ -314,11 +314,10 @@ export class MarkerArea extends HTMLElement {
 
   private prevPanPoint: IPoint = { x: 0, y: 0 };
   private panTo(point: IPoint) {
-    // @todo
-    // this.contentDiv.scrollBy({
-    //   left: this.prevPanPoint.x - point.x,
-    //   top: this.prevPanPoint.y - point.y,
-    // });
+    this._canvasContainer?.scrollBy({
+      left: this.prevPanPoint.x - point.x,
+      top: this.prevPanPoint.y - point.y,
+    });
     this.prevPanPoint = point;
   }
 
@@ -896,8 +895,10 @@ export class MarkerArea extends HTMLElement {
   }
 
   private touchPoints = 0;
+  private leadPointerId?: number;
   private isDragging = false;
   private isSelecting = false;
+  private isPanning = false;
 
   private _marqueeSelectOutline: SVGRectElement = SvgHelper.createRect(0, 0, [
     ['stroke', 'rgb(35, 35, 255)'],
@@ -921,7 +922,14 @@ export class MarkerArea extends HTMLElement {
     this._manipulationStartY = ev.clientY;
 
     this.touchPoints++;
-    if (this.touchPoints === 1 || ev.pointerType !== 'touch') {
+    if (this.touchPoints === 1) {
+      this.leadPointerId = ev.pointerId;
+    }
+
+    if (
+      (ev.pointerType === 'touch' && this.touchPoints === 1) ||
+      (ev.pointerType !== 'touch' && ev.button === 0 && !ev.altKey)
+    ) {
       if (
         this._currentMarkerEditor !== undefined &&
         (this._currentMarkerEditor.state === 'new' ||
@@ -977,6 +985,16 @@ export class MarkerArea extends HTMLElement {
           this.prevPanPoint = { x: ev.clientX, y: ev.clientY };
         }
       }
+    } else if (
+      (ev.pointerType !== 'touch' &&
+        ((ev.button === 0 && ev.altKey) || ev.button === 1)) || // left button + alt or middle button
+      (ev.pointerType === 'touch' &&
+        this.touchPoints === 2 &&
+        ev.pointerId === this.leadPointerId)
+    ) {
+      this.isDragging = true;
+      this.isPanning = true;
+      this.prevPanPoint = { x: ev.clientX, y: ev.clientY };
     }
   }
 
@@ -1028,8 +1046,8 @@ export class MarkerArea extends HTMLElement {
 
   private onPointerMove(ev: PointerEvent) {
     if (
-      this.touchPoints === 1 ||
-      (ev.pointerType !== 'touch' && this.isDragging)
+      (ev.pointerType === 'touch' && this.touchPoints === 1) ||
+      (ev.pointerType !== 'touch' && this.isDragging && !ev.altKey)
     ) {
       const localPoint = SvgHelper.clientToLocalCoordinates(
         this._mainCanvas,
@@ -1097,6 +1115,13 @@ export class MarkerArea extends HTMLElement {
           ['height', `${this._marqueeSelectRect.height}`],
         ]);
       }
+    } else if (
+      (ev.pointerType !== 'touch' && this.isPanning) ||
+      (ev.pointerType === 'touch' &&
+        this.touchPoints === 2 &&
+        ev.pointerId === this.leadPointerId)
+    ) {
+      this.panTo({ x: ev.clientX, y: ev.clientY });
     }
   }
 
@@ -1131,6 +1156,9 @@ export class MarkerArea extends HTMLElement {
   private onPointerUp(ev: PointerEvent) {
     if (this.touchPoints > 0) {
       this.touchPoints--;
+      if (this.touchPoints === 0) {
+        this.leadPointerId = undefined;
+      }
     }
     if (this.touchPoints === 0) {
       if (this.isDragging && this._currentMarkerEditor !== undefined) {
@@ -1165,6 +1193,7 @@ export class MarkerArea extends HTMLElement {
     }
     this.isDragging = false;
     this.isSelecting = false;
+    this.isPanning = false;
     this.addUndoStep();
   }
 
