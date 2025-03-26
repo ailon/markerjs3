@@ -639,6 +639,9 @@ export class MarkerView extends HTMLElement {
     if (this.touchPoints === 1) {
       this.leadPointerId = ev.pointerId;
       this.prevPanPoint = { x: ev.clientX, y: ev.clientY };
+      if (this._mainCanvas) {
+        this._mainCanvas.style.cursor = 'grabbing';
+      }
     }
   }
 
@@ -653,6 +656,10 @@ export class MarkerView extends HTMLElement {
       this.touchPoints--;
       if (this.touchPoints === 0) {
         this.leadPointerId = undefined;
+      }
+
+      if (this._mainCanvas) {
+        this._mainCanvas.style.cursor = 'default';
       }
     }
   }

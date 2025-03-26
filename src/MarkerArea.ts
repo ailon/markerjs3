@@ -995,6 +995,10 @@ export class MarkerArea extends HTMLElement {
       this.isDragging = true;
       this.isPanning = true;
       this.prevPanPoint = { x: ev.clientX, y: ev.clientY };
+
+      if (this._mainCanvas) {
+        this._mainCanvas.style.cursor = 'grabbing';
+      }
     }
   }
 
@@ -1195,6 +1199,9 @@ export class MarkerArea extends HTMLElement {
     this.isSelecting = false;
     this.isPanning = false;
     this.addUndoStep();
+    if (this._mainCanvas) {
+      this._mainCanvas.style.cursor = 'default';
+    }
   }
 
   private finishMarqueeSelection() {
