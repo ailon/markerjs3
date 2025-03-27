@@ -32,8 +32,8 @@ export class ShapeOutlineMarkerEditor<
     }
   }
 
-  protected resize(point: IPoint): void {
-    super.resize(point);
+  protected resize(point: IPoint, preserveAspectRatio = false): void {
+    super.resize(point, preserveAspectRatio);
     this.setSize();
   }
 

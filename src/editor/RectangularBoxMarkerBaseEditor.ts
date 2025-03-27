@@ -192,7 +192,7 @@ export class RectangularBoxMarkerBaseEditor<
     const rotatedPoint = this.marker.unrotatePoint(point);
 
     if (this.state === 'creating') {
-      this.resize(point);
+      this.resize(point, ev?.shiftKey);
     } else if (this.state === 'move') {
       this.marker.left =
         this.manipulationStartLeft +
@@ -205,50 +205,125 @@ export class RectangularBoxMarkerBaseEditor<
       this.marker.moveVisual({ x: this.marker.left, y: this.marker.top });
       this.adjustControlBox();
     } else if (this.state === 'resize') {
-      this.resize(rotatedPoint);
+      this.resize(rotatedPoint, ev?.shiftKey);
     } else if (this.state === 'rotate') {
       this.marker.rotate(point);
     }
   }
 
-  protected resize(point: IPoint): void {
+  protected resize(point: IPoint, preserveAspectRatio = false): void {
     let newX = this.manipulationStartLeft;
     let newWidth = this.manipulationStartWidth;
     let newY = this.manipulationStartTop;
     let newHeight = this.manipulationStartHeight;
 
-    switch (this.activeGrip) {
-      case this.controlGrips.getGrip('bottomleft'):
-      case this.controlGrips.getGrip('leftcenter'):
-      case this.controlGrips.getGrip('topleft'):
-        newX = this.manipulationStartLeft + point.x - this.manipulationStartX;
-        newWidth =
-          this.manipulationStartWidth + this.manipulationStartLeft - newX;
-        break;
-      case this.controlGrips.getGrip('bottomright'):
-      case this.controlGrips.getGrip('rightcenter'):
-      case this.controlGrips.getGrip('topright'):
-      case undefined:
-        newWidth =
-          this.manipulationStartWidth + point.x - this.manipulationStartX;
-        break;
-    }
+    const deltaX = point.x - this.manipulationStartX;
+    const deltaY = point.y - this.manipulationStartY;
+    if (preserveAspectRatio) {
+      const aspectRatio =
+        this.manipulationStartWidth !== 0 && this.manipulationStartHeight !== 0
+          ? this.manipulationStartWidth / this.manipulationStartHeight
+          : 1;
+      switch (this.activeGrip) {
+        // undefined when creating a new marker
+        case this.controlGrips.getGrip('bottomright'):
+        case undefined: {
+          newWidth = this.manipulationStartWidth + Math.max(deltaX, deltaY);
+          newHeight =
+            this.manipulationStartHeight +
+            Math.max(deltaX, deltaY) / aspectRatio;
+          break;
+        }
+        case this.controlGrips.getGrip('bottomcenter'): {
+          newWidth = this.manipulationStartWidth + deltaY;
+          newHeight = this.manipulationStartHeight + deltaY / aspectRatio;
+          newX = this.manipulationStartLeft - deltaY / 2;
+          break;
+        }
+        case this.controlGrips.getGrip('bottomleft'): {
+          newWidth = this.manipulationStartWidth + Math.max(-deltaX, deltaY);
+          newHeight =
+            this.manipulationStartHeight +
+            Math.max(-deltaX, deltaY) / aspectRatio;
+          newX = this.manipulationStartLeft - Math.max(-deltaX, deltaY);
+          break;
+        }
+        case this.controlGrips.getGrip('leftcenter'): {
+          newWidth = this.manipulationStartWidth - deltaX;
+          newHeight = this.manipulationStartHeight - deltaX / aspectRatio;
+          newX = this.manipulationStartLeft + deltaX;
+          newY = this.manipulationStartTop + deltaX / aspectRatio / 2;
+          break;
+        }
+        case this.controlGrips.getGrip('topleft'): {
+          newWidth = this.manipulationStartWidth + Math.max(-deltaX, -deltaY);
+          newHeight =
+            this.manipulationStartHeight +
+            Math.max(-deltaX, -deltaY) / aspectRatio;
+          newX = this.manipulationStartLeft - Math.max(-deltaX, -deltaY);
+          newY =
+            this.manipulationStartTop -
+            Math.max(-deltaX, -deltaY) / aspectRatio;
+          break;
+        }
+        case this.controlGrips.getGrip('topcenter'): {
+          newWidth = this.manipulationStartWidth - deltaY;
+          newHeight = this.manipulationStartHeight - deltaY / aspectRatio;
+          newX = this.manipulationStartLeft + deltaY / 2;
+          newY = this.manipulationStartTop + deltaY / aspectRatio;
+          break;
+        }
+        case this.controlGrips.getGrip('topright'): {
+          newWidth = this.manipulationStartWidth + Math.max(deltaX, -deltaY);
+          newHeight =
+            this.manipulationStartHeight +
+            Math.max(deltaX, -deltaY) / aspectRatio;
+          newY =
+            this.manipulationStartTop - Math.max(deltaX, -deltaY) / aspectRatio;
+          break;
+        }
+        case this.controlGrips.getGrip('rightcenter'): {
+          newWidth = this.manipulationStartWidth + deltaX;
+          newHeight = this.manipulationStartHeight + deltaX / aspectRatio;
+          newY = this.manipulationStartTop - deltaX / aspectRatio / 2;
+          break;
+        }
+      }
+    } else {
+      // free form resizing
+      switch (this.activeGrip) {
+        case this.controlGrips.getGrip('bottomleft'):
+        case this.controlGrips.getGrip('leftcenter'):
+        case this.controlGrips.getGrip('topleft'):
+          newX = this.manipulationStartLeft + point.x - this.manipulationStartX;
+          newWidth =
+            this.manipulationStartWidth + this.manipulationStartLeft - newX;
+          break;
+        case this.controlGrips.getGrip('bottomright'):
+        case this.controlGrips.getGrip('rightcenter'):
+        case this.controlGrips.getGrip('topright'):
+        case undefined:
+          newWidth =
+            this.manipulationStartWidth + point.x - this.manipulationStartX;
+          break;
+      }
 
-    switch (this.activeGrip) {
-      case this.controlGrips.getGrip('topcenter'):
-      case this.controlGrips.getGrip('topleft'):
-      case this.controlGrips.getGrip('topright'):
-        newY = this.manipulationStartTop + point.y - this.manipulationStartY;
-        newHeight =
-          this.manipulationStartHeight + this.manipulationStartTop - newY;
-        break;
-      case this.controlGrips.getGrip('bottomcenter'):
-      case this.controlGrips.getGrip('bottomleft'):
-      case this.controlGrips.getGrip('bottomright'):
-      case undefined:
-        newHeight =
-          this.manipulationStartHeight + point.y - this.manipulationStartY;
-        break;
+      switch (this.activeGrip) {
+        case this.controlGrips.getGrip('topcenter'):
+        case this.controlGrips.getGrip('topleft'):
+        case this.controlGrips.getGrip('topright'):
+          newY = this.manipulationStartTop + point.y - this.manipulationStartY;
+          newHeight =
+            this.manipulationStartHeight + this.manipulationStartTop - newY;
+          break;
+        case this.controlGrips.getGrip('bottomcenter'):
+        case this.controlGrips.getGrip('bottomleft'):
+        case this.controlGrips.getGrip('bottomright'):
+        case undefined:
+          newHeight =
+            this.manipulationStartHeight + point.y - this.manipulationStartY;
+          break;
+      }
     }
 
     if (newWidth >= 0) {

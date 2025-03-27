@@ -76,7 +76,7 @@ export class CalloutMarkerEditor<
     }
   }
 
-  protected resize(point: IPoint): void {
+  protected resize(point: IPoint, preserveAspectRatio = false): void {
     const newX =
       this.manipulationStartTipPositionX + point.x - this.manipulationStartX;
     const newY =
@@ -86,7 +86,7 @@ export class CalloutMarkerEditor<
       this.marker.tipPosition = { x: newX, y: newY };
       this.adjustControlBox();
     } else {
-      super.resize(point);
+      super.resize(point, preserveAspectRatio);
     }
   }
 }
