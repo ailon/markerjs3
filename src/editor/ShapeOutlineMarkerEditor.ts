@@ -17,8 +17,12 @@ export class ShapeOutlineMarkerEditor<
     this._creationStyle = 'draw';
   }
 
-  public pointerDown(point: IPoint, target?: EventTarget): void {
-    super.pointerDown(point, target);
+  public override pointerDown(
+    point: IPoint,
+    target?: EventTarget,
+    ev?: PointerEvent,
+  ): void {
+    super.pointerDown(point, target, ev);
     if (this.state === 'new') {
       this.marker.createVisual();
 
@@ -33,8 +37,8 @@ export class ShapeOutlineMarkerEditor<
     this.setSize();
   }
 
-  public pointerUp(point: IPoint): void {
-    super.pointerUp(point);
+  public override pointerUp(point: IPoint, ev?: PointerEvent): void {
+    super.pointerUp(point, ev);
     this.setSize();
   }
 }

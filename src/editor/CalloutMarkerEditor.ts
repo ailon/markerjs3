@@ -56,8 +56,12 @@ export class CalloutMarkerEditor<
     }
   }
 
-  public pointerDown(point: IPoint, target?: EventTarget): void {
-    super.pointerDown(point, target);
+  public override pointerDown(
+    point: IPoint,
+    target?: EventTarget,
+    ev?: PointerEvent,
+  ): void {
+    super.pointerDown(point, target, ev);
 
     this.manipulationStartTipPositionX = this.marker.tipPosition.x;
     this.manipulationStartTipPositionY = this.marker.tipPosition.y;

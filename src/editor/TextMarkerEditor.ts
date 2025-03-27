@@ -94,8 +94,12 @@ export class TextMarkerEditor<
   private _pointerDownTime: number = Number.MAX_VALUE;
   private _pointerDownPoint: IPoint = { x: 0, y: 0 };
 
-  public pointerDown(point: IPoint, target?: EventTarget): void {
-    super.pointerDown(point, target);
+  public override pointerDown(
+    point: IPoint,
+    target?: EventTarget,
+    ev?: PointerEvent,
+  ): void {
+    super.pointerDown(point, target, ev);
 
     this._pointerDownTime = Date.now();
     this._pointerDownPoint = point;
@@ -109,8 +113,12 @@ export class TextMarkerEditor<
     }
   }
 
-  public dblClick(point: IPoint, target?: EventTarget): void {
-    super.dblClick(point, target);
+  public override dblClick(
+    point: IPoint,
+    target?: EventTarget,
+    ev?: MouseEvent,
+  ): void {
+    super.dblClick(point, target, ev);
     if (this.state !== 'edit') {
       this.showEditor();
     }
@@ -135,9 +143,9 @@ export class TextMarkerEditor<
     this.setSize();
   }
 
-  public pointerUp(point: IPoint): void {
+  public override pointerUp(point: IPoint, ev?: PointerEvent): void {
     const inState = this.state;
-    super.pointerUp(point);
+    super.pointerUp(point, ev);
     this.setSize();
 
     if (

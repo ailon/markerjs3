@@ -321,34 +321,40 @@ export class MarkerBaseEditor<TMarkerType extends MarkerBase = MarkerBase> {
    *
    * @param point - event coordinates.
    * @param target - direct event target element.
+   * @param ev - pointer event.
    */
+  // prettier-ignore
   // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-empty-function
-  public pointerDown(point: IPoint, target?: EventTarget): void {}
+  public pointerDown(point: IPoint, target?: EventTarget, ev?: PointerEvent): void {}
 
   /**
    * Handles pointer (mouse, touch, stylus, etc.) double click event.
    *
    * @param point - event coordinates.
    * @param target - direct event target element.
+   * @param ev - pointer event.
    */
+  // prettier-ignore
   // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-empty-function
-  public dblClick(point: IPoint, target?: EventTarget): void {}
+  public dblClick(point: IPoint, target?: EventTarget, ev?: MouseEvent): void {}
 
   /**
    * Handles marker manipulation (move, resize, rotate, etc.).
    *
    * @param point - event coordinates.
+   * @param ev - pointer event.
    */
   // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-empty-function
-  public manipulate(point: IPoint): void {}
+  public manipulate(point: IPoint, ev?: PointerEvent): void {}
 
   /**
    * Handles pointer (mouse, touch, stylus, etc.) up event.
    *
    * @param point - event coordinates.
+   * @param ev - pointer event.
    */
   // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-empty-function
-  public pointerUp(point: IPoint): void {}
+  public pointerUp(point: IPoint, ev?: PointerEvent): void {}
 
   /**
    * Disposes the marker and clean's up.

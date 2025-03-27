@@ -81,8 +81,12 @@ export class LinearMarkerEditor<
     }
   }
 
-  public pointerDown(point: IPoint, target?: EventTarget): void {
-    super.pointerDown(point, target);
+  public override pointerDown(
+    point: IPoint,
+    target?: EventTarget,
+    ev?: PointerEvent,
+  ): void {
+    super.pointerDown(point, target, ev);
 
     this.manipulationStartX = point.x;
     this.manipulationStartY = point.y;
@@ -122,9 +126,9 @@ export class LinearMarkerEditor<
     }
   }
 
-  public pointerUp(point: IPoint): void {
+  public override pointerUp(point: IPoint, ev?: PointerEvent): void {
     const inState = this.state;
-    super.pointerUp(point);
+    super.pointerUp(point, ev);
     if (
       this.state === 'creating' &&
       Math.abs(this.marker.x1 - this.marker.x2) < 10 &&
@@ -134,7 +138,7 @@ export class LinearMarkerEditor<
       this.marker.adjustVisual();
       this.adjustControlBox();
     } else {
-      this.manipulate(point);
+      this.manipulate(point, ev);
     }
     this._state = 'select';
     if (inState === 'creating' && this.onMarkerCreated) {
@@ -142,7 +146,8 @@ export class LinearMarkerEditor<
     }
   }
 
-  public manipulate(point: IPoint): void {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  public override manipulate(point: IPoint, ev?: PointerEvent): void {
     if (this.state === 'creating') {
       this.resize(point);
     } else if (this.state === 'move') {

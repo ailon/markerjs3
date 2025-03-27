@@ -24,7 +24,11 @@ export class CurveMarkerEditor<
     }
   }
 
-  public pointerDown(point: IPoint, target?: EventTarget): void {
+  public override pointerDown(
+    point: IPoint,
+    target?: EventTarget,
+    ev?: PointerEvent,
+  ): void {
     if (this.state === 'new') {
       this.marker.curveX = point.x;
       this.marker.curveY = point.y;
@@ -33,7 +37,7 @@ export class CurveMarkerEditor<
     this.manipulationStartCurveX = this.marker.curveX;
     this.manipulationStartCurveY = this.marker.curveY;
 
-    super.pointerDown(point, target);
+    super.pointerDown(point, target, ev);
 
     if (this.state !== 'new' && this.state !== 'creating') {
       if (target && this.curveGrip?.ownsTarget(target)) {
@@ -67,14 +71,14 @@ export class CurveMarkerEditor<
     }
   }
 
-  public manipulate(point: IPoint): void {
+  public override manipulate(point: IPoint, ev?: PointerEvent): void {
     if (this.state === 'move') {
       this.marker.curveX =
         this.manipulationStartCurveX + point.x - this.manipulationStartX;
       this.marker.curveY =
         this.manipulationStartCurveY + point.y - this.manipulationStartY;
     }
-    super.manipulate(point);
+    super.manipulate(point, ev);
   }
 
   protected setupControlBox(): void {

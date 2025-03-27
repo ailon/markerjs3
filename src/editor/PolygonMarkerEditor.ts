@@ -76,8 +76,12 @@ export class PolygonMarkerEditor<
     }
   }
 
-  public pointerDown(point: IPoint, target?: EventTarget): void {
-    super.pointerDown(point, target);
+  public override pointerDown(
+    point: IPoint,
+    target?: EventTarget,
+    ev?: PointerEvent,
+  ): void {
+    super.pointerDown(point, target, ev);
 
     this.manipulationStartX = point.x;
     this.manipulationStartY = point.y;
@@ -146,16 +150,17 @@ export class PolygonMarkerEditor<
     }
   }
 
-  public pointerUp(point: IPoint): void {
-    super.pointerUp(point);
-    this.manipulate(point);
+  public override pointerUp(point: IPoint, ev?: PointerEvent): void {
+    super.pointerUp(point, ev);
+    this.manipulate(point, ev);
     if (this._state !== 'creating') {
       this._state = 'select';
     }
     this.stateChanged();
   }
 
-  public manipulate(point: IPoint): void {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  public override manipulate(point: IPoint, ev?: PointerEvent): void {
     if (this.state === 'creating') {
       this.resize(point);
     } else if (this.state === 'move') {
@@ -183,7 +188,12 @@ export class PolygonMarkerEditor<
     }
   }
 
-  public dblClick(point: IPoint, target?: EventTarget | undefined): void {
+  public override dblClick(
+    point: IPoint,
+    target?: EventTarget,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    ev?: MouseEvent,
+  ): void {
     if (target && this.state === 'select') {
       const selectorLineIndex = this.marker.selectorVisualLines.findIndex(
         (l) => l === target,

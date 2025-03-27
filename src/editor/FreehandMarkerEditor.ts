@@ -55,8 +55,12 @@ export class FreehandMarkerEditor<
     }
   }
 
-  public pointerDown(point: IPoint, target?: EventTarget): void {
-    super.pointerDown(point, target);
+  public override pointerDown(
+    point: IPoint,
+    target?: EventTarget,
+    ev?: PointerEvent,
+  ): void {
+    super.pointerDown(point, target, ev);
 
     this.manipulationStartX = point.x;
     this.manipulationStartY = point.y;
@@ -91,9 +95,9 @@ export class FreehandMarkerEditor<
     }
   }
 
-  public pointerUp(point: IPoint): void {
-    super.pointerUp(point);
-    this.manipulate(point);
+  public override pointerUp(point: IPoint, ev?: PointerEvent): void {
+    super.pointerUp(point, ev);
+    this.manipulate(point, ev);
     if (this._state === 'creating') {
       this.finishCreation();
     }
@@ -101,7 +105,8 @@ export class FreehandMarkerEditor<
     this.stateChanged();
   }
 
-  public manipulate(point: IPoint): void {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  public override manipulate(point: IPoint, ev?: PointerEvent): void {
     if (this.state === 'creating') {
       this.addNewPointWhileCreating(point);
     } else if (this.state === 'move') {

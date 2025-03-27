@@ -95,8 +95,12 @@ export class RectangularBoxMarkerBaseEditor<
     }
   }
 
-  public pointerDown(point: IPoint, target?: EventTarget): void {
-    super.pointerDown(point, target);
+  public override pointerDown(
+    point: IPoint,
+    target?: EventTarget,
+    ev?: PointerEvent,
+  ): void {
+    super.pointerDown(point, target, ev);
 
     if (this.state === 'new') {
       this.marker.left = point.x;
@@ -159,9 +163,9 @@ export class RectangularBoxMarkerBaseEditor<
    */
   protected _suppressMarkerCreateEvent = false;
 
-  public pointerUp(point: IPoint): void {
+  public override pointerUp(point: IPoint, ev?: PointerEvent): void {
     const inState = this.state;
-    super.pointerUp(point);
+    super.pointerUp(point, ev);
     if (
       this.state === 'creating' &&
       this.marker.width < 10 &&
@@ -170,7 +174,7 @@ export class RectangularBoxMarkerBaseEditor<
       this.marker.width = this.marker.defaultSize.width;
       this.marker.height = this.marker.defaultSize.height;
     } else {
-      this.manipulate(point);
+      this.manipulate(point, ev);
     }
     this._state = 'select';
     if (
@@ -183,7 +187,8 @@ export class RectangularBoxMarkerBaseEditor<
     this.stateChanged();
   }
 
-  public manipulate(point: IPoint): void {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  public override manipulate(point: IPoint, ev?: PointerEvent): void {
     const rotatedPoint = this.marker.unrotatePoint(point);
 
     if (this.state === 'creating') {

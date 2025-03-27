@@ -944,6 +944,7 @@ export class MarkerArea extends HTMLElement {
             this.zoomLevel,
           ),
           ev.target ?? undefined,
+          ev,
         );
       } else if (this.mode === 'select') {
         const localPoint = SvgHelper.clientToLocalCoordinates(
@@ -963,7 +964,7 @@ export class MarkerArea extends HTMLElement {
             this.setCurrentEditor(hitMarker);
           }
           this._selectedMarkerEditors.forEach((m) =>
-            m.pointerDown(localPoint, ev.target ?? undefined),
+            m.pointerDown(localPoint, ev.target ?? undefined, ev),
           );
         } else if (
           ev.target === this._marqueeSelectOutline &&
@@ -971,7 +972,7 @@ export class MarkerArea extends HTMLElement {
         ) {
           this.isDragging = true;
           this._selectedMarkerEditors.forEach((m) =>
-            m.pointerDown(localPoint, ev.target ?? undefined),
+            m.pointerDown(localPoint, ev.target ?? undefined, ev),
           );
         } else {
           this.setCurrentEditor();
@@ -1041,6 +1042,7 @@ export class MarkerArea extends HTMLElement {
             this.zoomLevel,
           ),
           ev.target ?? undefined,
+          ev,
         );
       } else {
         this.setCurrentEditor();
@@ -1080,10 +1082,10 @@ export class MarkerArea extends HTMLElement {
 
           if (this._selectedMarkerEditors.length > 0) {
             this._selectedMarkerEditors.forEach((m) =>
-              m.manipulate(localPoint),
+              m.manipulate(localPoint, ev),
             );
           } else {
-            this._currentMarkerEditor?.manipulate(localPoint);
+            this._currentMarkerEditor?.manipulate(localPoint, ev);
           }
         } else if (this.zoomLevel > 1) {
           this.panTo({ x: ev.clientX, y: ev.clientY });
@@ -1174,10 +1176,12 @@ export class MarkerArea extends HTMLElement {
         );
 
         if (this._selectedMarkerEditors.length > 1) {
-          this._selectedMarkerEditors.forEach((m) => m.pointerUp(localPoint));
+          this._selectedMarkerEditors.forEach((m) =>
+            m.pointerUp(localPoint, ev),
+          );
           this.adjustMarqueeSelectOutline();
         } else {
-          this._currentMarkerEditor.pointerUp(localPoint);
+          this._currentMarkerEditor.pointerUp(localPoint, ev);
         }
 
         this.hideOutline();
