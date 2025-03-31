@@ -112,6 +112,11 @@ export class Experiments {
     });
 
     this.markerArea1.addEventListener('markerdeselect', (e) => {
+      console.log(
+        'markerdeselect editors:',
+        e.detail.markerArea.selectedMarkerEditors.length,
+      );
+
       const opacityPanel = document.getElementById('opacityPropertyPanel');
       if (opacityPanel) {
         opacityPanel.style.display = 'none';

@@ -827,19 +827,7 @@ export class MarkerArea extends HTMLElement {
     if (this._currentMarkerEditor !== editor) {
       // no need to deselect if not changed
       if (this._currentMarkerEditor !== undefined) {
-        this._currentMarkerEditor.deselect();
-
-        // @todo
-        // if (!this._isResizing) {
-        this.dispatchEvent(
-          new CustomEvent<MarkerEditorEventData>('markerdeselect', {
-            detail: {
-              markerArea: this,
-              markerEditor: this._currentMarkerEditor,
-            },
-          }),
-        );
-        // }
+        this.deselectEditor(this._currentMarkerEditor);
       }
     }
     this._currentMarkerEditor = editor;
@@ -848,18 +836,9 @@ export class MarkerArea extends HTMLElement {
       !this._currentMarkerEditor.isSelected
     ) {
       if (this._currentMarkerEditor.state !== 'new') {
-        this._selectedMarkerEditors.push(this._currentMarkerEditor);
-        this._currentMarkerEditor.select();
+        this.selectEditor(this._currentMarkerEditor);
+        this._currentMarkerEditor.select(false);
       }
-
-      // @todo
-      // if (!this._isResizing) {
-      this.dispatchEvent(
-        new CustomEvent<MarkerEditorEventData>('markerselect', {
-          detail: { markerArea: this, markerEditor: this._currentMarkerEditor },
-        }),
-      );
-      // }
     }
   }
 
@@ -874,6 +853,12 @@ export class MarkerArea extends HTMLElement {
       }
       this._selectedMarkerEditors.push(editor);
       editor.select(true);
+
+      this.dispatchEvent(
+        new CustomEvent<MarkerEditorEventData>('markerselect', {
+          detail: { markerArea: this, markerEditor: editor },
+        }),
+      );
     }
   }
 
@@ -882,15 +867,29 @@ export class MarkerArea extends HTMLElement {
    * @param editor
    */
   public deselectEditor(editor?: MarkerBaseEditor): void {
-    if (editor === undefined) {
-      this._selectedMarkerEditors.forEach((m) => m.deselect());
-      this._selectedMarkerEditors.splice(0);
-    } else {
-      const index = this._selectedMarkerEditors.indexOf(editor);
-      if (index >= 0) {
-        this._selectedMarkerEditors.splice(index, 1);
-        editor.deselect();
+    const selectedCountOnEntry = this._selectedMarkerEditors.length;
+
+    if (selectedCountOnEntry > 0) {
+      const eventEditor =
+        editor ??
+        this._selectedMarkerEditors[this._selectedMarkerEditors.length - 1];
+
+      if (editor === undefined) {
+        this._selectedMarkerEditors.forEach((m) => m.deselect());
+        this._selectedMarkerEditors.splice(0);
+      } else {
+        const index = this._selectedMarkerEditors.indexOf(editor);
+        if (index >= 0) {
+          this._selectedMarkerEditors.splice(index, 1);
+          editor.deselect();
+        }
       }
+
+      this.dispatchEvent(
+        new CustomEvent<MarkerEditorEventData>('markerdeselect', {
+          detail: { markerArea: this, markerEditor: eventEditor },
+        }),
+      );
     }
   }
 
