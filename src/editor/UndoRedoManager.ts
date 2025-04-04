@@ -99,6 +99,9 @@ export class UndoRedoManager<T> {
    */
   public redo(): T | undefined {
     this.lastRedoStep = this.redoStack.pop();
+    if (this.lastRedoStep !== undefined) {
+      this.undoStack.push(this.lastRedoStep);
+    }
     return this.lastRedoStep;
   }
 }

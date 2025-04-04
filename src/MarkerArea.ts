@@ -1167,7 +1167,11 @@ export class MarkerArea extends HTMLElement {
       }
     }
     if (this.touchPoints === 0) {
-      if (this.isDragging && this._currentMarkerEditor !== undefined) {
+      if (
+        this.isDragging &&
+        (this._currentMarkerEditor !== undefined ||
+          this._selectedMarkerEditors.length > 0)
+      ) {
         const localPoint = SvgHelper.clientToLocalCoordinates(
           this._mainCanvas,
           ev.clientX,
@@ -1181,10 +1185,12 @@ export class MarkerArea extends HTMLElement {
           );
           this.adjustMarqueeSelectOutline();
         } else {
-          this._currentMarkerEditor.pointerUp(localPoint, ev);
+          this._currentMarkerEditor?.pointerUp(localPoint, ev);
         }
 
         this.hideOutline();
+
+        this.addUndoStep();
       } else if (this.isSelecting) {
         // finish marquee selection
         this.finishMarqueeSelection();
@@ -1202,7 +1208,6 @@ export class MarkerArea extends HTMLElement {
     this.isDragging = false;
     this.isSelecting = false;
     this.isPanning = false;
-    this.addUndoStep();
     if (this._mainCanvas) {
       this._mainCanvas.style.cursor = 'default';
     }
@@ -1397,8 +1402,9 @@ export class MarkerArea extends HTMLElement {
   /**
    * Restores the annotation from the previously saved state.
    * @param state
+   * @param addUndoStep if true (default) or omitted, an undo step is added after restoring the state
    */
-  public restoreState(state: AnnotationState): void {
+  public restoreState(state: AnnotationState, addUndoStep = true): void {
     // can't restore if image is not loaded yet
     if (!this._targetImageLoaded) {
       this._stateToRestore = state;
@@ -1445,6 +1451,10 @@ export class MarkerArea extends HTMLElement {
         this.targetWidth / stateCopy.width,
         this.targetHeight / stateCopy.height,
       );
+    }
+
+    if (addUndoStep) {
+      this.addUndoStep();
     }
 
     this.dispatchEvent(
@@ -1611,14 +1621,14 @@ export class MarkerArea extends HTMLElement {
    * Undo last action.
    */
   public undo(): void {
-    this.addUndoStep();
+    // this.addUndoStep(); // this seems illogical, but it was here for some reason, commenting for now in case regressions occur
     this.undoStep();
   }
 
   private undoStep(): void {
     const stepData = this.undoRedoManager.undo();
     if (stepData !== undefined) {
-      this.restoreState(stepData);
+      this.restoreState(stepData, false);
     }
   }
 
@@ -1632,7 +1642,7 @@ export class MarkerArea extends HTMLElement {
   private redoStep(): void {
     const stepData = this.undoRedoManager.redo();
     if (stepData !== undefined) {
-      this.restoreState(stepData);
+      this.restoreState(stepData, false);
       this.dispatchEvent(
         new CustomEvent<MarkerAreaEventData>('areastatechange', {
           detail: { markerArea: this },
