@@ -724,6 +724,15 @@ export class MarkerArea extends HTMLElement {
           this._mainCanvas.style.cursor = 'crosshair';
           break;
       }
+
+      this.dispatchEvent(
+        new CustomEvent<MarkerEditorEventData>('markercreating', {
+          detail: {
+            markerArea: this,
+            markerEditor: this._currentMarkerEditor,
+          },
+        }),
+      );
     }
 
     return this._currentMarkerEditor;

@@ -72,6 +72,9 @@ export class Experiments {
     this.markerArea1.addEventListener('areainit', (e) => {
       console.log('areainit', e);
     });
+    this.markerArea1.addEventListener('markercreating', (e) => {
+      console.log('markercreating', e);
+    });
     this.markerArea1.addEventListener('markercreate', (e) => {
       setPropertyValues(e);
       console.log('markercreated', e);
