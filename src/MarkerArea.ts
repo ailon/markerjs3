@@ -814,6 +814,7 @@ export class MarkerArea extends HTMLElement {
   public deleteSelectedMarkers() {
     this._selectedMarkerEditors.forEach((m) => this.deleteMarker(m));
     this._selectedMarkerEditors.splice(0);
+    this.hideMarqueeSelectOutline();
   }
 
   /**
