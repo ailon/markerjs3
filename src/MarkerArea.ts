@@ -1425,6 +1425,10 @@ export class MarkerArea extends HTMLElement {
     this.editors.splice(0);
 
     if (this._mainCanvas && this._groupLayer) {
+      // deselect everything
+      this.hideMarqueeSelectOutline();
+      this.deselectEditor();
+      // remove all markers
       while (this._mainCanvas.lastChild) {
         this._mainCanvas.removeChild(this._mainCanvas.lastChild);
       }
