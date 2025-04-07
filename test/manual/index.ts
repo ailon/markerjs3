@@ -139,6 +139,14 @@ export class Experiments {
       console.log('markerdeselect', e);
     });
 
+    this.markerArea1.addEventListener('markerdelete', (e) => {
+      console.log('markerdelete', e);
+      console.log(
+        'Selected editors',
+        this.markerArea1?.selectedMarkerEditors.length,
+      );
+    });
+
     const opacityInput = document.getElementById('opacity') as HTMLInputElement;
     opacityInput.addEventListener('change', (ev) => {
       this.setOpacity((ev.target as HTMLInputElement).value);

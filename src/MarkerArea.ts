@@ -809,6 +809,10 @@ export class MarkerArea extends HTMLElement {
       this._mainCanvas?.removeChild(markerEditor.container);
       markerEditor.dispose();
       this.editors.splice(this.editors.indexOf(markerEditor), 1);
+      this._selectedMarkerEditors.splice(
+        this._selectedMarkerEditors.indexOf(markerEditor),
+        1,
+      );
       this.dispatchEvent(
         new CustomEvent<MarkerEditorEventData>('markerdelete', {
           detail: { markerArea: this, markerEditor: markerEditor },
@@ -821,8 +825,9 @@ export class MarkerArea extends HTMLElement {
    * Deselects all markers.
    */
   public deleteSelectedMarkers() {
-    this._selectedMarkerEditors.forEach((m) => this.deleteMarker(m));
-    this._selectedMarkerEditors.splice(0);
+    const markersToDelete = [...this._selectedMarkerEditors];
+    // this._selectedMarkerEditors.splice(0);
+    markersToDelete.forEach((m) => this.deleteMarker(m));
     this.hideMarqueeSelectOutline();
   }
 
