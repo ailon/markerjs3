@@ -39,6 +39,7 @@ import { CalloutMarkerEditor } from './editor/CalloutMarkerEditor';
 import { ImageMarkerEditor } from './editor/ImageMarkerEditor';
 import { CaptionFrameMarkerEditor } from './editor/CaptionFrameMarkerEditor';
 import { CurveMarkerEditor } from './editor/CurveMarkerEditor';
+import { getHTMLElementConstructor } from './server-side';
 
 /**
  * Marker area custom event types.
@@ -169,7 +170,7 @@ export type MarkerAreaMode = 'select' | 'create' | 'delete';
  * });
  * ```
  */
-export class MarkerArea extends HTMLElement {
+export class MarkerArea extends getHTMLElementConstructor() {
   private _contentContainer?: HTMLDivElement;
   private _canvasContainer?: HTMLDivElement;
 

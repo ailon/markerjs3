@@ -3,6 +3,7 @@
  * @category API Reference
  */
 import { MarkerView } from './MarkerView';
+import { isServerSide } from './server-side';
 
 export {
   MarkerView,
@@ -12,6 +13,7 @@ export {
 } from './MarkerView';
 
 if (
+  !isServerSide &&
   window &&
   window.customElements &&
   window.customElements.get('mjs-marker-view') === undefined

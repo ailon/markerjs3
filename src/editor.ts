@@ -3,6 +3,7 @@
  * @category API Reference
  */
 import { MarkerArea } from './MarkerArea';
+import { isServerSide } from './server-side';
 
 export {
   MarkerArea,
@@ -38,6 +39,7 @@ export { CaptionFrameMarkerEditor } from './editor/CaptionFrameMarkerEditor';
 export { CurveMarkerEditor } from './editor/CurveMarkerEditor';
 
 if (
+  !isServerSide &&
   window &&
   window.customElements &&
   window.customElements.get('mjs-marker-area') === undefined

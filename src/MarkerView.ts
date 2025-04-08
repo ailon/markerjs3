@@ -26,6 +26,7 @@ import {
 import { Activator } from './core/Activator';
 
 import Logo from './assets/markerjs-logo-m.svg';
+import { getHTMLElementConstructor } from './server-side';
 
 /**
  * Event map for {@link MarkerView}.
@@ -116,7 +117,7 @@ export interface MarkerEventData extends MarkerViewEventData {
  * markerView.show(savedState);
  * ```
  */
-export class MarkerView extends HTMLElement {
+export class MarkerView extends getHTMLElementConstructor() {
   private _contentContainer?: HTMLDivElement;
   private _canvasContainer?: HTMLDivElement;
 
