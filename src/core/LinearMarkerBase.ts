@@ -93,8 +93,8 @@ export class LinearMarkerBase extends MarkerBase {
   }
 
   protected applyOpacity() {
-    if (this.visual) {
-      SvgHelper.setAttributes(this.visual, [
+    if (this.visibleVisual) {
+      SvgHelper.setAttributes(this.visibleVisual, [
         ['opacity', this._opacity.toString()],
       ]);
     }
@@ -163,14 +163,15 @@ export class LinearMarkerBase extends MarkerBase {
       ['stroke-width', Math.max(this.strokeWidth, 8).toString()],
     ]);
 
-    this.visibleVisual = SvgHelper.createGroup();
+    this.visibleVisual = SvgHelper.createGroup([
+      ['opacity', this.opacity.toString()],
+    ]);
     this.lineVisual = SvgHelper.createPath(this.getPath(), [
       ['stroke', this.strokeColor],
       ['fill', this.strokeColor],
       ['stroke-width', this.strokeWidth.toString()],
       ['stroke-linejoin', 'round'],
       ['stroke-dasharray', this.strokeDasharray.toString()],
-      ['opacity', this.opacity.toString()],
     ]);
     this.startTerminatorVisual = SvgHelper.createPath(
       this.getStartTerminatorPath(),
@@ -179,7 +180,6 @@ export class LinearMarkerBase extends MarkerBase {
         ['fill', this.strokeColor],
         ['stroke-width', this.strokeWidth.toString()],
         ['stroke-linejoin', 'round'],
-        ['opacity', this.opacity.toString()],
       ],
     );
     this.endTerminatorVisual = SvgHelper.createPath(
@@ -189,7 +189,6 @@ export class LinearMarkerBase extends MarkerBase {
         ['fill', this.strokeColor],
         ['stroke-width', this.strokeWidth.toString()],
         ['stroke-linejoin', 'round'],
-        ['opacity', this.opacity.toString()],
       ],
     );
 
@@ -209,32 +208,33 @@ export class LinearMarkerBase extends MarkerBase {
   public adjustVisual(): void {
     if (
       this.selectorVisual &&
+      this.visibleVisual &&
       this.lineVisual &&
       this.startTerminatorVisual &&
       this.endTerminatorVisual
     ) {
       SvgHelper.setAttributes(this.selectorVisual, [['d', this.getPath()]]);
+      SvgHelper.setAttributes(this.visibleVisual, [
+        ['opacity', this.opacity.toString()],
+      ]);
       SvgHelper.setAttributes(this.lineVisual, [
         ['d', this.getPath()],
         ['stroke', this.strokeColor],
         ['fill', this.fillColor],
         ['stroke-width', this.strokeWidth.toString()],
         ['stroke-dasharray', this.strokeDasharray.toString()],
-        ['opacity', this.opacity.toString()],
       ]);
       SvgHelper.setAttributes(this.startTerminatorVisual, [
         ['d', this.getStartTerminatorPath()],
         ['stroke', this.strokeColor],
         ['fill', this.strokeColor],
         ['stroke-width', this.strokeWidth.toString()],
-        ['opacity', this.opacity.toString()],
       ]);
       SvgHelper.setAttributes(this.endTerminatorVisual, [
         ['d', this.getEndTerminatorPath()],
         ['stroke', this.strokeColor],
         ['fill', this.strokeColor],
         ['stroke-width', this.strokeWidth.toString()],
-        ['opacity', this.opacity.toString()],
       ]);
     }
   }
