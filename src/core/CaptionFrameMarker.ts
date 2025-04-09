@@ -111,12 +111,16 @@ export class CaptionFrameMarker extends TextMarker {
 
     const paths = this.getPaths();
 
+    if (this.visual) {
+      SvgHelper.setAttributes(this.visual, [
+        ['opacity', this._opacity.toString()],
+      ]);
+    }
     this._outerFrameVisual = SvgHelper.createPath(paths.frame, [
       ['fill', 'transparent'],
       ['stroke', this._strokeColor],
       ['stroke-width', this._strokeWidth.toString()],
       ['stroke-dasharray', this._strokeDasharray],
-      ['opacity', this._opacity.toString()],
     ]);
     this._captionFrameVisual = SvgHelper.createPath(paths.caption, [
       ['fill', 'this._fillColor'],
@@ -124,7 +128,6 @@ export class CaptionFrameMarker extends TextMarker {
       ['stroke', this._strokeColor],
       ['stroke-width', this._strokeWidth.toString()],
       ['stroke-dasharray', this._strokeDasharray],
-      ['opacity', this._opacity.toString()],
     ]);
     this._frameVisual.appendChild(this._outerFrameVisual);
     this._frameVisual.appendChild(this._captionFrameVisual);
@@ -154,13 +157,18 @@ export class CaptionFrameMarker extends TextMarker {
    */
   protected adjustFrameVisual(): void {
     const paths = this.getPaths();
+    if (this.visual) {
+      SvgHelper.setAttributes(this.visual, [
+        ['opacity', this._opacity.toString()],
+      ]);
+    }
+
     if (this._outerFrameVisual) {
       SvgHelper.setAttributes(this._outerFrameVisual, [
         ['d', paths.frame],
         ['stroke', this._strokeColor],
         ['stroke-width', this._strokeWidth.toString()],
         ['stroke-dasharray', this._strokeDasharray],
-        ['opacity', this._opacity.toString()],
       ]);
     }
     if (this._captionFrameVisual) {
@@ -170,7 +178,6 @@ export class CaptionFrameMarker extends TextMarker {
         ['stroke', this._strokeColor],
         ['stroke-width', this._strokeWidth.toString()],
         ['stroke-dasharray', this._strokeDasharray],
-        ['opacity', this._opacity.toString()],
       ]);
     }
   }
