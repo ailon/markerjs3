@@ -4,7 +4,7 @@ marker.js 3 is a JavaScript browser library to enable image annotation in your w
 
 ## Installation
 
-```
+```bash
 npm install @markerjs/markerjs3
 ```
 
