@@ -138,7 +138,7 @@ export class FreehandMarkerEditor<
 
     this.controlBox.appendChild(this.controlRect);
 
-    this.controlBox.style.display = '';
+    this.controlBox.style.display = 'none';
   }
 
   protected adjustControlBox() {
