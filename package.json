@@ -9,7 +9,7 @@
   "license": "SEE LICENSE IN LICENSE",
   "repository": {
     "type": "git",
-    "url": "https://github.com/ailon/markerjs3"
+    "url": "git+https://github.com/ailon/markerjs3.git"
   },
   "keywords": [
     "image",
