@@ -42,7 +42,7 @@ export class Experiments {
       ShapeOutlineMarkerEditor<TriangleMarker>,
     );
 
-    // this.markerArea1.targetWidth = 1600;
+    this.markerArea1.targetWidth = 800;
     // this.markerArea1.targetHeight = 600;
     this.markerArea1.targetImage = this.targetImg;
 
@@ -332,8 +332,10 @@ export class Experiments {
     }
   }
   public restoreState() {
-    if (this.savedState) {
-      this.markerArea1?.restoreState(this.savedState);
+    if (this.markerArea1 && this.savedState) {
+      //this.markerArea1.targetWidth = 400;
+      this.markerArea1.targetHeight = 300;
+      this.markerArea1.restoreState(this.savedState);
     }
   }
   public undo() {
