@@ -884,6 +884,12 @@ export class MarkerArea extends HTMLElement {
   public deselectEditor(editor?: MarkerBaseEditor): void {
     const selectedCountOnEntry = this._selectedMarkerEditors.length;
 
+    // workaround for the polygon marker getting stuck in "creating" state
+    // when user switches to something else before finishing the polygon
+    if (editor && editor.state === 'creating') {
+      editor.deselect();
+    }
+
     if (selectedCountOnEntry > 0) {
       const eventEditor =
         editor ??
