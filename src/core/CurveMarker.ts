@@ -49,4 +49,13 @@ export class CurveMarker extends LineMarker {
 
     super.restoreState(state);
   }
+
+  public override scale(scaleX: number, scaleY: number): void {
+    super.scale(scaleX, scaleY);
+
+    this.curveX = this.curveX * scaleX;
+    this.curveY = this.curveY * scaleY;
+
+    this.adjustVisual();
+  }
 }
