@@ -286,6 +286,7 @@ export class TextMarker extends RectangularBoxMarkerBase {
         fontFamily: this.fontFamily,
         fontSize: this.fontSize,
         text: this.text,
+        padding: this.padding,
       },
       super.getState(),
     );
@@ -298,6 +299,9 @@ export class TextMarker extends RectangularBoxMarkerBase {
     this.fontFamily = textState.fontFamily;
     this.fontSize = textState.fontSize;
     this.text = textState.text;
+    if (textState.padding !== undefined) {
+      this.padding = textState.padding;
+    }
 
     this.createVisual();
 

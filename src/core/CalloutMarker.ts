@@ -272,8 +272,8 @@ export class CalloutMarker extends TextMarker {
   public scale(scaleX: number, scaleY: number): void {
     super.scale(scaleX, scaleY);
 
-    this.width = this.width * scaleX;
-    this.height = this.height * scaleY;
+    // this.width = this.width * scaleX;
+    // this.height = this.height * scaleY;
 
     this.strokeWidth *= (scaleX + scaleY) / 2;
 

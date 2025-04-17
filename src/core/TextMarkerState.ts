@@ -21,4 +21,8 @@ export interface TextMarkerState extends RectangularBoxMarkerBaseState {
    * Text content.
    */
   text: string;
+  /**
+   * Text padding.
+   */
+  padding?: number;
 }
