@@ -142,18 +142,20 @@ export class FreehandMarkerEditor<
   }
 
   protected adjustControlBox() {
-    const left = Math.min(...this.marker.points.map((p) => p.x));
-    const top = Math.min(...this.marker.points.map((p) => p.y));
-    const right = Math.max(...this.marker.points.map((p) => p.x));
-    const bottom = Math.max(...this.marker.points.map((p) => p.y));
+    if (this.marker.points.length > 0) {
+      const left = Math.min(...this.marker.points.map((p) => p.x));
+      const top = Math.min(...this.marker.points.map((p) => p.y));
+      const right = Math.max(...this.marker.points.map((p) => p.x));
+      const bottom = Math.max(...this.marker.points.map((p) => p.y));
 
-    if (this.controlRect) {
-      SvgHelper.setAttributes(this.controlRect, [
-        ['x', (left - this.strokeWidth).toString()],
-        ['y', (top - this.strokeWidth).toString()],
-        ['width', (right - left + this.strokeWidth * 2).toString()],
-        ['height', (bottom - top + this.strokeWidth * 2).toString()],
-      ]);
+      if (this.controlRect) {
+        SvgHelper.setAttributes(this.controlRect, [
+          ['x', (left - this.strokeWidth).toString()],
+          ['y', (top - this.strokeWidth).toString()],
+          ['width', (right - left + this.strokeWidth * 2).toString()],
+          ['height', (bottom - top + this.strokeWidth * 2).toString()],
+        ]);
+      }
     }
   }
 
