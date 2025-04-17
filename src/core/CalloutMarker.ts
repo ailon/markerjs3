@@ -223,7 +223,6 @@ export class CalloutMarker extends TextMarker {
       ['stroke', this._strokeColor],
       ['stroke-width', this._strokeWidth.toString()],
       ['stroke-dasharray', this._strokeDasharray],
-      ['opacity', this._opacity.toString()],
     ]);
     this.visual?.insertBefore(this._calloutVisual, this.textBlock.textElement);
   }
@@ -237,7 +236,6 @@ export class CalloutMarker extends TextMarker {
         ['stroke', this._strokeColor],
         ['stroke-width', this._strokeWidth.toString()],
         ['stroke-dasharray', this._strokeDasharray],
-        ['opacity', this._opacity.toString()],
       ]);
     }
   }
