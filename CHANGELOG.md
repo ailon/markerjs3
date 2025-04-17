@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.5.6] - 2025-04-17
+
+### Fixed
+
+- freehand marker editor trying to adjust control box for an empty marker resulting in JavaScript errors
+- callout opacity applied incorrectly in some scenarios
+- polygon marker gets stuck in the creating state if user switches to something else before finishing the polygon
+- curve marker scaled incorrectly when restoring state in a different size
+- fix text and callout incorrect scaling issue (added padding to text marker state)
+
 ## [3.5.5] - 2025-04-11
 
 ### Fixed
@@ -262,6 +272,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Initial public release.
 
+[3.5.6]: https://github.com/ailon/markerjs3/releases/tag/v3.5.6
 [3.5.5]: https://github.com/ailon/markerjs3/releases/tag/v3.5.5
 [3.5.4]: https://github.com/ailon/markerjs3/releases/tag/v3.5.4
 [3.5.3]: https://github.com/ailon/markerjs3/releases/tag/v3.5.3
