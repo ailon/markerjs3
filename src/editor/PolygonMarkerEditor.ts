@@ -114,6 +114,7 @@ export class PolygonMarkerEditor<
     this.marker.createVisual();
     this.marker.adjustVisual();
     this.adjustControlGrips();
+    this.controlBox.style.display = '';
 
     this.activeGrip = this.grips.at(-1);
     if (this.activeGrip) {
@@ -224,7 +225,7 @@ export class PolygonMarkerEditor<
 
     this.adjustControlGrips();
 
-    this.controlBox.style.display = '';
+    this.controlBox.style.display = 'none';
   }
 
   protected adjustControlBox() {
