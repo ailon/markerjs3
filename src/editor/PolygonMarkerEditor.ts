@@ -137,8 +137,12 @@ export class PolygonMarkerEditor<
   private finishCreation() {
     this.marker.stage = 'normal';
     // connected the last point with the first one
-    // remove the first point and adjust grips
+    // remove the first point
     this.marker.points.splice(0, 1);
+    // single point is not a polygon
+    if (this.marker.points.length === 1) {
+      this.marker.points.splice(0, 1);
+    }
     this.marker.adjustVisual();
     this.adjustControlGrips();
     this.grips.forEach((grip) => {
@@ -146,7 +150,7 @@ export class PolygonMarkerEditor<
     });
 
     this._state = 'select';
-    if (this.onMarkerCreated) {
+    if (this.marker.points.length > 0 && this.onMarkerCreated) {
       this.onMarkerCreated(this);
     }
   }
