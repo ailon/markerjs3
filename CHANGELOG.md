@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.5.7] - 2025-04-22
+
+### Fixed
+
+- polygon control box visible while not selected and restoring state
+- switching to other activities while creating a polygon with just one point results in an unmanageable single-point "polygon"
+
 ## [3.5.6] - 2025-04-17
 
 ### Fixed
@@ -272,6 +279,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Initial public release.
 
+[3.5.7]: https://github.com/ailon/markerjs3/releases/tag/v3.5.7
 [3.5.6]: https://github.com/ailon/markerjs3/releases/tag/v3.5.6
 [3.5.5]: https://github.com/ailon/markerjs3/releases/tag/v3.5.5
 [3.5.4]: https://github.com/ailon/markerjs3/releases/tag/v3.5.4
