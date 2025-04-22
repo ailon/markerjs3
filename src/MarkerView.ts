@@ -798,7 +798,8 @@ export class MarkerView extends HTMLElement {
     });
 
     const link = document.createElement('a');
-    link.href = 'https://markerjs.com/';
+    link.href =
+      'https://markerjs.com/?utm_source=markerjs3&utm_medium=logo&utm_content=marker_view';
     link.target = '_blank';
     link.innerHTML = Logo;
     link.title = 'Powered by marker.js';
