@@ -11,7 +11,7 @@ export class UndoRedoManager<T> {
    * Returns true if there are items in the undo stack.
    */
   public get isUndoPossible(): boolean {
-    return this.undoStack.length > 0;
+    return this.undoStack.length > 1;
   }
 
   /**

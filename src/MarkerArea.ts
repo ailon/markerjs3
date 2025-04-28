@@ -473,6 +473,7 @@ export class MarkerArea extends HTMLElement {
     this.setMainCanvasSize();
     this.addDefaultFilterDefs();
     this.toggleLogo();
+    this.addUndoStep();
     this.dispatchEvent(
       new CustomEvent<MarkerAreaEventData>('areashow', {
         detail: { markerArea: this },
@@ -1478,7 +1479,7 @@ export class MarkerArea extends HTMLElement {
     }
 
     if (addUndoStep) {
-      this.addUndoStep();
+      this.addUndoStep(true);
     }
 
     this.dispatchEvent(
@@ -1610,7 +1611,7 @@ export class MarkerArea extends HTMLElement {
     }
   }
 
-  private addUndoStep() {
+  private addUndoStep(forceAdd = false): void {
     if (
       this._currentMarkerEditor === undefined ||
       this._currentMarkerEditor.state !== 'edit'
@@ -1618,6 +1619,7 @@ export class MarkerArea extends HTMLElement {
       const currentState = this.getState();
       const lastUndoState = this.undoRedoManager.getLastUndoStep();
       if (
+        !forceAdd &&
         lastUndoState &&
         (lastUndoState.width !== currentState.width ||
           lastUndoState.height !== currentState.height)

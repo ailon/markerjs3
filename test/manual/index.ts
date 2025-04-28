@@ -334,12 +334,14 @@ export class Experiments {
   public restoreState() {
     if (this.markerArea1 && this.savedState) {
       //this.markerArea1.targetWidth = 400;
-      this.markerArea1.targetHeight = 300;
+      //this.markerArea1.targetHeight = 300;
       this.markerArea1.restoreState(this.savedState);
     }
   }
   public undo() {
-    this.markerArea1?.undo();
+    if (this.markerArea1 && this.markerArea1.isUndoPossible) {
+      this.markerArea1.undo();
+    }
   }
   public redo() {
     this.markerArea1?.redo();
