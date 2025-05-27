@@ -187,7 +187,6 @@ export class RectangularBoxMarkerBaseEditor<
     this.stateChanged();
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   public override manipulate(point: IPoint, ev?: PointerEvent): void {
     const rotatedPoint = this.marker.unrotatePoint(point);
 

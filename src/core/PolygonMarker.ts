@@ -151,7 +151,6 @@ export class PolygonMarker extends MarkerBase {
   /**
    * Adjusts marker visual after manipulation when needed.
    */
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
   public adjustVisual(): void {
     if (this.selectorVisual && this.visibleVisual) {
       SvgHelper.setAttributes(this.visibleVisual, [

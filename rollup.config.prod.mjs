@@ -1,7 +1,7 @@
 import typescript from '@rollup/plugin-typescript';
 import del from 'rollup-plugin-delete';
 import copy from 'rollup-plugin-copy';
-import pkg from './package.json' assert { type: "json" };
+import pkg from './package.json' with { type: 'json' };
 import generatePackageJson from 'rollup-plugin-generate-package-json';
 import terser from '@rollup/plugin-terser';
 import dts from 'rollup-plugin-dts';
@@ -21,9 +21,7 @@ see README.md and LICENSE for details
 export default [
   // types
   {
-    input: [
-      './src/index.ts',
-    ],
+    input: ['./src/index.ts'],
     output: {
       dir: './dts/',
     },
@@ -100,4 +98,3 @@ export default [
     ],
   },
 ];
-

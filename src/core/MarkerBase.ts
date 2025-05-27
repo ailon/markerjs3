@@ -228,7 +228,6 @@ export class MarkerBase {
   /**
    * Disposes the marker and cleans up.
    */
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
   public dispose(): void {}
 
   protected addMarkerVisualToContainer(element: SVGElement): void {
@@ -280,7 +279,7 @@ export class MarkerBase {
    * @param scaleX - horizontal scale
    * @param scaleY - vertical scale
    */
-  // eslint-disable-next-line @typescript-eslint/no-empty-function, @typescript-eslint/no-unused-vars
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   public scale(scaleX: number, scaleY: number): void {}
 
   /**
