@@ -309,6 +309,8 @@ export class MarkerArea extends HTMLElement {
       });
 
       this._overlayContainer.style.transform = `scale(${this._zoomLevel})`;
+
+      this.adjustEditorsZoom();
     }
   }
 
@@ -431,6 +433,9 @@ export class MarkerArea extends HTMLElement {
 
     this.showOutline = this.showOutline.bind(this);
     this.hideOutline = this.hideOutline.bind(this);
+
+    this.scaleMarkers = this.scaleMarkers.bind(this);
+    this.adjustEditorsZoom = this.adjustEditorsZoom.bind(this);
 
     this.getState = this.getState.bind(this);
     this.restoreState = this.restoreState.bind(this);
@@ -753,11 +758,13 @@ export class MarkerArea extends HTMLElement {
     }
     this._mainCanvas.appendChild(g);
 
-    return new markerEditorType({
+    const newEditor = new markerEditorType({
       container: g,
       overlayContainer: this._overlayContentContainer,
       markerType: markerType,
     });
+    newEditor.zoomLevel = this.zoomLevel;
+    return newEditor;
   }
 
   private markerCreated(editor: MarkerBaseEditor<MarkerBase>) {
@@ -1508,6 +1515,12 @@ export class MarkerArea extends HTMLElement {
     if (preScaleSelectedMarker !== undefined) {
       this.setCurrentEditor(preScaleSelectedMarker);
     }
+  }
+
+  private adjustEditorsZoom() {
+    this.editors.forEach((editor) => {
+      editor.zoomLevel = this._zoomLevel;
+    });
   }
 
   /**

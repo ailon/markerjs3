@@ -215,6 +215,7 @@ export class LinearMarkerEditor<
    */
   protected createGrip(): ResizeGrip {
     const grip = new ResizeGrip();
+    grip.zoomLevel = this.zoomLevel;
     grip.visual.transform.baseVal.appendItem(SvgHelper.createTransform());
     this.manipulationBox.appendChild(grip.visual);
 
@@ -238,6 +239,9 @@ export class LinearMarkerEditor<
         this.marker.x2 - gripSize / 2,
         this.marker.y2 - gripSize / 2,
       );
+
+      this.grip1.zoomLevel = this.zoomLevel;
+      this.grip2.zoomLevel = this.zoomLevel;
     }
   }
 

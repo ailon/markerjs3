@@ -29,6 +29,7 @@ export class CalloutMarkerEditor<
 
   private createTipGrip(): ResizeGrip {
     const grip = new ResizeGrip();
+    grip.zoomLevel = this.zoomLevel;
     grip.visual.transform.baseVal.appendItem(SvgHelper.createTransform());
     this.manipulationBox.appendChild(grip.visual);
 
@@ -39,6 +40,7 @@ export class CalloutMarkerEditor<
     super.positionGrips();
 
     if (this.tipGrip) {
+      this.tipGrip.zoomLevel = this.zoomLevel;
       const tipGripSize = this.tipGrip.gripSize ?? 0;
       this.positionGrip(
         this.tipGrip.visual,

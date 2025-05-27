@@ -264,6 +264,7 @@ export class PolygonMarkerEditor<
    */
   protected createGrip(): ResizeGrip {
     const grip = new ResizeGrip();
+    grip.zoomLevel = this.zoomLevel;
     grip.visual.transform.baseVal.appendItem(SvgHelper.createTransform());
     this.manipulationBox.appendChild(grip.visual);
 
@@ -275,6 +276,7 @@ export class PolygonMarkerEditor<
    */
   protected positionGrips(): void {
     this.grips.forEach((grip, i) => {
+      grip.zoomLevel = this.zoomLevel;
       const point = this.marker.points[i];
       this.positionGrip(
         grip.visual,

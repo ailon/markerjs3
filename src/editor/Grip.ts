@@ -31,10 +31,40 @@ export class Grip {
     return this._visual!;
   }
 
+  private _selectorElement?: SVGGraphicsElement;
+  private _visibleElement?: SVGGraphicsElement;
+
   /**
    * Grip's size (radius).
    */
   public gripSize = 5;
+
+  private _zoomLevel = 1;
+
+  /**
+   * Returns the current zoom level.
+   *
+   * @remarks
+   * This set by the MarkerArea based on its current zoom level.
+   *
+   * @since 3.6.0
+   */
+  public get zoomLevel(): number {
+    return this._zoomLevel;
+  }
+
+  /**
+   * Sets the current zoom level.
+   *
+   * @remarks
+   * This set by the MarkerArea based on its current zoom level.
+   *
+   * @since 3.6.0
+   */
+  public set zoomLevel(value: number) {
+    this._zoomLevel = value;
+    this.adjustVisual();
+  }
 
   /**
    * Grip's fill color.
@@ -50,6 +80,7 @@ export class Grip {
    */
   constructor() {
     this.createVisual = this.createVisual.bind(this);
+    this.adjustVisual = this.adjustVisual.bind(this);
   }
 
   /**
@@ -57,22 +88,39 @@ export class Grip {
    */
   protected createVisual() {
     this._visual = SvgHelper.createGroup();
-    this._visual.appendChild(
-      SvgHelper.createCircle(this.gripSize * 2, [
-        ['fill', 'transparent'],
-        ['cx', (this.gripSize / 2).toString()],
-        ['cy', (this.gripSize / 2).toString()],
-      ]),
-    );
-    const visual = SvgHelper.createCircle(this.gripSize, [
+    this._selectorElement = SvgHelper.createCircle(this.gripSize * 2, [
+      ['fill', 'transparent'],
+      ['cx', (this.gripSize / 2).toString()],
+      ['cy', (this.gripSize / 2).toString()],
+    ]);
+    this._visual.appendChild(this._selectorElement);
+    this._visibleElement = SvgHelper.createCircle(this.gripSize, [
       ['fill-opacity', '1'],
       ['stroke-width', '1'],
       ['stroke-opacity', '1'],
     ]);
-    visual.style.fill = `var(--mjs-grip-fill, ${this.fillColor})`;
-    visual.style.stroke = `var(--mjs-grip-stroke, ${this.strokeColor})`;
-    visual.style.filter = 'drop-shadow(0px 0px 2px rgba(0, 0, 0, .7))';
-    this._visual.appendChild(visual);
+    this._visibleElement.style.fill = `var(--mjs-grip-fill, ${this.fillColor})`;
+    this._visibleElement.style.stroke = `var(--mjs-grip-stroke, ${this.strokeColor})`;
+    this._visibleElement.style.filter =
+      'drop-shadow(0px 0px 2px rgba(0, 0, 0, .7))';
+    this._visual.appendChild(this._visibleElement);
+  }
+
+  protected adjustVisual() {
+    if (this._selectorElement && this._visibleElement) {
+      this._selectorElement.setAttribute(
+        'r',
+        ((this.gripSize * 2) / this.zoomLevel).toString(),
+      );
+      this._visibleElement.setAttribute(
+        'r',
+        (this.gripSize / this.zoomLevel).toString(),
+      );
+      this._visibleElement.setAttribute(
+        'stroke-width',
+        (1 / this.zoomLevel).toString(),
+      );
+    }
   }
 
   /**

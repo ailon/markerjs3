@@ -83,6 +83,9 @@ export class CurveMarkerEditor<
 
   protected setupControlBox(): void {
     super.setupControlBox();
+
+    const strokeWidth = 1 / this.zoomLevel;
+
     this.curveControlLine1 = SvgHelper.createLine(
       this.marker.x1,
       this.marker.y1,
@@ -90,7 +93,7 @@ export class CurveMarkerEditor<
       this.marker.curveY,
       [
         ['stroke', 'black'],
-        ['stroke-width', '1'],
+        ['stroke-width', strokeWidth.toString()],
         ['stroke-opacity', '0.5'],
         ['stroke-dasharray', '3, 2'],
         ['fill', 'transparent'],
@@ -104,7 +107,7 @@ export class CurveMarkerEditor<
       this.marker.curveY,
       [
         ['stroke', 'black'],
-        ['stroke-width', '1'],
+        ['stroke-width', strokeWidth.toString()],
         ['stroke-opacity', '0.5'],
         ['stroke-dasharray', '3, 2'],
         ['fill', 'transparent'],
@@ -125,16 +128,26 @@ export class CurveMarkerEditor<
   protected adjustControlBox() {
     super.adjustControlBox();
 
-    if (this.curveControlLine1 && this.curveControlLine2) {
+    const strokeWidth = 1 / this.zoomLevel;
+    if (this.curveControlLine1 && this.curveControlLine2 && this.curveGrip) {
       this.curveControlLine1.setAttribute('x1', this.marker.x1.toString());
       this.curveControlLine1.setAttribute('y1', this.marker.y1.toString());
       this.curveControlLine1.setAttribute('x2', this.marker.curveX.toString());
       this.curveControlLine1.setAttribute('y2', this.marker.curveY.toString());
+      this.curveControlLine1.setAttribute(
+        'stroke-width',
+        strokeWidth.toString(),
+      );
 
       this.curveControlLine2.setAttribute('x1', this.marker.x2.toString());
       this.curveControlLine2.setAttribute('y1', this.marker.y2.toString());
       this.curveControlLine2.setAttribute('x2', this.marker.curveX.toString());
       this.curveControlLine2.setAttribute('y2', this.marker.curveY.toString());
+      this.curveControlLine2.setAttribute(
+        'stroke-width',
+        strokeWidth.toString(),
+      );
+      this.curveGrip.zoomLevel = this.zoomLevel;
     }
   }
 
@@ -142,6 +155,7 @@ export class CurveMarkerEditor<
     super.addControlGrips();
 
     this.curveGrip = this.createGrip();
+    this.curveGrip.zoomLevel = this.zoomLevel;
     this.positionGrips();
   }
 

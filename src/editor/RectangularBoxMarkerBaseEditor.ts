@@ -383,7 +383,7 @@ export class RectangularBoxMarkerBaseEditor<
       this.marker.height + this.CB_DISTANCE,
       [
         ['stroke', 'black'],
-        ['stroke-width', '1'],
+        ['stroke-width', (1 / this.zoomLevel).toString()],
         ['stroke-opacity', '0.5'],
         ['stroke-dasharray', '3, 2'],
         ['fill', 'transparent'],
@@ -401,7 +401,7 @@ export class RectangularBoxMarkerBaseEditor<
         this.marker.top - this.CB_DISTANCE * 3,
         [
           ['stroke', 'black'],
-          ['stroke-width', '1'],
+          ['stroke-width', (1 / this.zoomLevel).toString()],
           ['stroke-opacity', '0.5'],
           ['stroke-dasharray', '3, 2'],
         ],
@@ -436,6 +436,10 @@ export class RectangularBoxMarkerBaseEditor<
       'height',
       (this.marker.height + this.CB_DISTANCE).toString(),
     );
+    this.controlRect?.setAttribute(
+      'stroke-width',
+      (1 / this.zoomLevel).toString(),
+    );
 
     if (this.rotatorGripLine !== undefined) {
       this.rotatorGripLine.setAttribute(
@@ -453,6 +457,10 @@ export class RectangularBoxMarkerBaseEditor<
       this.rotatorGripLine.setAttribute(
         'y2',
         (-Math.max(this.CB_DISTANCE * 3, 30)).toString(),
+      );
+      this.rotatorGripLine.setAttribute(
+        'stroke-width',
+        (1 / this.zoomLevel).toString(),
       );
     }
 
@@ -540,7 +548,12 @@ export class RectangularBoxMarkerBaseEditor<
         bottom,
       );
 
+      this.controlGrips.grips.forEach((grip) => {
+        grip.zoomLevel = this.zoomLevel;
+      });
+
       if (this.rotatorGrip !== undefined) {
+        this.rotatorGrip.zoomLevel = this.zoomLevel;
         const rotatorGripSize = this.rotatorGrip.gripSize ?? 0;
         const rtop = -rotatorGripSize / 2;
         const rcx =
@@ -549,7 +562,8 @@ export class RectangularBoxMarkerBaseEditor<
         this.positionGrip(
           this.rotatorGrip.visual,
           rcx,
-          rtop - Math.max(this.CB_DISTANCE * 3, 30),
+          rtop -
+            Math.max(Math.max(this.CB_DISTANCE * 3, 30), 15 / this.zoomLevel), // magic numbers - may need to rethink
         );
       }
     }

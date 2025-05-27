@@ -251,6 +251,35 @@ export class MarkerBaseEditor<TMarkerType extends MarkerBase = MarkerBase> {
     return this.marker.notes;
   }
 
+  private _zoomLevel = 1;
+
+  /**
+   * Returns the current zoom level.
+   *
+   * @remarks
+   * This set by the MarkerArea based on its current zoom level.
+   * It is used to scale the marker editor controls.
+   *
+   * @since 3.6.0
+   */
+  public get zoomLevel(): number {
+    return this._zoomLevel;
+  }
+
+  /**
+   * Sets the current zoom level.
+   *
+   * @remarks
+   * This set by the MarkerArea based on its current zoom level.
+   * It is used to scale the marker editor controls.
+   *
+   * @since 3.6.0
+   */
+  public set zoomLevel(value: number) {
+    this._zoomLevel = value;
+    this.adjustControlBox();
+  }
+
   /**
    * Creates a new instance of marker editor.
    *
