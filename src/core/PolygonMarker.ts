@@ -205,6 +205,7 @@ export class PolygonMarker extends MarkerBase {
     const result: PolygonMarkerState = Object.assign(
       {
         points: this.points,
+        fillColor: this.fillColor,
       },
       super.getState(),
     );
@@ -218,6 +219,9 @@ export class PolygonMarker extends MarkerBase {
 
     const pmState = state as PolygonMarkerState;
     this.points = pmState.points;
+    if (pmState.fillColor !== undefined) {
+      this.fillColor = pmState.fillColor;
+    }
 
     this.createVisual();
     this.adjustVisual();

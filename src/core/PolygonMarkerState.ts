@@ -9,4 +9,10 @@ export interface PolygonMarkerState extends MarkerBaseState {
    * Polygon points.
    */
   points: Array<IPoint>;
+  /**
+   * Marker's fill color.
+   *
+   * @since 3.6.2
+   */
+  fillColor?: string;
 }
