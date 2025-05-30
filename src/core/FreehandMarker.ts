@@ -163,7 +163,6 @@ export class FreehandMarker extends MarkerBase {
       },
       super.getState(),
     );
-    result.typeName = FreehandMarker.typeName;
 
     return result;
   }
