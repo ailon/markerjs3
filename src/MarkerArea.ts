@@ -42,59 +42,140 @@ import { CurveMarkerEditor } from './editor/CurveMarkerEditor';
 
 /**
  * Marker area custom event types.
+ *
+ * @summary
+ * Defines the custom events that can be dispatched by the {@link MarkerArea} component.
+ *
+ * @remarks
+ * The `MarkerAreaEventMap` interface defines the events that can be dispatched by the {@link MarkerArea} component.
+ *
+ * You can listen to these events using the {@link MarkerArea.addEventListener | addEventListener} method on the {@link MarkerArea} instance.
+ *
+ * The events can be logically grouped into two categories:
+ * 1. Marker area events (start with `area`)
+ * 2. Marker editor events (start with `marker`).
+ *
+ * The marker area events are related to the overall state of the {@link MarkerArea} component,
+ * while the marker editor events are related to the individual marker editors within the area.
+ *
+ * Marker area events receive {@link MarkerAreaEventData} as their `event.detail`,
+ * while marker editor events receive {@link MarkerEditorEventData} as their `event.detail`.
+ * Both event data types contain a reference to the {@link MarkerArea} instance
+ * and, for marker editor events, a reference to the specific marker editor that triggered the event.
  */
 export interface MarkerAreaEventMap {
   /**
    * Marker area initialized.
+   *
+   * @remarks
+   * This event is dispatched early in the lifecycle when the {@link MarkerArea} component is initialized
+   * but none of its internal elements have been created yet.
+   *
+   * Use {@link areashow} to know when the component is fully initialized and ready to be used.
    */
   areainit: CustomEvent<MarkerAreaEventData>;
   /**
    * Marker area shown.
+   *
+   * @remarks
+   * This event is dispatched when the {@link MarkerArea} component is fully initialized and ready to be used.
    */
   areashow: CustomEvent<MarkerAreaEventData>;
   /**
    * Marker area state restored.
+   *
+   * @remarks
+   * This event is dispatched when the {@link MarkerArea} component restores its state from
+   * a previously saved state.
    */
   arearestorestate: CustomEvent<MarkerAreaEventData>;
   /**
    * Marker area focused.
+   *
+   * @remarks
+   * This event is dispatched when the {@link MarkerArea} component receives focus.
    */
   areafocus: CustomEvent<MarkerAreaEventData>;
   /**
    * Marker area lost focus.
+   *
+   * @remarks
+   * This event is dispatched when the {@link MarkerArea} component loses focus.
    */
   areablur: CustomEvent<MarkerAreaEventData>;
   /**
    * Marker area state changed.
+   *
+   * @remarks
+   * This event is dispatched when the {@link MarkerArea} component's state changes.
+   *
+   * This is a good place to implement auto-saving or update the UI based on the current state.
    */
   areastatechange: CustomEvent<MarkerAreaEventData>;
 
   /**
    * Marker selected.
+   *
+   * @remarks
+   * This event is dispatched when a marker editor is selected.
+   * You can use this event to update the UI or perform actions based on the selected marker editor.
    */
   markerselect: CustomEvent<MarkerEditorEventData>;
   /**
    * Marker deselected.
+   *
+   * @remarks
+   * This event is dispatched when a marker editor is deselected.
+   * You can use this event to update the UI or perform actions based on the deselected marker editor.
    */
   markerdeselect: CustomEvent<MarkerEditorEventData>;
   /**
    * Marker creating.
+   *
+   * @remarks
+   * This event is dispatched when a marker creation has been initiated.
+   * You can use this event to update the UI or perform actions based on the marker creation process.
    */
   markercreating: CustomEvent<MarkerEditorEventData>;
   /**
    * Marker created.
+   *
+   * @remarks
+   * This event is dispatched when a marker has been created.
+   * You can use this event to update the UI or perform actions based on the created marker editor.
+   *
+   * One common use case is implementing continuous marker creation,
+   * where you create a new marker editor immediately after the previous one has been created.
+   *
+   * @example
+   * ```js
+   * // create another marker of the same type
+   * markerArea.addEventListener("markercreate", (ev) => {
+   *   markerArea.createMarker(ev.detail.markerEditor.marker.typeName);
+   * });
+   * ```
    */
   markercreate: CustomEvent<MarkerEditorEventData>;
   /**
    * Marker about to be deleted.
+   *
+   * @remarks
+   * This event is dispatched before a marker editor is deleted.
    */
   markerbeforedelete: CustomEvent<MarkerEditorEventData>;
   /**
    * Marker deleted.
+   *
+   * @remarks
+   * This event is dispatched after a marker editor is deleted.
+   * You can use this event to update the UI or perform actions based on the deleted marker editor.
    */
   markerdelete: CustomEvent<MarkerEditorEventData>;
   /**
    * Marker changed.
+   *
+   * @remarks
+   * This event is dispatched when a marker editor's state has changed.
    */
   markerchange: CustomEvent<MarkerEditorEventData>;
 }
@@ -644,18 +725,18 @@ export class MarkerArea extends HTMLElement {
               this._targetWidth > 0
                 ? this._targetWidth
                 : this._targetHeight > 0
-                ? this._targetHeight * aspectRatio
-                : img.clientWidth > 0
-                ? img.clientWidth
-                : img.naturalWidth;
+                  ? this._targetHeight * aspectRatio
+                  : img.clientWidth > 0
+                    ? img.clientWidth
+                    : img.naturalWidth;
             const calculatedHeight =
               this._targetHeight > 0
                 ? this._targetHeight
                 : this._targetWidth > 0
-                ? this._targetWidth / aspectRatio
-                : img.clientHeight > 0
-                ? img.clientHeight
-                : img.naturalHeight;
+                  ? this._targetWidth / aspectRatio
+                  : img.clientHeight > 0
+                    ? img.clientHeight
+                    : img.naturalHeight;
 
             this._targetWidth = calculatedWidth;
             this._targetHeight = calculatedHeight;

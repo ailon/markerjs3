@@ -28,50 +28,105 @@ import { Activator } from './core/Activator';
 import Logo from './assets/markerjs-logo-m.svg';
 
 /**
- * Event map for {@link MarkerView}.
+ * Marker view custom event types.
+ *
+ * @summary
+ * Defines the custom events that can be dispatched by the {@link MarkerView} component.
+ *
+ * @remarks
+ * The `MarkerViewEventMap` interface defines the events that can be dispatched by the {@link MarkerView} component.
+ *
+ * You can listen to these events using the {@link MarkerView.addEventListener | addEventListener} method on the {@link MarkerView} instance.
+ *
+ * The events can be logically grouped into two categories:
+ * 1. Marker view events (start with `view`)
+ * 2. Marker events (start with `marker`).
+ *
+ * The marker view events are related to the overall state of the {@link MarkerView} component,
+ * while the marker events are related to the individual markers within the view.
+ *
+ * Marker view events receive {@link MarkerViewEventData} as their `event.detail`,
+ * while marker events receive {@link MarkerEventData} as their `event.detail`.
+ * Both event data types contain a reference to the {@link MarkerView} instance
+ * and, for marker events, a reference to the specific marker that triggered the event.
  */
 export interface MarkerViewEventMap {
   /**
    * Viewer initialized.
+   *
+   * @remarks
+   * This event is dispatched when the {@link MarkerView} instance is created and initialized
+   * but none of its internal elements have been created yet.
    */
   viewinit: CustomEvent<MarkerViewEventData>;
 
   /**
    * Viewer shown.
+   *
+   * @remarks
+   * This event is dispatched when the {@link MarkerView} instance is fully initialized,
+   * its internal elements are created, and the target image is loaded.
+   * It indicates that the viewer is ready to display markers and annotations.
    */
   viewshow: CustomEvent<MarkerViewEventData>;
 
   /**
    * Viewer state restored.
+   *
+   * @remarks
+   * This event is dispatched when the {@link MarkerView} instance has restored a previously saved state.
+   * It indicates that the viewer has loaded markers and annotations from a saved state.
    */
   viewrestorestate: CustomEvent<MarkerViewEventData>;
 
   /**
    * Marker clicked.
+   *
+   * @remarks
+   * This event is dispatched when a marker within the {@link MarkerView} is clicked.
+   * It provides access to the clicked marker and the {@link MarkerView} instance.
    */
   markerclick: CustomEvent<MarkerEventData>;
   /**
    * Marker mouse over.
+   *
+   * @remarks
+   * This event is dispatched when the mouse pointer hovers over a marker within the {@link MarkerView}.
    */
   markerover: CustomEvent<MarkerEventData>;
   /**
    * Marker pointer down.
+   *
+   * @remarks
+   * This event is dispatched when a pointer (mouse, touch, etc.) is pressed down on a marker within the {@link MarkerView}.
    */
   markerpointerdown: CustomEvent<MarkerEventData>;
   /**
    * Marker pointer move.
+   *
+   * @remarks
+   * This event is dispatched when a pointer (mouse, touch, etc.) moves while over a marker within the {@link MarkerView}.
    */
   markerpointermove: CustomEvent<MarkerEventData>;
   /**
    * Marker pointer up.
+   *
+   * @remarks
+   * This event is dispatched when a pointer (mouse, touch, etc.) is released after being pressed down on a marker within the {@link MarkerView}.
    */
   markerpointerup: CustomEvent<MarkerEventData>;
   /**
    * Marker pointer enter.
+   *
+   * @remarks
+   * This event is dispatched when a pointer (mouse, touch, etc.) enters the area of a marker within the {@link MarkerView}.
    */
   markerpointerenter: CustomEvent<MarkerEventData>;
   /**
    * Marker pointer leave.
+   *
+   * @remarks
+   * This event is dispatched when a pointer (mouse, touch, etc.) leaves the area of a marker within the {@link MarkerView}.
    */
   markerpointerleave: CustomEvent<MarkerEventData>;
 }
@@ -463,18 +518,18 @@ export class MarkerView extends HTMLElement {
               this._targetWidth > 0
                 ? this._targetWidth
                 : this._targetHeight > 0
-                ? this._targetHeight * aspectRatio
-                : img.clientWidth > 0
-                ? img.clientWidth
-                : img.naturalWidth;
+                  ? this._targetHeight * aspectRatio
+                  : img.clientWidth > 0
+                    ? img.clientWidth
+                    : img.naturalWidth;
             const calculatedHeight =
               this._targetHeight > 0
                 ? this._targetHeight
                 : this._targetWidth > 0
-                ? this._targetWidth / aspectRatio
-                : img.clientHeight > 0
-                ? img.clientHeight
-                : img.naturalHeight;
+                  ? this._targetWidth / aspectRatio
+                  : img.clientHeight > 0
+                    ? img.clientHeight
+                    : img.naturalHeight;
 
             this._targetWidth = calculatedWidth;
             this._targetHeight = calculatedHeight;
