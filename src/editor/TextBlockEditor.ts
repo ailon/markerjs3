@@ -12,7 +12,7 @@ export type BlurHandler = () => void;
  * Represents a text block editor element.
  */
 export class TextBlockEditor {
-  private textEditor: HTMLDivElement;
+  private textEditor: HTMLTextAreaElement;
   private isInFocus = false;
 
   private _width = 0;
@@ -163,7 +163,7 @@ export class TextBlockEditor {
    * Creates a new text block editor instance.
    */
   constructor() {
-    this.textEditor = document.createElement('div');
+    this.textEditor = document.createElement('textarea');
 
     this.getEditorUi = this.getEditorUi.bind(this);
     this.focus = this.focus.bind(this);
@@ -172,26 +172,24 @@ export class TextBlockEditor {
 
   private isSetupCompleted = false;
   private setup() {
-    // this.textEditor.style.position = 'absolute';
     this.textEditor.style.pointerEvents = 'auto';
-    this.textEditor.style.display = 'flex';
-    this.textEditor.style.flexDirection = 'column';
-    this.textEditor.style.alignItems = 'center';
-    this.textEditor.style.justifyContent = 'center';
     this.textEditor.style.width = `${this._width}px`;
     this.textEditor.style.height = `${this._height}px`;
     this.textEditor.style.overflow = 'hidden';
     this.textEditor.style.textAlign = 'center';
+    this.textEditor.style.alignContent = 'center';
+    this.textEditor.style.padding = '0px';
+    this.textEditor.style.margin = '0px';
     this.textEditor.style.fontFamily = this._fontFamily;
     this.textEditor.style.fontSize = this._fontSize;
     this.textEditor.style.lineHeight = '1em';
-    if (this._text !== '') {
-      this.textEditor.innerText = this._text;
-    } else {
-      this.textEditor.innerHTML = '&nbsp;';
-    }
-    this.textEditor.contentEditable = 'true';
+    // remove all borders
     this.textEditor.style.outline = 'none';
+    this.textEditor.style.border = 'none';
+    // disable resizing
+    this.textEditor.style.resize = 'none';
+
+    this.textEditor.value = this._text;
     this.textEditor.style.color = this._textColor;
     this.textEditor.style.whiteSpace = 'pre';
     this.textEditor.addEventListener('pointerdown', (ev) => {
@@ -208,29 +206,18 @@ export class TextBlockEditor {
     });
     this.textEditor.addEventListener('keyup', (ev) => {
       ev.cancelBubble = true;
-      this._text = this.textEditor.innerText;
+      this._text = this.textEditor.value;
       if (this.onTextChanged !== undefined) {
         this.onTextChanged(this._text);
       }
     });
     this.textEditor.addEventListener('blur', () => {
-      this._text = this.textEditor.innerText;
+      this._text = this.textEditor.value;
       if (this.onTextChanged !== undefined) {
         this.onTextChanged(this._text);
       }
       if (this.onBlur !== undefined) {
         this.onBlur();
-      }
-    });
-    this.textEditor.addEventListener('paste', (ev) => {
-      if (ev.clipboardData) {
-        // paste plain text
-        const content = ev.clipboardData.getData('text');
-        const selection = window.getSelection();
-        if (!selection || !selection.rangeCount) return false;
-        selection.deleteFromDocument();
-        selection.getRangeAt(0).insertNode(document.createTextNode(content));
-        ev.preventDefault();
       }
     });
 
@@ -241,7 +228,7 @@ export class TextBlockEditor {
    * Returns editor's UI,
    * @returns UI in a div element.
    */
-  public getEditorUi(): HTMLDivElement {
+  public getEditorUi(): HTMLTextAreaElement {
     if (!this.isSetupCompleted) {
       this.setup();
     }
@@ -254,14 +241,6 @@ export class TextBlockEditor {
    */
   public focus() {
     this.textEditor.focus();
-
-    // position cursor at the end of the text
-    const range = document.createRange();
-    range.selectNodeContents(this.textEditor);
-    range.collapse(false);
-    const selection = window.getSelection();
-    selection?.removeAllRanges();
-    selection?.addRange(range);
   }
   /**
    * Unfocuses the editor.

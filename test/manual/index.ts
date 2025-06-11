@@ -42,7 +42,7 @@ export class Experiments {
       ShapeOutlineMarkerEditor<TriangleMarker>,
     );
 
-    this.markerArea1.targetWidth = 1800;
+    // this.markerArea1.targetWidth = 1800;
     // this.markerArea1.targetHeight = 600;
     this.markerArea1.targetImage = this.targetImg;
 

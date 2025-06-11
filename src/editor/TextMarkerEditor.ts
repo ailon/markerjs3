@@ -126,6 +126,7 @@ export class TextMarkerEditor<
 
   protected setSize(): void {
     super.setSize();
+    this.textBlockEditorContainer.style.display = 'flex';
     this.textBlockEditorContainer.style.transform = `translate(${this.marker.left}px, ${this.marker.top}px)`;
     this.textBlockEditorContainer.style.width = `${this.marker.width}px`;
     this.textBlockEditorContainer.setAttribute('width', `${this.marker.width}`);
