@@ -889,7 +889,6 @@ export class MarkerArea extends HTMLElement {
    */
   public deleteMarker(markerEditor: MarkerBaseEditor): void {
     if (this.editors.indexOf(markerEditor) >= 0) {
-      this.addUndoStep();
       this.dispatchEvent(
         new CustomEvent<MarkerEditorEventData>('markerbeforedelete', {
           detail: { markerArea: this, markerEditor: markerEditor },
@@ -902,6 +901,7 @@ export class MarkerArea extends HTMLElement {
         this._selectedMarkerEditors.indexOf(markerEditor),
         1,
       );
+      this.addUndoStep();
       this.dispatchEvent(
         new CustomEvent<MarkerEditorEventData>('markerdelete', {
           detail: { markerArea: this, markerEditor: markerEditor },
