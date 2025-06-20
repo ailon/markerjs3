@@ -887,7 +887,10 @@ export class MarkerArea extends HTMLElement {
    * Deletes a marker represented by the specified editor.
    * @param markerEditor
    */
-  public deleteMarker(markerEditor: MarkerBaseEditor): void {
+  public deleteMarker(
+    markerEditor: MarkerBaseEditor,
+    suppressUndo: boolean = false,
+  ): void {
     if (this.editors.indexOf(markerEditor) >= 0) {
       this.dispatchEvent(
         new CustomEvent<MarkerEditorEventData>('markerbeforedelete', {
@@ -901,7 +904,9 @@ export class MarkerArea extends HTMLElement {
         this._selectedMarkerEditors.indexOf(markerEditor),
         1,
       );
-      this.addUndoStep();
+      if (!suppressUndo) {
+        this.addUndoStep();
+      }
       this.dispatchEvent(
         new CustomEvent<MarkerEditorEventData>('markerdelete', {
           detail: { markerArea: this, markerEditor: markerEditor },
@@ -916,7 +921,9 @@ export class MarkerArea extends HTMLElement {
   public deleteSelectedMarkers() {
     const markersToDelete = [...this._selectedMarkerEditors];
     // this._selectedMarkerEditors.splice(0);
-    markersToDelete.forEach((m) => this.deleteMarker(m));
+    markersToDelete.forEach((m, index) =>
+      this.deleteMarker(m, index !== markersToDelete.length - 1),
+    );
     this.hideMarqueeSelectOutline();
   }
 
