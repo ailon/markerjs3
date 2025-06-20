@@ -488,4 +488,20 @@ export class Experiments {
       this.markerArea1.deleteSelectedMarkers();
     }
   }
+
+  public hideAllMarkers() {
+    if (this.markerArea1) {
+      this.markerArea1.editors.forEach((editor) => {
+        editor.hide();
+      });
+    }
+  }
+
+  public showAllMarkers() {
+    if (this.markerArea1) {
+      this.markerArea1.editors.forEach((editor) => {
+        editor.show();
+      });
+    }
+  }
 }

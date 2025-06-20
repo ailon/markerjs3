@@ -433,6 +433,32 @@ export class MarkerBaseEditor<TMarkerType extends MarkerBase = MarkerBase> {
   }
 
   /**
+   * Hides all marker's visuals and editor controls.
+   *
+   * @remarks
+   * This could be useful when you want to temporarily hide the marker so you can,
+   * for example, create a new one in the same place. Reveal it later with {@link show}.
+   *
+   * @since 3.7.0
+   */
+  public hide(): void {
+    this.container.style.display = 'none';
+  }
+
+  /**
+   * Shows all marker's visuals and editor controls.
+   *
+   * @remarks
+   * This could be useful when you want to temporarily hide the marker (with {@link hide}) so you can,
+   * for example, create a new one in the same place.
+   *
+   * @since 3.7.0
+   */
+  public show(): void {
+    this.container.style.display = 'block';
+  }
+
+  /**
    * Returns marker's state that can be restored in the future.
    *
    * @returns
