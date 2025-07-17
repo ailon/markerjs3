@@ -67,8 +67,6 @@ export class LinearMarkerEditor<
     this.manipulate = this.manipulate.bind(this);
     this.pointerDown = this.pointerDown.bind(this);
     this.pointerUp = this.pointerUp.bind(this);
-
-    this.setupControlBox();
   }
 
   public ownsTarget(el: EventTarget): boolean {
@@ -92,6 +90,8 @@ export class LinearMarkerEditor<
     this.manipulationStartY = point.y;
 
     if (this.state === 'new') {
+      this.setupControlBox();
+
       this.marker.x1 = point.x;
       this.marker.y1 = point.y;
       this.marker.x2 = point.x;

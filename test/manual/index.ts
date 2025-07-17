@@ -23,7 +23,6 @@ export class Experiments {
   markerView1?: MarkerView;
   renderer?: Renderer;
   targetImg?: HTMLImageElement;
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
   public setup(): void {
     // const targetImg = document.getElementById('testImg') as HTMLImageElement;
     this.targetImg = document.createElement('img');
@@ -254,7 +253,6 @@ export class Experiments {
     }
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   public addMarker(markerType: string) {
     const editor = this.markerArea1?.createMarker(markerType);
 

@@ -1,7 +1,6 @@
 import { IPoint, RectangularBoxMarkerBase, SvgHelper } from '../core';
 import { Grip, GripLocation } from './Grip';
 import { MarkerBaseEditor } from './MarkerBaseEditor';
-import { MarkerEditorProperties } from './MarkerEditorProperties';
 import { RectangularBoxMarkerGrips } from './RectangularBoxMarkerGrips';
 import { RotateGrip } from './RotateGrip';
 
@@ -52,7 +51,7 @@ export class RectangularBoxMarkerBaseEditor<
   /**
    * Container for the marker's editing controls.
    */
-  protected controlBox = SvgHelper.createGroup();
+  protected controlBox?: SVGGElement;
   /**
    * Container for the marker's manipulation grips.
    */
@@ -76,12 +75,6 @@ export class RectangularBoxMarkerBaseEditor<
   protected activeGrip?: Grip;
   private disableRotation = false;
 
-  constructor(properties: MarkerEditorProperties<TMarkerType>) {
-    super(properties);
-
-    this.setupControlBox();
-  }
-
   public ownsTarget(el: EventTarget): boolean {
     if (super.ownsTarget(el) || this._marker.ownsTarget(el)) {
       return true;
@@ -103,6 +96,8 @@ export class RectangularBoxMarkerBaseEditor<
     super.pointerDown(point, target, ev);
 
     if (this.state === 'new') {
+      this.setupControlBox();
+
       this.marker.left = point.x;
       this.marker.top = point.y;
     }
@@ -355,12 +350,16 @@ export class RectangularBoxMarkerBaseEditor<
     super.select(multi);
     this.adjustControlBox();
     this.manipulationBox.style.display = multi ? 'none' : '';
-    this.controlBox.style.display = '';
+    if (this.controlBox) {
+      this.controlBox.style.display = '';
+    }
   }
 
   public deselect(): void {
     super.deselect();
-    this.controlBox.style.display = 'none';
+    if (this.controlBox) {
+      this.controlBox.style.display = 'none';
+    }
   }
 
   /**
@@ -421,49 +420,51 @@ export class RectangularBoxMarkerBaseEditor<
    * Adjusts control box size and location.
    */
   protected adjustControlBox() {
-    const translate = this.controlBox.transform.baseVal.getItem(0);
-    translate.setTranslate(
-      this.marker.left - this.CB_DISTANCE / 2,
-      this.marker.top - this.CB_DISTANCE / 2,
-    );
-    this.controlBox.transform.baseVal.replaceItem(translate, 0);
-    this.controlRect?.setAttribute(
-      'width',
-      (this.marker.width + this.CB_DISTANCE).toString(),
-    );
-    this.controlRect?.setAttribute(
-      'height',
-      (this.marker.height + this.CB_DISTANCE).toString(),
-    );
-    this.controlRect?.setAttribute(
-      'stroke-width',
-      (1 / this.zoomLevel).toString(),
-    );
-
-    if (this.rotatorGripLine !== undefined) {
-      this.rotatorGripLine.setAttribute(
-        'x1',
-        ((this.marker.width + this.CB_DISTANCE) / 2).toString(),
+    if (this.controlBox) {
+      const translate = this.controlBox.transform.baseVal.getItem(0);
+      translate.setTranslate(
+        this.marker.left - this.CB_DISTANCE / 2,
+        this.marker.top - this.CB_DISTANCE / 2,
       );
-      this.rotatorGripLine.setAttribute(
-        'y1',
-        (-this.CB_DISTANCE / 2).toString(),
+      this.controlBox.transform.baseVal.replaceItem(translate, 0);
+      this.controlRect?.setAttribute(
+        'width',
+        (this.marker.width + this.CB_DISTANCE).toString(),
       );
-      this.rotatorGripLine.setAttribute(
-        'x2',
-        ((this.marker.width + this.CB_DISTANCE) / 2).toString(),
+      this.controlRect?.setAttribute(
+        'height',
+        (this.marker.height + this.CB_DISTANCE).toString(),
       );
-      this.rotatorGripLine.setAttribute(
-        'y2',
-        (-Math.max(this.CB_DISTANCE * 3, 30)).toString(),
-      );
-      this.rotatorGripLine.setAttribute(
+      this.controlRect?.setAttribute(
         'stroke-width',
         (1 / this.zoomLevel).toString(),
       );
-    }
 
-    this.positionGrips();
+      if (this.rotatorGripLine !== undefined) {
+        this.rotatorGripLine.setAttribute(
+          'x1',
+          ((this.marker.width + this.CB_DISTANCE) / 2).toString(),
+        );
+        this.rotatorGripLine.setAttribute(
+          'y1',
+          (-this.CB_DISTANCE / 2).toString(),
+        );
+        this.rotatorGripLine.setAttribute(
+          'x2',
+          ((this.marker.width + this.CB_DISTANCE) / 2).toString(),
+        );
+        this.rotatorGripLine.setAttribute(
+          'y2',
+          (-Math.max(this.CB_DISTANCE * 3, 30)).toString(),
+        );
+        this.rotatorGripLine.setAttribute(
+          'stroke-width',
+          (1 / this.zoomLevel).toString(),
+        );
+      }
+
+      this.positionGrips();
+    }
   }
 
   /**
@@ -591,13 +592,17 @@ export class RectangularBoxMarkerBaseEditor<
    * Hides marker's editing controls.
    */
   protected hideControlBox(): void {
-    this.controlBox.style.display = 'none';
+    if (this.controlBox) {
+      this.controlBox.style.display = 'none';
+    }
   }
   /**
    * Shows marker's editing controls.
    */
   protected showControlBox(): void {
-    this.controlBox.style.display = '';
+    if (this.controlBox) {
+      this.controlBox.style.display = '';
+    }
   }
 
   /**

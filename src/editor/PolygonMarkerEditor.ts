@@ -62,8 +62,6 @@ export class PolygonMarkerEditor<
     this.manipulate = this.manipulate.bind(this);
     this.pointerDown = this.pointerDown.bind(this);
     this.pointerUp = this.pointerUp.bind(this);
-
-    this.setupControlBox();
   }
 
   public ownsTarget(el: EventTarget): boolean {
@@ -87,6 +85,7 @@ export class PolygonMarkerEditor<
     this.manipulationStartY = point.y;
 
     if (this.state === 'new') {
+      this.setupControlBox();
       this.startCreation(point);
     } else if (this._state === 'creating') {
       if (this.grips.length > 0 && target && this.grips[0].ownsTarget(target)) {

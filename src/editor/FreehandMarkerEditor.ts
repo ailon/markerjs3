@@ -39,8 +39,6 @@ export class FreehandMarkerEditor<
     this.manipulate = this.manipulate.bind(this);
     this.pointerDown = this.pointerDown.bind(this);
     this.pointerUp = this.pointerUp.bind(this);
-
-    this.setupControlBox();
   }
 
   public ownsTarget(el: EventTarget): boolean {
@@ -66,6 +64,7 @@ export class FreehandMarkerEditor<
     this.manipulationStartY = point.y;
 
     if (this.state === 'new') {
+      this.setupControlBox();
       this.startCreation(point);
     } else if (this.state !== 'move') {
       this.select();
