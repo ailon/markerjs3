@@ -91,7 +91,6 @@ export class LinearMarkerEditor<
 
     if (this.state === 'new') {
       this.setupControlBox();
-
       this.marker.x1 = point.x;
       this.marker.y1 = point.y;
       this.marker.x2 = point.x;
@@ -186,6 +185,9 @@ export class LinearMarkerEditor<
    * Creates control box for manipulation controls.
    */
   protected setupControlBox(): void {
+    if (this._controlBox) return;
+
+    this._controlBox = SvgHelper.createGroup();
     this.container.appendChild(this._controlBox);
     this.manipulationBox = SvgHelper.createGroup();
     this._controlBox.appendChild(this.manipulationBox);
@@ -196,6 +198,9 @@ export class LinearMarkerEditor<
   }
 
   protected adjustControlBox() {
+    if (!this._controlBox) {
+      this.setupControlBox();
+    }
     this.positionGrips();
   }
 
@@ -261,11 +266,13 @@ export class LinearMarkerEditor<
     super.select(multi);
     this.adjustControlBox();
     this.manipulationBox.style.display = multi ? 'none' : '';
-    this._controlBox.style.display = '';
+    this._controlBox!.style.display = '';
   }
 
   public deselect(): void {
     super.deselect();
-    this._controlBox.style.display = 'none';
+    if (this._controlBox) {
+      this._controlBox.style.display = 'none';
+    }
   }
 }

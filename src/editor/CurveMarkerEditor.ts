@@ -115,13 +115,14 @@ export class CurveMarkerEditor<
       ],
     );
 
-    this._controlBox.insertBefore(
+    // super creates the control box, so we know it exists
+    this._controlBox!.insertBefore(
       this.curveControlLine1,
-      this._controlBox.firstChild,
+      this._controlBox!.firstChild,
     );
-    this._controlBox.insertBefore(
+    this._controlBox!.insertBefore(
       this.curveControlLine2,
-      this._controlBox.firstChild,
+      this._controlBox!.firstChild,
     );
   }
 

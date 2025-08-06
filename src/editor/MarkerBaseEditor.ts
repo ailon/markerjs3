@@ -1,4 +1,4 @@
-import { IPoint, MarkerBase, MarkerBaseState, SvgHelper } from '../core';
+import { IPoint, MarkerBase, MarkerBaseState } from '../core';
 import { MarkerEditorProperties } from './MarkerEditorProperties';
 
 /**
@@ -117,7 +117,7 @@ export class MarkerBaseEditor<TMarkerType extends MarkerBase = MarkerBase> {
   /**
    * SVG group holding editor's control box.
    */
-  protected _controlBox = SvgHelper.createGroup();
+  protected _controlBox?: SVGGElement;
 
   /**
    * Method called when marker creation is finished.

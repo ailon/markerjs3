@@ -29,7 +29,7 @@ export class PolygonMarkerEditor<
   /**
    * Container for control elements.
    */
-  protected controlBox: SVGGElement = SvgHelper.createGroup();
+  protected controlBox?: SVGGElement;
   /**
    * Container for manipulation grips.
    */
@@ -84,8 +84,10 @@ export class PolygonMarkerEditor<
     this.manipulationStartX = point.x;
     this.manipulationStartY = point.y;
 
+    this.adjustControlBox();
+    this.controlBox!.style.display = '';
+
     if (this.state === 'new') {
-      this.setupControlBox();
       this.startCreation(point);
     } else if (this._state === 'creating') {
       if (this.grips.length > 0 && target && this.grips[0].ownsTarget(target)) {
@@ -113,7 +115,9 @@ export class PolygonMarkerEditor<
     this.marker.createVisual();
     this.marker.adjustVisual();
     this.adjustControlGrips();
-    this.controlBox.style.display = '';
+    if (this.controlBox) {
+      this.controlBox.style.display = '';
+    }
 
     this.activeGrip = this.grips.at(-1);
     if (this.activeGrip) {
@@ -221,6 +225,8 @@ export class PolygonMarkerEditor<
    * Creates control box for manipulation controls.
    */
   protected setupControlBox(): void {
+    if (this.controlBox) return;
+
     this.controlBox = SvgHelper.createGroup();
     this.container.appendChild(this.controlBox);
     this.manipulationBox = SvgHelper.createGroup();
@@ -232,6 +238,9 @@ export class PolygonMarkerEditor<
   }
 
   protected adjustControlBox() {
+    if (!this.controlBox) {
+      this.setupControlBox();
+    }
     // this.positionGrips();
     this.adjustControlGrips();
   }
@@ -301,12 +310,14 @@ export class PolygonMarkerEditor<
     super.select(multi);
     this.adjustControlBox();
     this.manipulationBox.style.display = multi ? 'none' : '';
-    this.controlBox.style.display = '';
+    this.controlBox!.style.display = '';
   }
 
   public deselect(): void {
     super.deselect();
-    this.controlBox.style.display = 'none';
+    if (this.controlBox) {
+      this.controlBox.style.display = 'none';
+    }
     if (this.state === 'creating') {
       this.finishCreation();
     }

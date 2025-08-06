@@ -23,7 +23,7 @@ export class FreehandMarkerEditor<
   /**
    * Container for control elements.
    */
-  protected controlBox: SVGGElement = SvgHelper.createGroup();
+  protected controlBox?: SVGGElement;
   private controlRect?: SVGRectElement;
 
   constructor(properties: MarkerEditorProperties<TMarkerType>) {
@@ -124,6 +124,8 @@ export class FreehandMarkerEditor<
    * Creates control box for manipulation controls.
    */
   protected setupControlBox(): void {
+    if (this.controlBox) return;
+
     this.controlBox = SvgHelper.createGroup();
     this.container.appendChild(this.controlBox);
 
@@ -141,6 +143,9 @@ export class FreehandMarkerEditor<
   }
 
   protected adjustControlBox() {
+    if (!this.controlBox) {
+      this.setupControlBox();
+    }
     if (this.marker.points.length > 0) {
       const left = Math.min(...this.marker.points.map((p) => p.x));
       const top = Math.min(...this.marker.points.map((p) => p.y));
@@ -161,11 +166,15 @@ export class FreehandMarkerEditor<
   public select(): void {
     super.select();
     this.adjustControlBox();
-    this.controlBox.style.display = '';
+    if (this.controlBox) {
+      this.controlBox.style.display = '';
+    }
   }
 
   public deselect(): void {
     super.deselect();
-    this.controlBox.style.display = 'none';
+    if (this.controlBox) {
+      this.controlBox.style.display = 'none';
+    }
   }
 }

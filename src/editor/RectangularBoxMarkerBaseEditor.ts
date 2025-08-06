@@ -95,9 +95,9 @@ export class RectangularBoxMarkerBaseEditor<
   ): void {
     super.pointerDown(point, target, ev);
 
-    if (this.state === 'new') {
-      this.setupControlBox();
+    this.setupControlBox();
 
+    if (this.state === 'new') {
       this.marker.left = point.x;
       this.marker.top = point.y;
     }
@@ -366,6 +366,8 @@ export class RectangularBoxMarkerBaseEditor<
    * Creates control box for manipulation controls.
    */
   protected setupControlBox() {
+    if (this.controlBox) return;
+
     this.controlBox = SvgHelper.createGroup();
     const translate = SvgHelper.createTransform();
     translate.setTranslate(-this.CB_DISTANCE / 2, -this.CB_DISTANCE / 2);
