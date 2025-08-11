@@ -422,6 +422,10 @@ export class RectangularBoxMarkerBaseEditor<
    * Adjusts control box size and location.
    */
   protected adjustControlBox() {
+    if (!this.controlBox) {
+      this.setupControlBox();
+    }
+
     if (this.controlBox) {
       const translate = this.controlBox.transform.baseVal.getItem(0);
       translate.setTranslate(

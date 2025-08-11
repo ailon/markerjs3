@@ -502,4 +502,23 @@ export class Experiments {
       });
     }
   }
+
+  public selectFirstMarker() {
+    if (this.markerArea1) {
+      const firstEditor = this.markerArea1.editors[0];
+      if (firstEditor) {
+        this.markerArea1.setCurrentEditor(firstEditor);
+      }
+    }
+  }
+
+  public selectLastMarker() {
+    if (this.markerArea1) {
+      const lastEditor =
+        this.markerArea1.editors[this.markerArea1.editors.length - 1];
+      if (lastEditor) {
+        this.markerArea1.setCurrentEditor(lastEditor);
+      }
+    }
+  }
 }
