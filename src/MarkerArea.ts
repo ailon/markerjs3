@@ -752,7 +752,10 @@ export class MarkerArea extends HTMLElement {
 
           this._targetImageLoaded = true;
           if (this._stateToRestore !== undefined) {
-            this.restoreState(this._stateToRestore);
+            this.restoreState(
+              this._stateToRestore,
+              this._stateToRestoreAddUndoStep,
+            );
           }
         }
 
@@ -1517,6 +1520,7 @@ export class MarkerArea extends HTMLElement {
   }
 
   private _stateToRestore: AnnotationState | undefined;
+  private _stateToRestoreAddUndoStep = true;
   /**
    * Restores the annotation from the previously saved state.
    * @param state
@@ -1526,9 +1530,12 @@ export class MarkerArea extends HTMLElement {
     // can't restore if image is not loaded yet
     if (!this._targetImageLoaded) {
       this._stateToRestore = state;
+      this._stateToRestoreAddUndoStep = addUndoStep;
       return;
     }
+    // clear any pending state to restore
     this._stateToRestore = undefined;
+    this._stateToRestoreAddUndoStep = true;
 
     const stateCopy: AnnotationState = JSON.parse(JSON.stringify(state));
     this.editors.splice(0);
