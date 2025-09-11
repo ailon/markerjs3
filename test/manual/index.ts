@@ -76,6 +76,7 @@ export class Experiments {
     });
     this.markerArea1.addEventListener('markercreate', (e) => {
       setPropertyValues(e);
+      //e.detail.markerArea.createMarker(e.detail.markerEditor.marker.typeName);
       console.log('markercreated', e);
     });
     this.markerArea1.addEventListener('markerchange', (e) => {

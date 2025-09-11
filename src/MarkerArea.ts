@@ -851,7 +851,6 @@ export class MarkerArea extends HTMLElement {
   private markerCreated(editor: MarkerBaseEditor<MarkerBase>) {
     if (this._mainCanvas) {
       this.mode = 'select';
-      this._mainCanvas.style.cursor = 'default';
       this.editors.push(editor);
       this.setCurrentEditor(editor);
       if (editor.continuousCreation) {
@@ -864,6 +863,8 @@ export class MarkerArea extends HTMLElement {
           newMarkerEditor.strokeWidth = editor.strokeWidth;
           newMarkerEditor.strokeDasharray = editor.strokeDasharray;
         }
+      } else {
+        this._mainCanvas.style.cursor = 'default';
       }
       this.addUndoStep();
       this.dispatchEvent(
@@ -1283,6 +1284,10 @@ export class MarkerArea extends HTMLElement {
       }
     }
     if (this.touchPoints === 0) {
+      if (this._mainCanvas) {
+        this._mainCanvas.style.cursor = 'default';
+      }
+
       if (
         this.isDragging &&
         (this._currentMarkerEditor !== undefined ||
@@ -1324,9 +1329,6 @@ export class MarkerArea extends HTMLElement {
     this.isDragging = false;
     this.isSelecting = false;
     this.isPanning = false;
-    if (this._mainCanvas) {
-      this._mainCanvas.style.cursor = 'default';
-    }
   }
 
   private finishMarqueeSelection() {
