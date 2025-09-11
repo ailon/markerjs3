@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.8.0] - 2025-09-11
+
+### Added
+
+- `targetImageLoadTimeout` property to the Renderer to control the waiting time on known slow connection or large images
+
+### Fixed
+
+- cursor resetting to default when continuously creating markers
+- delayed restoring of state ignores addUndoStep parameter
+
 ## [3.7.3] - 2025-08-06
 
 ### Fixed
@@ -344,6 +355,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Initial public release.
 
+[3.8.0]: https://github.com/ailon/markerjs3/releases/tag/v3.8.0
 [3.7.3]: https://github.com/ailon/markerjs3/releases/tag/v3.7.3
 [3.7.2]: https://github.com/ailon/markerjs3/releases/tag/v3.7.2
 [3.7.1]: https://github.com/ailon/markerjs3/releases/tag/v3.7.1
