@@ -320,6 +320,7 @@ export class Experiments {
       renderer.naturalSize = true;
       //renderer.targetWidth = 467;
       // renderer.markersOnly = true;
+      // renderer.targetImageLoadTimeout = 0;
       renderer.targetImage = this.markerArea1.targetImage;
       const renderedSrc = await renderer.rasterize(this.savedState);
 

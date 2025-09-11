@@ -171,6 +171,26 @@ export class Renderer {
     this._defaultFilter = value;
   }
 
+  private _targetImageLoadTimeout = 10000;
+  /**
+   * Timeout in milliseconds to wait for the target image to load.
+   * Default is 10000 (10 seconds). Set to 0 to wait indefinitely.
+   *
+   * @since 3.8.0
+   */
+  public get targetImageLoadTimeout(): number {
+    return this._targetImageLoadTimeout;
+  }
+  /**
+   * Timeout in milliseconds to wait for the target image to load.
+   * Default is 10000 (10 seconds). Set to 0 to wait indefinitely.
+   *
+   * @since 3.8.0
+   */
+  public set targetImageLoadTimeout(value: number) {
+    this._targetImageLoadTimeout = value;
+  }
+
   private _defsElement?: SVGDefsElement;
   private _defs: (string | Node)[] = [];
 
@@ -316,14 +336,14 @@ export class Renderer {
               this._targetWidth > 0
                 ? this._targetWidth
                 : this._targetHeight > 0
-                ? this._targetHeight * aspectRatio
-                : img.naturalWidth;
+                  ? this._targetHeight * aspectRatio
+                  : img.naturalWidth;
             const calculatedHeight =
               this._targetHeight > 0
                 ? this._targetHeight
                 : this._targetWidth > 0
-                ? this._targetWidth / aspectRatio
-                : img.naturalHeight;
+                  ? this._targetWidth / aspectRatio
+                  : img.naturalHeight;
 
             this._targetWidth = calculatedWidth;
             this._targetHeight = calculatedHeight;
@@ -458,7 +478,11 @@ export class Renderer {
     }
 
     let counter = 0;
-    while (!this._targetImageLoaded && counter++ < 100) {
+    while (
+      !this._targetImageLoaded &&
+      (this._targetImageLoadTimeout === 0 ||
+        counter++ < this._targetImageLoadTimeout / 100)
+    ) {
       // wait for the target image to load
       await new Promise((r) => setTimeout(r, 100));
     }
