@@ -143,6 +143,7 @@ export class LinearMarkerEditor<
     if (inState === 'creating' && this.onMarkerCreated) {
       this.onMarkerCreated(this);
     }
+    this.stateChanged();
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
