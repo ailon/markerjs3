@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.8.1] - 2025-10-05
+
+### Fixed
+
+- linear markers (Line, Arrow, Measurement) don't fire `markerchange` events on manipulation
+
 ## [3.8.0] - 2025-09-11
 
 ### Added
@@ -355,6 +361,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Initial public release.
 
+[3.8.1]: https://github.com/ailon/markerjs3/releases/tag/v3.8.1
 [3.8.0]: https://github.com/ailon/markerjs3/releases/tag/v3.8.0
 [3.7.3]: https://github.com/ailon/markerjs3/releases/tag/v3.7.3
 [3.7.2]: https://github.com/ailon/markerjs3/releases/tag/v3.7.2
