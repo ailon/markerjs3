@@ -26,9 +26,12 @@ export class Experiments {
   public setup(): void {
     // const targetImg = document.getElementById('testImg') as HTMLImageElement;
     this.targetImg = document.createElement('img');
-    this.targetImg.src = './images/landscape_sm.jpg';
+    this.targetImg.src = './images/landscape.jpg';
 
     this.markerArea1 = document.getElementById('markerArea1') as MarkerArea;
+
+    this.markerArea1.autoZoomOut = true;
+    this.markerArea1.autoZoomIn = true;
 
     // this.markerArea1.defaultFilter = 'drop-shadow(2px 2px 2px black)';
     this.markerArea1.defaultFilter = 'url(#dropShadow)';
@@ -457,6 +460,12 @@ export class Experiments {
   public zoomReset() {
     if (this.markerArea1) {
       this.markerArea1.zoomLevel = 1;
+    }
+  }
+
+  public zoomAuto() {
+    if (this.markerArea1) {
+      this.markerArea1.autoZoom();
     }
   }
 
