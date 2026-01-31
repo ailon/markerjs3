@@ -50,6 +50,9 @@ export class Experiments {
 
     this.markerView1 = document.getElementById('markerView1') as MarkerView;
 
+    this.markerView1.autoZoomOut = true;
+    this.markerView1.autoZoomIn = true;
+
     //     this.markerView1.defaultFilter = `
     // drop-shadow(1px 0 0 white)
     // drop-shadow(-1px 0 0 white)
@@ -483,6 +486,11 @@ export class Experiments {
   public viewerZoomReset() {
     if (this.markerView1) {
       this.markerView1.zoomLevel = 1;
+    }
+  }
+  public viewerZoomAuto() {
+    if (this.markerView1) {
+      this.markerView1.autoZoom();
     }
   }
 

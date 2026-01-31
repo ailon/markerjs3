@@ -273,6 +273,51 @@ export class MarkerView extends HTMLElement {
     }
   }
 
+  /**
+   * Adjusts the zoom level to fit the image within the container without scrollbars.
+   *
+   * @remarks
+   * - If `autoZoomIn` is true: zooms in when the image is smaller than the container
+   * - If `autoZoomOut` is true: zooms out when the image is larger than the container
+   * - If both are false: does nothing
+   */
+  public autoZoom(): void {
+    if (!this._autoZoomIn && !this._autoZoomOut) {
+      return;
+    }
+
+    if (
+      !this._canvasContainer ||
+      this._targetWidth <= 0 ||
+      this._targetHeight <= 0
+    ) {
+      return;
+    }
+
+    // Account for the 10px margin on each side of the canvas
+    const margin = 20;
+    const availableWidth = this._canvasContainer.clientWidth - margin;
+    const availableHeight = this._canvasContainer.clientHeight - margin;
+
+    if (availableWidth <= 0 || availableHeight <= 0) {
+      return;
+    }
+
+    // Calculate the zoom level needed to fit
+    const zoomToFitWidth = availableWidth / this._targetWidth;
+    const zoomToFitHeight = availableHeight / this._targetHeight;
+    const zoomToFit = Math.min(zoomToFitWidth, zoomToFitHeight);
+
+    // Determine if we should apply the zoom
+    if (zoomToFit > 1 && this._autoZoomIn) {
+      // Image is smaller than container, zoom in
+      this.zoomLevel = zoomToFit;
+    } else if (zoomToFit < 1 && this._autoZoomOut) {
+      // Image is larger than container, zoom out
+      this.zoomLevel = zoomToFit;
+    }
+  }
+
   private _defaultFilter?: string;
   /**
    * Returns the default SVG filter for the created markers.
@@ -290,6 +335,28 @@ export class MarkerView extends HTMLElement {
    */
   public set defaultFilter(value: string | undefined) {
     this._defaultFilter = value;
+  }
+
+  private _autoZoomIn = false;
+  /**
+   * If true, automatically zooms in on smaller images to fit the container.
+   */
+  public get autoZoomIn(): boolean {
+    return this._autoZoomIn;
+  }
+  public set autoZoomIn(value: boolean) {
+    this._autoZoomIn = value;
+  }
+
+  private _autoZoomOut = false;
+  /**
+   * If true, automatically zooms out on larger images to fit the container.
+   */
+  public get autoZoomOut(): boolean {
+    return this._autoZoomOut;
+  }
+  public set autoZoomOut(value: boolean) {
+    this._autoZoomOut = value;
   }
 
   private _isInitialized = false;
@@ -347,6 +414,8 @@ export class MarkerView extends HTMLElement {
 
     this.show = this.show.bind(this);
     this.scaleMarkers = this.scaleMarkers.bind(this);
+
+    this.autoZoom = this.autoZoom.bind(this);
 
     this.toggleLogo = this.toggleLogo.bind(this);
     this.addLogo = this.addLogo.bind(this);
@@ -551,6 +620,7 @@ export class MarkerView extends HTMLElement {
 
         // reset zoom to scroll to center if needed
         this.zoomLevel = this._zoomLevel;
+        this.autoZoom();
       });
       this._editingTarget.src = this.targetImage.src;
 
