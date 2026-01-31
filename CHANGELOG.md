@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.9.0] - 2026-01-31
+
+### Added
+
+- `autoZoom()` method to `MarkerArea` and `MarkerView` to automatically adjust zoom level to fit the image within the container
+- `autoZoomIn` property to automatically zoom in on smaller images to fit the container (default: false)
+- `autoZoomOut` property to automatically zoom out on larger images to fit the container (default: false)
+
 ## [3.8.1] - 2025-10-05
 
 ### Fixed
@@ -361,6 +369,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Initial public release.
 
+[3.9.0]: https://github.com/ailon/markerjs3/releases/tag/v3.9.0
 [3.8.1]: https://github.com/ailon/markerjs3/releases/tag/v3.8.1
 [3.8.0]: https://github.com/ailon/markerjs3/releases/tag/v3.8.0
 [3.7.3]: https://github.com/ailon/markerjs3/releases/tag/v3.7.3
