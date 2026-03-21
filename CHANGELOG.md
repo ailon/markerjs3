@@ -5,6 +5,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.10.0] - 2026-03-21
+
+### Added
+
+- pinch-zoom supported
+
+### Changed
+
+- scroll-based zoom and pan to pan-and-zoom navigation
+
+### Fixed
+
+- zooming behavior to zoom relative to current visible center (rather than image center)
+
 ## [3.9.0] - 2026-01-31
 
 ### Added
@@ -369,6 +383,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Initial public release.
 
+[3.10.0]: https://github.com/ailon/markerjs3/releases/tag/v3.10.0
 [3.9.0]: https://github.com/ailon/markerjs3/releases/tag/v3.9.0
 [3.8.1]: https://github.com/ailon/markerjs3/releases/tag/v3.8.1
 [3.8.0]: https://github.com/ailon/markerjs3/releases/tag/v3.8.0
