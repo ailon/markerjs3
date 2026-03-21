@@ -253,6 +253,7 @@ export type MarkerAreaMode = 'select' | 'create' | 'delete';
 export class MarkerArea extends HTMLElement {
   private _contentContainer?: HTMLDivElement;
   private _canvasContainer?: HTMLDivElement;
+  private _transformContainer!: HTMLDivElement;
 
   private _overlayContainer!: HTMLDivElement;
   private _overlayContentContainer!: HTMLDivElement;
@@ -373,23 +374,9 @@ export class MarkerArea extends HTMLElement {
       this._mainCanvas &&
       this._overlayContainer
     ) {
-      // this.setMainCanvasSize();
-      this._mainCanvas.style.transform = `scale(${this._zoomLevel})`;
-      this.setEditingTargetSize();
-
-      const scrollMultiplier = Math.max(this._zoomLevel, 1);
-      this._canvasContainer.scrollTo({
-        left:
-          (this._mainCanvas.clientWidth * scrollMultiplier -
-            this._canvasContainer.clientWidth) /
-          2,
-        top:
-          (this._mainCanvas.clientHeight * scrollMultiplier -
-            this._canvasContainer.clientHeight) /
-          2,
-      });
-
-      this._overlayContainer.style.transform = `scale(${this._zoomLevel})`;
+      this._panX = 0;
+      this._panY = 0;
+      this.applyTransform();
 
       this.adjustEditorsZoom();
     }
@@ -416,10 +403,8 @@ export class MarkerArea extends HTMLElement {
       return;
     }
 
-    // Account for the 10px margin on each side of the canvas
-    const margin = 20;
-    const availableWidth = this._canvasContainer.clientWidth - margin;
-    const availableHeight = this._canvasContainer.clientHeight - margin;
+    const availableWidth = this._canvasContainer.clientWidth;
+    const availableHeight = this._canvasContainer.clientHeight;
 
     if (availableWidth <= 0 || availableHeight <= 0) {
       return;
@@ -440,12 +425,20 @@ export class MarkerArea extends HTMLElement {
     }
   }
 
+  private _panX = 0;
+  private _panY = 0;
+
+  private applyTransform() {
+    if (this._transformContainer) {
+      this._transformContainer.style.transform = `translate(${this._panX}px, ${this._panY}px) scale(${this._zoomLevel})`;
+    }
+  }
+
   private prevPanPoint: IPoint = { x: 0, y: 0 };
   private panTo(point: IPoint) {
-    this._canvasContainer?.scrollBy({
-      left: this.prevPanPoint.x - point.x,
-      top: this.prevPanPoint.y - point.y,
-    });
+    this._panX -= this.prevPanPoint.x - point.x;
+    this._panY -= this.prevPanPoint.y - point.y;
+    this.applyTransform();
     this.prevPanPoint = point;
   }
 
@@ -655,15 +648,25 @@ export class MarkerArea extends HTMLElement {
     this._canvasContainer = document.createElement('div');
     this._canvasContainer.style.touchAction = 'pinch-zoom';
     this._canvasContainer.className = 'canvas-container';
-    this._canvasContainer.style.display = 'grid';
-    this._canvasContainer.style.gridTemplateColumns = '1fr';
+    this._canvasContainer.style.display = 'flex';
     this._canvasContainer.style.flexGrow = '2';
     this._canvasContainer.style.flexShrink = '2';
-    this._canvasContainer.style.justifyItems = 'center';
+    this._canvasContainer.style.justifyContent = 'center';
     this._canvasContainer.style.alignItems = 'center';
-    this._canvasContainer.style.overflow = 'auto';
+    this._canvasContainer.style.overflow = 'hidden';
     this._canvasContainer.style.userSelect = 'none';
+    this._canvasContainer.addEventListener('wheel', (ev) => {
+      ev.preventDefault();
+      this._panX -= ev.deltaX;
+      this._panY -= ev.deltaY;
+      this.applyTransform();
+    }, { passive: false });
 
+    this._transformContainer = document.createElement('div');
+    this._transformContainer.style.display = 'grid';
+    this._transformContainer.style.gridTemplateColumns = '1fr';
+
+    this._canvasContainer.appendChild(this._transformContainer);
     this._contentContainer.appendChild(this._canvasContainer);
 
     this.shadowRoot?.appendChild(this._contentContainer);
@@ -684,8 +687,6 @@ export class MarkerArea extends HTMLElement {
     this._mainCanvas.style.pointerEvents = 'auto';
     // this._mainCanvas.style.backgroundColor = 'pink'; // @todo
     // this._mainCanvas.style.opacity = '0.3'; // @todo
-    this._mainCanvas.style.margin = '10px';
-    this._mainCanvas.style.transform = `scale(${this._zoomLevel})`;
 
     this.addDefsToMainCanvas();
 
@@ -693,7 +694,7 @@ export class MarkerArea extends HTMLElement {
 
     this._mainCanvas.appendChild(this._groupLayer);
 
-    this._canvasContainer?.appendChild(this._mainCanvas);
+    this._transformContainer.appendChild(this._mainCanvas);
   }
 
   private addDefsToMainCanvas() {
@@ -708,18 +709,10 @@ export class MarkerArea extends HTMLElement {
       this._targetHeight > 0 &&
       this._targetWidth > 0
     ) {
-      this._mainCanvas.style.width = `${this._targetWidth * this.zoomLevel}px`;
-      this._mainCanvas.style.height = `${
-        this._targetHeight * this.zoomLevel
-      }px`;
-      this._mainCanvas.setAttribute(
-        'width',
-        `${this._targetWidth * this.zoomLevel}`,
-      );
-      this._mainCanvas.setAttribute(
-        'height',
-        `${this._targetHeight * this.zoomLevel}`,
-      );
+      this._mainCanvas.style.width = `${this._targetWidth}px`;
+      this._mainCanvas.style.height = `${this._targetHeight}px`;
+      this._mainCanvas.setAttribute('width', `${this._targetWidth}`);
+      this._mainCanvas.setAttribute('height', `${this._targetHeight}`);
       this._mainCanvas.setAttribute(
         'viewBox',
         '0 0 ' +
@@ -733,14 +726,10 @@ export class MarkerArea extends HTMLElement {
 
   private setEditingTargetSize() {
     if (this._editingTarget !== undefined) {
-      this._editingTarget.width = this._targetWidth * this.zoomLevel;
-      this._editingTarget.height = this._targetHeight * this.zoomLevel;
-      this._editingTarget.style.width = `${
-        this._targetWidth * this.zoomLevel
-      }px`;
-      this._editingTarget.style.height = `${
-        this._targetHeight * this.zoomLevel
-      }px`;
+      this._editingTarget.width = this._targetWidth;
+      this._editingTarget.height = this._targetHeight;
+      this._editingTarget.style.width = `${this._targetWidth}px`;
+      this._editingTarget.style.height = `${this._targetHeight}px`;
     }
   }
 
@@ -753,7 +742,7 @@ export class MarkerArea extends HTMLElement {
     this._overlayContainer.style.gridRowStart = '1';
     this._overlayContainer.style.gridColumnStart = '1';
 
-    this._canvasContainer?.appendChild(this._overlayContainer);
+    this._transformContainer.appendChild(this._overlayContainer);
 
     this._overlayContentContainer = document.createElement('div');
     this._overlayContentContainer.style.position = 'relative';
@@ -833,7 +822,7 @@ export class MarkerArea extends HTMLElement {
       });
       this._editingTarget.src = this.targetImage.src;
 
-      this._canvasContainer.insertBefore(this._editingTarget, this._mainCanvas);
+      this._transformContainer.insertBefore(this._editingTarget, this._mainCanvas);
     }
   }
 
