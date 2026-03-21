@@ -447,6 +447,23 @@ export class MarkerArea extends HTMLElement {
     this.prevPanPoint = point;
   }
 
+  private getPinchDistance(): number {
+    const points = Array.from(this.activePointers.values());
+    if (points.length < 2) return 0;
+    const dx = points[1].x - points[0].x;
+    const dy = points[1].y - points[0].y;
+    return Math.sqrt(dx * dx + dy * dy);
+  }
+
+  private getPinchMidpoint(): IPoint {
+    const points = Array.from(this.activePointers.values());
+    if (points.length < 2) return { x: 0, y: 0 };
+    return {
+      x: (points[0].x + points[1].x) / 2,
+      y: (points[0].y + points[1].y) / 2,
+    };
+  }
+
   private undoRedoManager = new UndoRedoManager<AnnotationState>();
 
   private _defaultFilter?: string;
@@ -651,7 +668,7 @@ export class MarkerArea extends HTMLElement {
     this._contentContainer.style.overflow = 'hidden';
 
     this._canvasContainer = document.createElement('div');
-    this._canvasContainer.style.touchAction = 'pinch-zoom';
+    this._canvasContainer.style.touchAction = 'none';
     this._canvasContainer.className = 'canvas-container';
     this._canvasContainer.style.display = 'flex';
     this._canvasContainer.style.flexGrow = '2';
@@ -1082,6 +1099,10 @@ export class MarkerArea extends HTMLElement {
   private isDragging = false;
   private isSelecting = false;
   private isPanning = false;
+  private activePointers = new Map<number, IPoint>();
+  private isPinching = false;
+  private prevPinchDistance = 0;
+  private prevPinchMidpoint: IPoint = { x: 0, y: 0 };
 
   private _marqueeSelectOutline: SVGRectElement = SvgHelper.createRect(0, 0, [
     ['stroke', 'rgb(35, 35, 255)'],
@@ -1100,6 +1121,8 @@ export class MarkerArea extends HTMLElement {
     // if (!this._isFocused) {
     //   this.focus();
     // }
+
+    this.activePointers.set(ev.pointerId, { x: ev.clientX, y: ev.clientY });
 
     this._manipulationStartX = ev.clientX;
     this._manipulationStartY = ev.clientY;
@@ -1170,11 +1193,8 @@ export class MarkerArea extends HTMLElement {
         }
       }
     } else if (
-      (ev.pointerType !== 'touch' &&
-        ((ev.button === 0 && ev.altKey) || ev.button === 1)) || // left button + alt or middle button
-      (ev.pointerType === 'touch' &&
-        this.touchPoints === 2 &&
-        ev.pointerId === this.leadPointerId)
+      ev.pointerType !== 'touch' &&
+      ((ev.button === 0 && ev.altKey) || ev.button === 1) // left button + alt or middle button
     ) {
       this.isDragging = true;
       this.isPanning = true;
@@ -1183,6 +1203,10 @@ export class MarkerArea extends HTMLElement {
       if (this._mainCanvas) {
         this._mainCanvas.style.cursor = 'grabbing';
       }
+    } else if (ev.pointerType === 'touch' && this.touchPoints === 2) {
+      this.isPinching = true;
+      this.prevPinchDistance = this.getPinchDistance();
+      this.prevPinchMidpoint = this.getPinchMidpoint();
     }
   }
 
@@ -1234,6 +1258,8 @@ export class MarkerArea extends HTMLElement {
   }
 
   private onPointerMove(ev: PointerEvent) {
+    this.activePointers.set(ev.pointerId, { x: ev.clientX, y: ev.clientY });
+
     if (
       (ev.pointerType === 'touch' && this.touchPoints === 1) ||
       (ev.pointerType !== 'touch' && this.isDragging && !ev.altKey)
@@ -1304,13 +1330,33 @@ export class MarkerArea extends HTMLElement {
           ['height', `${this._marqueeSelectRect.height}`],
         ]);
       }
-    } else if (
-      (ev.pointerType !== 'touch' && this.isPanning) ||
-      (ev.pointerType === 'touch' &&
-        this.touchPoints === 2 &&
-        ev.pointerId === this.leadPointerId)
-    ) {
+    } else if (ev.pointerType !== 'touch' && this.isPanning) {
       this.panTo({ x: ev.clientX, y: ev.clientY });
+    } else if (ev.pointerType === 'touch' && this.touchPoints === 2 && this.isPinching) {
+      const newDistance = this.getPinchDistance();
+      const newMidpoint = this.getPinchMidpoint();
+
+      // Pan by midpoint translation
+      this._panX += newMidpoint.x - this.prevPinchMidpoint.x;
+      this._panY += newMidpoint.y - this.prevPinchMidpoint.y;
+
+      // Zoom at the new midpoint
+      if (this.prevPinchDistance > 0 && this._canvasContainer) {
+        const ratio = newDistance / this.prevPinchDistance;
+        const newZoom = Math.max(0.1, Math.min(10, this._zoomLevel * ratio));
+        const actualRatio = newZoom / this._zoomLevel;
+        const containerRect = this._canvasContainer.getBoundingClientRect();
+        const mx = newMidpoint.x - (containerRect.left + containerRect.width / 2);
+        const my = newMidpoint.y - (containerRect.top + containerRect.height / 2);
+        this._panX = mx * (1 - actualRatio) + this._panX * actualRatio;
+        this._panY = my * (1 - actualRatio) + this._panY * actualRatio;
+        this._zoomLevel = newZoom;
+        this.applyTransform();
+        this.adjustEditorsZoom();
+      }
+
+      this.prevPinchDistance = newDistance;
+      this.prevPinchMidpoint = { ...newMidpoint };
     }
   }
 
@@ -1343,11 +1389,22 @@ export class MarkerArea extends HTMLElement {
   }
 
   private onPointerUp(ev: PointerEvent) {
+    this.activePointers.delete(ev.pointerId);
+
     if (this.touchPoints > 0) {
       this.touchPoints--;
       if (this.touchPoints === 0) {
         this.leadPointerId = undefined;
       }
+    }
+
+    if (this.touchPoints < 2) {
+      this.isPinching = false;
+      this.prevPinchDistance = 0;
+    }
+
+    if (this.touchPoints === 1 && this.activePointers.size === 1) {
+      this.prevPanPoint = Array.from(this.activePointers.values())[0];
     }
     if (this.touchPoints === 0) {
       if (this._mainCanvas) {
@@ -1395,6 +1452,10 @@ export class MarkerArea extends HTMLElement {
     this.isDragging = false;
     this.isSelecting = false;
     this.isPanning = false;
+    if (this.touchPoints === 0) {
+      this.isPinching = false;
+      this.prevPinchDistance = 0;
+    }
   }
 
   private finishMarqueeSelection() {
@@ -1459,7 +1520,8 @@ export class MarkerArea extends HTMLElement {
     }
   }
 
-  private onPointerOut(/*ev: PointerEvent*/) {
+  private onPointerOut(ev: PointerEvent) {
+    this.activePointers.delete(ev.pointerId);
     if (this.touchPoints > 0) {
       this.touchPoints--;
     }

@@ -471,7 +471,7 @@ export class MarkerView extends HTMLElement {
     this._contentContainer.style.overflow = 'hidden';
 
     this._canvasContainer = document.createElement('div');
-    this._canvasContainer.style.touchAction = 'pinch-zoom';
+    this._canvasContainer.style.touchAction = 'none';
     this._canvasContainer.className = 'canvas-container';
     this._canvasContainer.style.display = 'flex';
     this._canvasContainer.style.flexGrow = '2';
@@ -752,12 +752,18 @@ export class MarkerView extends HTMLElement {
 
   private touchPoints = 0;
   private leadPointerId?: number;
+  private activePointers = new Map<number, IPoint>();
+  private isPinching = false;
+  private prevPinchDistance = 0;
+  private prevPinchMidpoint: IPoint = { x: 0, y: 0 };
 
   private onCanvasPointerDown(ev: PointerEvent) {
     // @todo ?
     // if (!this._isFocused) {
     //   this.focus();
     // }
+
+    this.activePointers.set(ev.pointerId, { x: ev.clientX, y: ev.clientY });
 
     this.touchPoints++;
     if (this.touchPoints === 1) {
@@ -766,16 +772,48 @@ export class MarkerView extends HTMLElement {
       if (this._mainCanvas) {
         this._mainCanvas.style.cursor = 'grabbing';
       }
+    } else if (this.touchPoints === 2) {
+      this.isPinching = true;
+      this.prevPinchDistance = this.getPinchDistance();
+      this.prevPinchMidpoint = this.getPinchMidpoint();
     }
   }
 
   private onPointerMove(ev: PointerEvent) {
-    if (this.touchPoints > 0 && this.leadPointerId === ev.pointerId) {
+    this.activePointers.set(ev.pointerId, { x: ev.clientX, y: ev.clientY });
+
+    if (this.touchPoints === 2 && this.isPinching) {
+      const newDistance = this.getPinchDistance();
+      const newMidpoint = this.getPinchMidpoint();
+
+      // Pan by midpoint translation
+      this._panX += newMidpoint.x - this.prevPinchMidpoint.x;
+      this._panY += newMidpoint.y - this.prevPinchMidpoint.y;
+
+      // Zoom at the new midpoint
+      if (this.prevPinchDistance > 0 && this._canvasContainer) {
+        const ratio = newDistance / this.prevPinchDistance;
+        const newZoom = Math.max(0.1, Math.min(10, this._zoomLevel * ratio));
+        const actualRatio = newZoom / this._zoomLevel;
+        const containerRect = this._canvasContainer.getBoundingClientRect();
+        const mx = newMidpoint.x - (containerRect.left + containerRect.width / 2);
+        const my = newMidpoint.y - (containerRect.top + containerRect.height / 2);
+        this._panX = mx * (1 - actualRatio) + this._panX * actualRatio;
+        this._panY = my * (1 - actualRatio) + this._panY * actualRatio;
+        this._zoomLevel = newZoom;
+        this.applyTransform();
+      }
+
+      this.prevPinchDistance = newDistance;
+      this.prevPinchMidpoint = { ...newMidpoint };
+    } else if (this.touchPoints > 0 && this.leadPointerId === ev.pointerId) {
       this.panTo({ x: ev.clientX, y: ev.clientY });
     }
   }
 
-  private onPointerUp() {
+  private onPointerUp(ev: PointerEvent) {
+    this.activePointers.delete(ev.pointerId);
+
     if (this.touchPoints > 0) {
       this.touchPoints--;
       if (this.touchPoints === 0) {
@@ -786,9 +824,19 @@ export class MarkerView extends HTMLElement {
         this._mainCanvas.style.cursor = 'default';
       }
     }
+
+    if (this.touchPoints < 2) {
+      this.isPinching = false;
+      this.prevPinchDistance = 0;
+    }
+
+    if (this.touchPoints === 1 && this.activePointers.size === 1) {
+      this.prevPanPoint = Array.from(this.activePointers.values())[0];
+    }
   }
 
-  private onPointerOut(/*ev: PointerEvent*/) {
+  private onPointerOut(ev: PointerEvent) {
+    this.activePointers.delete(ev.pointerId);
     if (this.touchPoints > 0) {
       this.touchPoints--;
     }
@@ -880,6 +928,23 @@ export class MarkerView extends HTMLElement {
     this._panY -= this.prevPanPoint.y - point.y;
     this.applyTransform();
     this.prevPanPoint = point;
+  }
+
+  private getPinchDistance(): number {
+    const points = Array.from(this.activePointers.values());
+    if (points.length < 2) return 0;
+    const dx = points[1].x - points[0].x;
+    const dy = points[1].y - points[0].y;
+    return Math.sqrt(dx * dx + dy * dy);
+  }
+
+  private getPinchMidpoint(): IPoint {
+    const points = Array.from(this.activePointers.values());
+    if (points.length < 2) return { x: 0, y: 0 };
+    return {
+      x: (points[0].x + points[1].x) / 2,
+      y: (points[0].y + points[1].y) / 2,
+    };
   }
 
   /**
