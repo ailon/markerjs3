@@ -255,10 +255,11 @@ export class MarkerView extends HTMLElement {
    * Sets the current zoom level.
    */
   public set zoomLevel(value: number) {
+    const oldZoom = this._zoomLevel;
     this._zoomLevel = value;
     if (this._canvasContainer && this._contentContainer && this._mainCanvas) {
-      this._panX = 0;
-      this._panY = 0;
+      this._panX = this._panX * value / oldZoom;
+      this._panY = this._panY * value / oldZoom;
       this.applyTransform();
     }
   }
@@ -299,9 +300,13 @@ export class MarkerView extends HTMLElement {
     // Determine if we should apply the zoom
     if (zoomToFit > 1 && this._autoZoomIn) {
       // Image is smaller than container, zoom in
+      this._panX = 0;
+      this._panY = 0;
       this.zoomLevel = zoomToFit;
     } else if (zoomToFit < 1 && this._autoZoomOut) {
       // Image is larger than container, zoom out
+      this._panX = 0;
+      this._panY = 0;
       this.zoomLevel = zoomToFit;
     }
   }
